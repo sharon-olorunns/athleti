@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { Exercise, LoggedExercise, Prescription, WorkoutSession } from '@/types';
+import type { Units } from '@/core/units';
 import {
   findLoggedSet,
   lastPerformance,
@@ -36,6 +37,7 @@ interface BodyProps {
   session: WorkoutSession;
   history: WorkoutSession[];
   plateIncrementKg: number;
+  units: Units;
   onOpenNotes: () => void;
 }
 
@@ -49,6 +51,7 @@ function ExerciseBody({
   session,
   history,
   plateIncrementKg,
+  units,
   onOpenNotes,
 }: BodyProps) {
   const completeRow = useWorkout((s) => s.completeRow);
@@ -90,6 +93,7 @@ function ExerciseBody({
           prescription,
           history: performanceHistory(exerciseId, history, session.id),
           weekNumber: session.weekNumber,
+          units,
         });
 
   const setCount = plannedSetCount(
@@ -219,7 +223,9 @@ function ExerciseBody({
       )}
 
       {previous !== undefined && (
-        <p className={styles.lastTime}>Last time — {summariseSets(previous.sets, exercise)}</p>
+        <p className={styles.lastTime}>
+          Last time — {summariseSets(previous.sets, exercise, units)}
+        </p>
       )}
 
       {skipped ? (
@@ -263,6 +269,7 @@ function ExerciseBody({
                   previous={previousSetFor(row, previous)}
                   focused={focusKey === `${exerciseId}|${row.key}`}
                   plateIncrementKg={plateIncrementKg}
+                  units={units}
                   staticRepText={staticRepText}
                   onChange={(next) => setDraft(exerciseId, row.key, next)}
                   onComplete={(next, wasClean) => {
@@ -412,11 +419,12 @@ interface CollapsedProps {
   prescription: Prescription;
   exercise: Exercise | undefined;
   session: WorkoutSession;
+  units: Units;
   onExpand: () => void;
 }
 
 /** `Trap bar deadlift — 4×5 @ 80kg ✓` */
-function CollapsedExercise({ prescription, exercise, session, onExpand }: CollapsedProps) {
+function CollapsedExercise({ prescription, exercise, session, units, onExpand }: CollapsedProps) {
   const entry = entryFor(session, effectiveExerciseId(session, prescription.exerciseId));
   const skipped = entry?.skipped === true;
 
@@ -428,7 +436,7 @@ function CollapsedExercise({ prescription, exercise, session, onExpand }: Collap
       ) : (
         <>
           <span className={styles.summaryValue}>
-            {summariseSets(entry?.sets ?? [], exercise)}
+            {summariseSets(entry?.sets ?? [], exercise, units)}
           </span>
           <span className={styles.tick}>✓</span>
         </>
@@ -479,6 +487,7 @@ interface CardProps {
   history: WorkoutSession[];
   exerciseById: (id: string) => Exercise | undefined;
   plateIncrementKg: number;
+  units: Units;
   expanded: boolean;
   onExpand: () => void;
   onOpenNotes: () => void;
@@ -494,6 +503,7 @@ export function ExerciseCard({
   history,
   exerciseById,
   plateIncrementKg,
+  units,
   expanded,
   onExpand,
   onOpenNotes,
@@ -520,6 +530,7 @@ export function ExerciseCard({
                 session={session}
                 history={history}
                 plateIncrementKg={plateIncrementKg}
+                units={units}
                 onOpenNotes={onOpenNotes}
               />
             ) : allComplete ? (
@@ -527,6 +538,7 @@ export function ExerciseCard({
                 prescription={prescription}
                 exercise={exerciseById(effectiveExerciseId(session, prescription.exerciseId))}
                 session={session}
+                units={units}
                 onExpand={onExpand}
               />
             ) : (

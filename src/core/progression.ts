@@ -11,7 +11,7 @@ import type { Exercise, LoggedExercise, LoggedSet, Prescription, ProgressionType
 import { deloadSets, isDeloadWeek } from './schedule';
 import { parseReps, topOfRange } from './reps';
 import type { RowValues } from './workout';
-import { formatWeight } from './workout';
+import { formatWeight, type Units } from './units';
 
 export type SuggestionKind =
   | 'none'
@@ -48,6 +48,8 @@ export interface ProgressionInput {
   /** Past performances of this exercise, newest first, excluding the live session. */
   history: readonly LoggedExercise[];
   weekNumber: number;
+  /** Display units. Suggestions are computed in kilograms and shown in these. */
+  units?: Units;
 }
 
 /** Round a computed weight onto the increment, so suggestions land on real plates. */
@@ -163,7 +165,7 @@ export function qualityQuestion(
 }
 
 function loadSuggestion(input: ProgressionInput, sets: number): ProgressionSuggestion {
-  const { exercise, prescription, history } = input;
+  const { exercise, prescription, history, units = 'kg' } = input;
   const rule = exercise.progression;
   const inverse = rule.inverse === true;
   const increment = rule.incrementKg ?? 0;
@@ -205,8 +207,8 @@ function loadSuggestion(input: ProgressionInput, sets: number): ProgressionSugge
       ...base,
       kind: 'load-progress',
       message: inverse
-        ? `All sets at ${repTarget} clean last time → assistance down to ${formatWeight(next)} kg`
-        : `All sets at ${repTarget} clean last time → try ${formatWeight(next)} kg`,
+        ? `All sets at ${repTarget} clean last time → assistance down to ${formatWeight(next, units)}`
+        : `All sets at ${repTarget} clean last time → try ${formatWeight(next, units)}`,
       prefill: {
         weightKg: next,
         ...(repFloor > 0 ? { reps: repFloor } : {}),
@@ -236,13 +238,13 @@ function loadSuggestion(input: ProgressionInput, sets: number): ProgressionSugge
       ...base,
       kind: 'load-stalled',
       message: inverse
-        ? `Stalled two weeks — assistance back up to ${formatWeight(backedOff)} kg for one session, then rebuild.`
+        ? `Stalled two weeks — assistance back up to ${formatWeight(backedOff, units)} for one session, then rebuild.`
         : 'Stalled two weeks — drop to 60% for one session, then rebuild.',
       prefill: { weightKg: backedOff },
     };
   }
 
-  const weightText = lastWeight === undefined ? '' : ` @ ${formatWeight(lastWeight)} kg`;
+  const weightText = lastWeight === undefined ? '' : ` @ ${formatWeight(lastWeight, units)}`;
   return {
     ...base,
     kind: 'load-hold',
@@ -252,7 +254,7 @@ function loadSuggestion(input: ProgressionInput, sets: number): ProgressionSugge
 }
 
 function qualitySuggestion(input: ProgressionInput, sets: number): ProgressionSuggestion {
-  const { exercise, history } = input;
+  const { exercise, history, units = 'kg' } = input;
   const last = history[0];
 
   /*
@@ -265,7 +267,7 @@ function qualitySuggestion(input: ProgressionInput, sets: number): ProgressionSu
     last === undefined
       ? ''
       : ` · last time ${repsSummary(last.sets)}${
-          lastWeight === undefined ? '' : ` @ ${formatWeight(lastWeight)} kg`
+          lastWeight === undefined ? '' : ` @ ${formatWeight(lastWeight, units)}`
         }`;
 
   return {

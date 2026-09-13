@@ -1,12 +1,15 @@
 import styles from './TabBar.module.css';
 
-export type Tab = 'today' | 'history' | 'progress' | 'programme';
+export type Tab = 'today' | 'history' | 'progress' | 'programme' | 'settings';
 
 const TABS: { id: Tab; label: string; glyph: string }[] = [
   { id: 'today', label: 'Today', glyph: '●' },
   { id: 'history', label: 'History', glyph: '☷' },
   { id: 'progress', label: 'Progress', glyph: '◔' },
-  { id: 'programme', label: 'Programme', glyph: '☰' },
+  // 'Plan' rather than 'Programme': the longer word does not fit a fifth of a
+  // 320px bar without truncating. The screen itself keeps its full title.
+  { id: 'programme', label: 'Plan', glyph: '☰' },
+  { id: 'settings', label: 'Settings', glyph: '⚙' },
 ];
 
 interface Props {
@@ -31,7 +34,7 @@ export function TabBar({ active, onChange, workoutActive }: Props) {
             {tab.glyph}
           </span>
           {tab.id === 'today' && workoutActive && <span className={styles.dot} />}
-          {tab.label}
+          <span className={styles.label}>{tab.label}</span>
         </button>
       ))}
     </nav>

@@ -2,7 +2,7 @@ import type { CSSProperties } from 'react';
 import { resolveAlternatives } from '@/core/alternatives';
 import { performancesOf, strengthSeries, topSet } from '@/core/stats';
 import { summariseSets } from '@/core/workout';
-import { formatWeight } from '@/core/workout';
+import { formatWeight, toDisplayWeight, weightUnitLabel } from '@/core/units';
 import { Chip } from '@/components/Chip';
 import { LineChart } from '@/components/charts/LineChart';
 import { equipmentLabel, PROGRESSION_TINT } from '@/components/labels';
@@ -24,6 +24,7 @@ const shortDate = (at: number) =>
 export function ExerciseDetail({ exerciseId, onClose }: { exerciseId: string; onClose: () => void }) {
   const exercise = useApp((s) => s.exercise(exerciseId));
   const library = useApp((s) => s.library);
+  const units = useApp((s) => s.settings.units);
   const history = useWorkout((s) => s.history);
 
   if (exercise === undefined) return null;
@@ -32,6 +33,15 @@ export function ExerciseDetail({ exerciseId, onClose }: { exerciseId: string; on
   const series = strengthSeries(exercise, performances);
   const inverse = exercise.progression.inverse === true;
   const alternatives = resolveAlternatives(exercise, library);
+
+  // Weights are stored in kilograms; the axis converts like every other display.
+  const weightSeries = series.kind === 'e1rm' || series.kind === 'assistance';
+  const chartLabel = weightSeries
+    ? series.label.replace('(kg)', `(${weightUnitLabel(units)})`)
+    : series.label;
+  const chartPoints = weightSeries
+    ? series.points.map((p) => ({ ...p, value: toDisplayWeight(p.value, units) }))
+    : series.points;
   const tint = PROGRESSION_TINT[exercise.progression.type];
 
   return (
@@ -90,10 +100,10 @@ export function ExerciseDetail({ exerciseId, onClose }: { exerciseId: string; on
           ) : (
             <div className={styles.chart}>
               <LineChart
-                title={series.label}
+                title={chartLabel}
                 valueLabel={series.lowerIsBetter ? 'lower is better' : ''}
                 series={[
-                  { id: 'main', label: series.label, points: series.points, emphasis: true },
+                  { id: 'main', label: chartLabel, points: chartPoints, emphasis: true },
                 ]}
               />
             </div>
@@ -112,7 +122,7 @@ export function ExerciseDetail({ exerciseId, onClose }: { exerciseId: string; on
                   <li key={`${at}-${entry.exerciseId}`} className={styles.historyRow}>
                     <span className={styles.historyDate}>{shortDate(at)}</span>
                     <span className={styles.historySets}>
-                      {summariseSets(entry.sets, exercise)}
+                      {summariseSets(entry.sets, exercise, units)}
                       {entry.substitutedForId !== undefined && (
                         <span className={styles.swapMark}>
                           stood in for {useApp.getState().exercise(entry.substitutedForId)?.name ??
@@ -122,7 +132,7 @@ export function ExerciseDetail({ exerciseId, onClose }: { exerciseId: string; on
                     </span>
                     {best?.weightKg !== undefined && (
                       <span className={styles.historyTop}>
-                        top {formatWeight(best.weightKg)} kg
+                        top {formatWeight(best.weightKg, units)}
                       </span>
                     )}
                   </li>

@@ -15,6 +15,8 @@
 
 .tab {
   flex: 1 1 0;
+  min-width: 0;
+  padding: 0 2px;
   min-height: var(--tabbar-h);
   display: flex;
   flex-direction: column;
@@ -24,6 +26,21 @@
   color: var(--text-faint);
   font-size: var(--fs-xs);
   font-weight: 650;
+}
+
+/* Five labels have to fit across a 320px screen. */
+.label {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+@media (max-width: 380px) {
+  .tab {
+    font-size: 11px;
+    letter-spacing: -0.01em;
+  }
 }
 
 .active {

@@ -7,6 +7,7 @@ import { ExerciseDetail } from './screens/ExerciseDetail/ExerciseDetail';
 import { HistoryScreen } from './screens/History/HistoryScreen';
 import { ProgrammeScreen } from './screens/Programme/ProgrammeScreen';
 import { ProgressScreen } from './screens/Progress/ProgressScreen';
+import { SettingsScreen } from './screens/Settings/SettingsScreen';
 import { TodayScreen } from './screens/Today/TodayScreen';
 import { WorkoutScreen } from './screens/Workout/WorkoutScreen';
 import { useApp } from './state/store';
@@ -67,13 +68,14 @@ export default function App() {
     <>
       {tab === 'today' &&
         (session === undefined ? (
-          <TodayScreen onStarted={() => setTab('today')} />
+          <TodayScreen onStarted={() => setTab('today')} onOpenSettings={() => setTab('settings')} />
         ) : (
           <WorkoutScreen onFinished={() => setTab('today')} />
         ))}
       {tab === 'history' && <HistoryScreen onOpenExercise={setDetailId} />}
       {tab === 'progress' && <ProgressScreen />}
       {tab === 'programme' && <ProgrammeScreen onOpenExercise={setDetailId} />}
+      {tab === 'settings' && <SettingsScreen />}
 
       {detailId !== undefined && (
         <ExerciseDetail exerciseId={detailId} onClose={() => setDetailId(undefined)} />

@@ -1,10 +1,11 @@
 import { useState } from 'react';
-import type { WorkoutSession } from '@/types';
+import type { Settings, WorkoutSession } from '@/types';
 import { durationLabel, sessionStats } from '@/core/session';
 import { sessionPainScore } from '@/core/stats';
 import { painTint } from '@/core/pain';
 import { summariseSets } from '@/core/workout';
 import { Chip } from '@/components/Chip';
+import { formatWeight } from '@/core/units';
 import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
 import styles from './History.module.css';
@@ -19,6 +20,7 @@ const longDate = (at: number) =>
 /** Section 5.4: reverse-chronological sessions, each opening a read-only view. */
 export function HistoryScreen({ onOpenExercise }: { onOpenExercise: (id: string) => void }) {
   const programme = useApp((s) => s.programme);
+  const units = useApp((s) => s.settings.units);
   const exerciseById = useApp((s) => s.exercise);
   const history = useWorkout((s) => s.history);
 
@@ -83,6 +85,7 @@ export function HistoryScreen({ onOpenExercise }: { onOpenExercise: (id: string)
       {open !== undefined && (
         <SessionView
           session={open}
+          units={units}
           onClose={() => setOpenId(undefined)}
           onOpenExercise={onOpenExercise}
         />
@@ -94,10 +97,12 @@ export function HistoryScreen({ onOpenExercise }: { onOpenExercise: (id: string)
 /** Read-only: a finished session is a record, not something to edit. */
 function SessionView({
   session,
+  units,
   onClose,
   onOpenExercise,
 }: {
   session: WorkoutSession;
+  units: Settings['units'];
   onClose: () => void;
   onOpenExercise: (id: string) => void;
 }) {
@@ -161,7 +166,7 @@ function SessionView({
                   {exercise?.name ?? entry.exerciseId}
                 </button>
                 <span className={styles.entrySummary}>
-                  {entry.skipped === true ? 'skipped' : summariseSets(entry.sets, exercise)}
+                  {entry.skipped === true ? 'skipped' : summariseSets(entry.sets, exercise, units)}
                 </span>
               </span>
 
@@ -200,7 +205,7 @@ function SessionView({
                       </span>
                       <span>
                         {[
-                          set.weightKg !== undefined ? `${set.weightKg} kg` : undefined,
+                          set.weightKg !== undefined ? formatWeight(set.weightKg, units) : undefined,
                           set.reps !== undefined ? `${set.reps} reps` : undefined,
                           set.seconds !== undefined ? `${set.seconds}s` : undefined,
                           set.distanceM !== undefined ? `${set.distanceM} m` : undefined,

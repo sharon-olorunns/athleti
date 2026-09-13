@@ -73,6 +73,8 @@ export const META_KEYS = {
   dismissedMorningChecks: 'dismissedMorningChecks',
   /** True once the install offer has been made, so it is made only once. */
   installOffered: 'installOffered',
+  /** When the backup nudge was last dismissed, so it returns only after an export. */
+  exportReminderDismissedAt: 'exportReminderDismissedAt',
 } as const;
 
 export class TrainerDb extends Dexie {

@@ -8,6 +8,7 @@ import {
   weeklyAdherence,
   weeklyVolumeByMuscle,
 } from '@/core/stats';
+import { toDisplayWeight, weightUnitLabel } from '@/core/units';
 import { BarChart } from '@/components/charts/BarChart';
 import { LineChart, type Band } from '@/components/charts/LineChart';
 import { useApp } from '@/state/store';
@@ -36,6 +37,7 @@ export function ProgressScreen() {
   const library = useApp((s) => s.library);
   const exerciseById = useApp((s) => s.exercise);
   const morningChecks = useApp((s) => s.morningChecks);
+  const units = useApp((s) => s.settings.units);
   const history = useWorkout((s) => s.history);
 
   const [query, setQuery] = useState('');
@@ -70,6 +72,15 @@ export function ProgressScreen() {
     pickedExercise,
     picked === undefined ? [] : performancesOf(picked, history),
   );
+
+  // Weights are stored in kilograms; the axis converts at the display boundary.
+  const weightSeries = series.kind === 'e1rm' || series.kind === 'assistance';
+  const strengthLabel = weightSeries
+    ? series.label.replace('(kg)', `(${weightUnitLabel(units)})`)
+    : series.label;
+  const strengthPoints = weightSeries
+    ? series.points.map((p) => ({ ...p, value: toDisplayWeight(p.value, units) }))
+    : series.points;
 
   const latestWeek = volume[volume.length - 1];
 
@@ -159,8 +170,12 @@ export function ProgressScreen() {
           ) : (
             <LineChart
               title={pickedExercise.name}
-              valueLabel={series.lowerIsBetter ? `${series.label} · lower is better` : series.label}
-              series={[{ id: 'main', label: series.label, points: series.points, emphasis: true }]}
+              valueLabel={
+                series.lowerIsBetter ? `${strengthLabel} · lower is better` : strengthLabel
+              }
+              series={[
+                { id: 'main', label: strengthLabel, points: strengthPoints, emphasis: true },
+              ]}
             />
           ))}
       </section>

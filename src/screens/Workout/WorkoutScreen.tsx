@@ -140,6 +140,7 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
                 history={history}
                 exerciseById={exerciseById}
                 plateIncrementKg={settings.plateIncrementKg}
+                units={settings.units}
                 expanded={index === openIndex}
                 onExpand={() => setExpandedIndex(index === openIndex ? undefined : index)}
                 onOpenNotes={() => {

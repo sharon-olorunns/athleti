@@ -20,6 +20,7 @@ import type {
 import { effectiveExerciseId } from './alternatives';
 import { logsPerSide, setRowCount } from './prescription';
 import { bottomOfRange, parseReps } from './reps';
+import { formatWeight, type Units } from './units';
 
 export interface PlannedRow {
   /** Stable across re-renders and reloads: derived from position, not identity. */
@@ -227,10 +228,11 @@ export function stepFor(field: TrackedField, plateIncrementKg: number): number {
   }
 }
 
-/** Weights show a decimal only when they have one: "60 kg", "62.5 kg". */
-export function formatWeight(kg: number): string {
-  return Number.isInteger(kg) ? String(kg) : kg.toFixed(1);
-}
+/**
+ * Re-exported so callers have one import for weight display. Conversion happens
+ * here, at the boundary; everything stored stays in kilograms.
+ */
+export { formatWeightValue as formatWeight, formatWeight as formatWeightWithUnit } from './units';
 
 /**
  * A performance as one line: "4×5 @ 80 kg", "5×45s", "3×20 m @ 40 kg".
@@ -239,6 +241,7 @@ export function formatWeight(kg: number): string {
 export function summariseSets(
   sets: readonly LoggedSet[],
   exercise: Exercise | undefined,
+  units: Units = 'kg',
 ): string {
   if (sets.length === 0) return '';
   const tracks = exercise?.tracks ?? [];
@@ -254,8 +257,9 @@ export function summariseSets(
     return undefined;
   };
 
-  const units = sets.map(unitOf).filter((u) => u !== undefined);
-  const sameUnit = new Set(units).size <= 1;
+  // What each set achieved, in whatever the exercise tracks.
+  const efforts = sets.map(unitOf).filter((u) => u !== undefined);
+  const sameEffort = new Set(efforts).size <= 1;
 
   // A varying weight is reported as the top set. Checked before the reps, since
   // identical reps at different loads must not collapse to "4×5" and lose the
@@ -265,22 +269,23 @@ export function summariseSets(
       (set.weightKg ?? 0) > (best.weightKg ?? 0) ? set : best,
     );
     const topUnit = unitOf(top);
-    const topWeight = top.weightKg === undefined ? '' : ` @ ${formatWeight(top.weightKg)} kg`;
+    const topWeight =
+      top.weightKg === undefined ? '' : ` @ ${formatWeight(top.weightKg, units)}`;
     return `${count} sets · top ${topUnit ?? ''}${topWeight}`.replace('top  @', 'top @');
   }
 
   const load =
     tracks.includes('weight') && weights[0] !== undefined
-      ? ` @ ${formatWeight(weights[0])} kg`
+      ? ` @ ${formatWeight(weights[0], units)}`
       : '';
 
-  if (units.length === 0) return `${count} set${count === 1 ? '' : 's'}${load}`;
+  if (efforts.length === 0) return `${count} set${count === 1 ? '' : 's'}${load}`;
 
-  if (sameUnit) return `${count}×${units[0]}${load}`;
+  if (sameEffort) return `${count}×${efforts[0]}${load}`;
 
   // Mixed efforts at one load: show them rather than averaging away a set that
   // fell short.
-  return `${units.join('/')}${load}`;
+  return `${efforts.join('/')}${load}`;
 }
 
 /** A block item paired with the block it came from, in the order they are worked. */

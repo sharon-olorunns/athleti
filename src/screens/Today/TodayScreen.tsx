@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { isDeloadWeek, nextDayId } from '@/core/schedule';
 import { durationLabel, sessionStats } from '@/core/session';
 import { morningCheckDue, painTint } from '@/core/pain';
+import { exportReminderDue } from '@/core/backup';
 import { kneeTrend, painTimeline, recentPainPoints } from '@/core/stats';
 import { Sparkline } from '@/components/charts/Sparkline';
 import { permanentSubstitutionCandidate, substitutionKey } from '@/core/alternatives';
@@ -28,7 +29,13 @@ function shortDate(epochMs: number): string {
  * The knee sparkline and the export reminder belong here too, but they need pain
  * data and exports, which arrive in later milestones.
  */
-export function TodayScreen({ onStarted }: { onStarted: () => void }) {
+export function TodayScreen({
+  onStarted,
+  onOpenSettings,
+}: {
+  onStarted: () => void;
+  onOpenSettings: () => void;
+}) {
   const programme = useApp((s) => s.programme);
   const exerciseById = useApp((s) => s.exercise);
   const currentWeek = useApp((s) => s.currentWeek());
@@ -44,6 +51,7 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
   const [pickerOpen, setPickerOpen] = useState(false);
   const [dismissedMornings, setDismissedMornings] = useState<string[]>([]);
   const [dismissedSwaps, setDismissedSwaps] = useState<string[]>([]);
+  const [exportDue, setExportDue] = useState(false);
 
   // Both prompts are offered once and remembered, so neither becomes a nag.
   useEffect(() => {
@@ -52,6 +60,31 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
     );
     void getMeta<string[]>(META_KEYS.dismissedSubstitutions).then((v) => setDismissedSwaps(v ?? []));
   }, []);
+
+  /*
+   * The backup nudge: more than 30 days since the last export, or since the
+   * first session if there has never been one. Offered once and dismissible —
+   * losing everything to a cleared browser is the failure mode it guards.
+   */
+  useEffect(() => {
+    let cancelled = false;
+    void Promise.all([
+      getMeta<number>(META_KEYS.lastExportAt),
+      getMeta<number>(META_KEYS.exportReminderDismissedAt),
+    ]).then(([lastExport, dismissedAt]) => {
+      if (cancelled) return;
+      const earliest = history.reduce<number | undefined>(
+        (min, session) => (min === undefined ? session.startedAt : Math.min(min, session.startedAt)),
+        undefined,
+      );
+      const due = exportReminderDue(lastExport, earliest, Date.now());
+      const alreadyDismissedSince = dismissedAt !== undefined && dismissedAt > (lastExport ?? 0);
+      setExportDue(due && !alreadyDismissedSince);
+    });
+    return () => {
+      cancelled = true;
+    };
+  }, [history]);
 
   if (programme === undefined) return null;
 
@@ -112,6 +145,38 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
           </Chip>
         )}
       </div>
+
+      {exportDue && (
+        <section className={styles.card}>
+          <p className={styles.cardTitle}>Back up your training</p>
+          <p className={styles.cardBody}>
+            It has been over a month. There is no server — an export is the only
+            copy that survives a cleared browser.
+          </p>
+          <div className={styles.cardActions}>
+            <button
+              type="button"
+              className={styles.cardButton}
+              onClick={() => {
+                setExportDue(false);
+                void setMeta(META_KEYS.exportReminderDismissedAt, Date.now());
+              }}
+            >
+              Not now
+            </button>
+            <button
+              type="button"
+              className={`${styles.cardButton} ${styles.cardPrimary}`}
+              onClick={() => {
+                setExportDue(false);
+                onOpenSettings();
+              }}
+            >
+              Export
+            </button>
+          </div>
+        </section>
+      )}
 
       {morning !== undefined && (
         <section className={styles.card}>

@@ -104,7 +104,9 @@ working before the next is started.
       and adherence, plus the Today knee trend
 - [x] **7. PWA shell** — manifest, service worker, precached offline shell,
       install offer and a gated update flow
-- [ ] 8. Export/import, settings, polish
+- [x] **8. Export/import, settings, polish** — the settings screen, working
+      kilogram/pound display, a JSON backup and restore, CSV set history, and the
+      30-day backup nudge
 
 ### The PWA shell
 
@@ -261,6 +263,50 @@ log, not a diagnosis.
 - **The 0–10 scale is a 4×3 grid, not a row of eleven.** Eleven 48px targets do
   not fit across a 320px screen. Three rows of four keep every target at least
   48px wide on the smallest phone, and the twelfth cell is the Skip.
+
+### Settings, units and backups
+
+All seven settings are live. `units` was the last one stored but doing nothing,
+and it now works end to end.
+
+**Weights are kilograms everywhere inside the app** — the seed is in kilograms,
+`weightKg` is in kilograms, and every calculation stays there. Conversion happens
+only at the boundary: on the way to a screen, and on the way back from an input.
+Set rows, progression banners, summaries, history and the strength charts all
+follow the setting.
+
+One consequence worth knowing: in pounds the step is the kilogram plate
+increment converted, so 2.5 kg reads as 5.5 lb rather than a round 5 lb. That is
+deliberate — the plates are kilograms, and stepping by round pounds would drift
+the stored weight onto numbers no gym actually has.
+
+#### Export and import
+
+There is no server, so an export is the user's only backup and it has to be
+trustworthy.
+
+- **Export** writes one JSON file — every session, morning check, setting, custom
+  exercise, the programme as edited, and the bookkeeping that cannot be
+  regenerated, above all the programme start date that every week number depends
+  on. Filename `trainer-export-YYYY-MM-DD.json`.
+- **Import** validates before it writes anything: a file from another app, or
+  from a newer schema than this build understands, is refused rather than
+  half-applied. The change is then planned and shown as a summary — sessions
+  added, updated, unchanged, and on a replace, how many will be deleted — and
+  only written once confirmed, in a single transaction.
+- **Merge resolves an id collision by recency.** There is no modified timestamp
+  in the data model, so recency is the latest moment a session can be shown to
+  have been touched: its finish, its start, or its last completed set. A session
+  that gained sets after being exported therefore beats the exported copy.
+- **Merge leaves this device's settings and programme alone.** Merging history is
+  not the same as adopting another device's preferences; only a replace takes
+  those.
+- **CSV** gives one row per logged set for a spreadsheet, in kilograms
+  regardless of the display setting — an export should not depend on a
+  preference.
+- The Today screen nudges for a backup once it has been more than 30 days, or
+  more than 30 days since the first session if there has never been one.
+  Dismissible, and it stays dismissed until the next export.
 
 ### Charts
 

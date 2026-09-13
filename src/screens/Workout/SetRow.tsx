@@ -1,7 +1,15 @@
 import { useEffect, useRef, useState } from 'react';
 import type { Exercise, LoggedSet, TrackedField } from '@/types';
 import type { PlannedRow, RowValues } from '@/core/workout';
-import { formatWeight, stepFor } from '@/core/workout';
+import { stepFor } from '@/core/workout';
+import {
+  displayStep,
+  formatWeightValue,
+  fromDisplayWeight,
+  toDisplayWeight,
+  weightUnitLabel,
+  type Units,
+} from '@/core/units';
 import { Stepper } from '@/components/Stepper';
 import styles from './SetRow.module.css';
 
@@ -13,6 +21,7 @@ interface Props {
   previous: LoggedSet | undefined;
   focused: boolean;
   plateIncrementKg: number;
+  units: Units;
   /**
    * Shown instead of a rep stepper when the prescription has no single rep count
    * to step — the mobility flows prescribe "6 / 30s / 8" across three movements.
@@ -25,8 +34,7 @@ interface Props {
   onUncomplete: () => void;
 }
 
-const UNIT: Record<TrackedField, string> = {
-  weight: 'kg',
+const UNIT: Record<Exclude<TrackedField, 'weight'>, string> = {
   reps: 'reps',
   seconds: 'sec',
   distance: 'm',
@@ -44,6 +52,7 @@ export function SetRow({
   previous,
   focused,
   plateIncrementKg,
+  units,
   staticRepText,
   timerAction,
   onChange,
@@ -74,7 +83,7 @@ export function SetRow({
       <div className={styles.head}>
         <span className={styles.label}>Set {row.label}</span>
         {previous !== undefined && (
-          <span className={styles.prev}>prev {describeSet(previous, tracks)}</span>
+          <span className={styles.prev}>prev {describeSet(previous, tracks, units)}</span>
         )}
       </div>
 
@@ -82,11 +91,13 @@ export function SetRow({
         {tracks.includes('weight') && (
           <Stepper
             label={`Weight, set ${row.label}`}
-            value={values.weightKg}
-            onChange={(v) => update('weightKg', v)}
-            step={stepFor('weight', plateIncrementKg)}
+            // Kilograms are what is stored; the field converts on the way in and
+            // on the way out, and nothing else in the app sees the display unit.
+            value={values.weightKg === undefined ? undefined : toDisplayWeight(values.weightKg, units)}
+            onChange={(v) => update('weightKg', fromDisplayWeight(v, units))}
+            step={displayStep(plateIncrementKg, units)}
             decimals={1}
-            unit={UNIT.weight}
+            unit={weightUnitLabel(units)}
             disabled={isDone}
           />
         )}
@@ -162,14 +173,15 @@ export function SetRow({
 }
 
 /** "8 @ 60" / "45s" / "20 m @ 40" — compact enough for ghost text. */
-function describeSet(set: LoggedSet, tracks: readonly TrackedField[]): string {
+function describeSet(set: LoggedSet, tracks: readonly TrackedField[], units: Units): string {
   const parts: string[] = [];
   if (tracks.includes('reps') && set.reps !== undefined) parts.push(String(set.reps));
   if (tracks.includes('seconds') && set.seconds !== undefined) parts.push(`${set.seconds}s`);
   if (tracks.includes('distance') && set.distanceM !== undefined) parts.push(`${set.distanceM} m`);
   const core = parts.join(' ');
   if (tracks.includes('weight') && set.weightKg !== undefined) {
-    return core === '' ? `${formatWeight(set.weightKg)}` : `${core} @ ${formatWeight(set.weightKg)}`;
+    const weight = formatWeightValue(set.weightKg, units);
+    return core === '' ? weight : `${core} @ ${weight}`;
   }
   return core;
 }

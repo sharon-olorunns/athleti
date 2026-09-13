@@ -1,0 +1,261 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+  padding: calc(var(--safe-top) + var(--sp-4)) var(--sp-4);
+  padding-bottom: calc(
+    var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + var(--sp-6) + var(--safe-bottom)
+  );
+}
+
+.title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-4);
+}
+
+.group {
+  margin-bottom: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.groupTitle {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: var(--sp-2);
+}
+
+.row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-2) var(--sp-4);
+  min-height: 64px;
+}
+
+.row + .row {
+  border-top: 1px solid var(--border);
+}
+
+.label {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.labelText {
+  display: block;
+  font-weight: 650;
+  font-size: var(--fs-md);
+}
+
+.labelNote {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  margin-top: 2px;
+}
+
+/*
+ * On a narrow screen a three-way control and its label cannot share a line
+ * without squeezing the label into four, so the control drops beneath it.
+ */
+@media (max-width: 400px) {
+  .rowStacked {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--sp-2);
+    padding-top: var(--sp-3);
+    padding-bottom: var(--sp-3);
+  }
+
+  .rowStacked .segments {
+    width: 100%;
+  }
+
+  .rowStacked .segment {
+    flex: 1 1 0;
+  }
+}
+
+/* A segmented choice, sized so each option clears the tap target. */
+.segments {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 2px;
+  padding: 2px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-strong);
+}
+
+.segment {
+  min-height: var(--tap);
+  min-width: var(--tap);
+  padding: 0 var(--sp-2);
+  border-radius: 6px;
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.segmentActive {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* A switch, which is what a boolean setting deserves. */
+.toggle {
+  flex: 0 0 auto;
+  width: 58px;
+  height: var(--tap);
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-sunken);
+  position: relative;
+  transition: background 120ms ease;
+}
+
+.toggleOn {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+
+.knob {
+  position: absolute;
+  top: 50%;
+  left: 4px;
+  width: 22px;
+  height: 22px;
+  margin-top: -11px;
+  border-radius: 50%;
+  background: var(--text);
+  transition: transform 120ms ease;
+}
+
+.toggleOn .knob {
+  transform: translateX(26px);
+  background: var(--accent-text);
+}
+
+.action {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--sp-3) var(--sp-4);
+  min-height: 64px;
+  font-size: var(--fs-md);
+  font-weight: 650;
+}
+
+.action + .action {
+  border-top: 1px solid var(--border);
+}
+
+.actionNote {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  font-weight: 400;
+  margin-top: 2px;
+}
+
+.danger {
+  color: var(--pain-red);
+}
+
+/* The import summary: shown before anything is written. */
+.sheet {
+  position: fixed;
+  left: 50%;
+  transform: translateX(-50%);
+  bottom: 0;
+  width: 100%;
+  max-width: 640px;
+  z-index: 31;
+  background: var(--surface);
+  border-top: 1px solid var(--border-strong);
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: var(--sp-4) var(--sp-4) calc(var(--sp-4) + var(--safe-bottom));
+}
+
+.scrim {
+  position: fixed;
+  inset: 0;
+  z-index: 30;
+  background: rgba(0, 0, 0, 0.55);
+}
+
+.sheetTitle {
+  font-size: var(--fs-lg);
+  margin-bottom: var(--sp-2);
+}
+
+.summaryList {
+  display: grid;
+  gap: var(--sp-1);
+  margin: var(--sp-3) 0;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.summaryValue {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.warn {
+  color: var(--pain-amber);
+}
+
+.sheetActions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.sheetButton {
+  flex: 1 1 0;
+  min-height: var(--tap);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.status {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.error {
+  color: var(--pain-red);
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.about {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  text-align: center;
+  margin-top: var(--sp-5);
+  line-height: 1.6;
+}
