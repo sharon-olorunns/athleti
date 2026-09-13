@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import type { CSSProperties } from 'react';
 import type { Exercise, LoggedExercise, Prescription, WorkoutSession } from '@/types';
 import {
@@ -14,19 +15,24 @@ import {
 } from '@/core/workout';
 import { qualityQuestion, suggestedSetsFor, suggestProgression } from '@/core/progression';
 import { entryFor } from '@/core/session';
+import { effectiveExerciseId, substitutionFor } from '@/core/alternatives';
+import { lastPainScore, offersKneeSafeSwap } from '@/core/pain';
+import { PainScale } from '@/components/pain/PainScale';
+import { SwapSheet } from '@/components/swap/SwapSheet';
 import { targetText } from '@/core/prescription';
 import { parseReps } from '@/core/reps';
 import { contextLabelFor, type TimerCompletionTarget } from '@/core/timer';
 import { useTimer } from '@/state/timerStore';
 import { Chip } from '@/components/Chip';
 import { equipmentLabel, PROGRESSION_TINT } from '@/components/labels';
+import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
 import { SetRow } from './SetRow';
 import styles from './ExerciseCard.module.css';
 
 interface BodyProps {
   prescription: Prescription;
-  exercise: Exercise | undefined;
+  exerciseById: (id: string) => Exercise | undefined;
   session: WorkoutSession;
   history: WorkoutSession[];
   plateIncrementKg: number;
@@ -39,7 +45,7 @@ interface BodyProps {
  */
 function ExerciseBody({
   prescription,
-  exercise,
+  exerciseById,
   session,
   history,
   plateIncrementKg,
@@ -56,8 +62,21 @@ function ExerciseBody({
   const startHold = useTimer((s) => s.startHold);
   const startInterval = useTimer((s) => s.startInterval);
   const confirmQuality = useWorkout((s) => s.confirmQuality);
+  const swapExercise = useWorkout((s) => s.swapExercise);
+  const revertSwap = useWorkout((s) => s.revertSwap);
+  const savePainScore = useWorkout((s) => s.savePainScore);
+  const library = useApp((s) => s.library);
 
-  const exerciseId = prescription.exerciseId;
+  const [swapOpen, setSwapOpen] = useState(false);
+  const [swapFromPain, setSwapFromPain] = useState(false);
+
+  // A swap replaces the exercise for this session only; everything below works
+  // from what is actually being performed, so history accrues under its own id.
+  const prescribedId = prescription.exerciseId;
+  const prescribedExercise = exerciseById(prescribedId);
+  const exerciseId = effectiveExerciseId(session, prescribedId);
+  const substitution = substitutionFor(session, prescribedId);
+  const exercise = exerciseById(exerciseId);
   const entry: LoggedExercise | undefined = entryFor(session, exerciseId);
   const previous = lastPerformance(exerciseId, history, session.id);
   const skipped = entry?.skipped === true;
@@ -173,6 +192,15 @@ function ExerciseBody({
         ))}
       </div>
 
+      {substitution !== undefined && prescribedExercise !== undefined && (
+        <span className={styles.swapped}>
+          Swapped for {prescribedExercise.name}
+          {substitution.substitutionReason !== undefined
+            ? ` · ${substitution.substitutionReason}`
+            : ''}
+        </span>
+      )}
+
       {exercise?.cue !== undefined && <p className={styles.cue}>{exercise.cue}</p>}
       {prescription.note !== undefined && <p className={styles.note}>{prescription.note}</p>}
 
@@ -256,6 +284,37 @@ function ExerciseBody({
             })}
           </ul>
 
+          {exercise?.painTracked === true && allSetsLogged && (
+            <div className={styles.pain}>
+              <PainScale
+                question="Knee during that?"
+                value={entry?.painScore}
+                onSelect={(score) => {
+                  void savePainScore(exerciseId, score);
+                  // A red score offers the swap sheet directly.
+                  if (offersKneeSafeSwap(score)) {
+                    setSwapFromPain(true);
+                    setSwapOpen(true);
+                  }
+                }}
+                onSkip={() => undefined}
+                skipLabel="Not now"
+              />
+              {entry?.painScore !== undefined && offersKneeSafeSwap(entry.painScore) && (
+                <button
+                  type="button"
+                  className={styles.painSwap}
+                  onClick={() => {
+                    setSwapFromPain(true);
+                    setSwapOpen(true);
+                  }}
+                >
+                  Swap to a knee-safe alternative
+                </button>
+              )}
+            </div>
+          )}
+
           {question !== undefined && allSetsLogged && (
             <div className={styles.quality}>
               <span className={styles.qualityQuestion}>{question}</span>
@@ -285,6 +344,16 @@ function ExerciseBody({
           )}
 
           <div className={styles.actions}>
+            <button
+              type="button"
+              className={styles.action}
+              onClick={() => {
+                setSwapFromPain(false);
+                setSwapOpen(true);
+              }}
+            >
+              Swap
+            </button>
             <button type="button" className={styles.action} onClick={() => addSet(exerciseId)}>
               Add set
             </button>
@@ -300,6 +369,25 @@ function ExerciseBody({
             </button>
           </div>
         </>
+      )}
+
+      {swapOpen && (
+        <SwapSheet
+          prescribed={prescribedExercise}
+          currentId={exerciseId}
+          library={library}
+          lastPainScore={lastPainScore(history)}
+          fromPainScore={swapFromPain}
+          onChoose={(substitute, reason) => {
+            void swapExercise(prescribedId, substitute, reason);
+            setSwapOpen(false);
+          }}
+          onRevert={() => {
+            void revertSwap(prescribedId);
+            setSwapOpen(false);
+          }}
+          onClose={() => setSwapOpen(false)}
+        />
       )}
     </div>
   );
@@ -329,7 +417,7 @@ interface CollapsedProps {
 
 /** `Trap bar deadlift — 4×5 @ 80kg ✓` */
 function CollapsedExercise({ prescription, exercise, session, onExpand }: CollapsedProps) {
-  const entry = entryFor(session, prescription.exerciseId);
+  const entry = entryFor(session, effectiveExerciseId(session, prescription.exerciseId));
   const skipped = entry?.skipped === true;
 
   return (
@@ -413,8 +501,9 @@ export function ExerciseCard({
   const prescriptions = item.kind === 'single' ? [item.prescription] : item.prescriptions;
 
   const allComplete = prescriptions.every((prescription) => {
-    const exercise = exerciseById(prescription.exerciseId);
-    const entry = entryFor(session, prescription.exerciseId);
+    const performedId = effectiveExerciseId(session, prescription.exerciseId);
+    const exercise = exerciseById(performedId);
+    const entry = entryFor(session, performedId);
     return prescriptionProgress(prescription, exercise, entry).complete;
   });
 
@@ -427,7 +516,7 @@ export function ExerciseCard({
             {expanded ? (
               <ExerciseBody
                 prescription={prescription}
-                exercise={exerciseById(prescription.exerciseId)}
+                exerciseById={exerciseById}
                 session={session}
                 history={history}
                 plateIncrementKg={plateIncrementKg}
@@ -436,14 +525,14 @@ export function ExerciseCard({
             ) : allComplete ? (
               <CollapsedExercise
                 prescription={prescription}
-                exercise={exerciseById(prescription.exerciseId)}
+                exercise={exerciseById(effectiveExerciseId(session, prescription.exerciseId))}
                 session={session}
                 onExpand={onExpand}
               />
             ) : (
               <UpcomingExercise
                 prescription={prescription}
-                exercise={exerciseById(prescription.exerciseId)}
+                exercise={exerciseById(effectiveExerciseId(session, prescription.exerciseId))}
                 sets={suggestedSetsFor(
                   exerciseById(prescription.exerciseId),
                   prescription,

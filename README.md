@@ -92,7 +92,9 @@ working before the next is started.
 - [x] **4. Progression engine** — the four currencies, double progression,
       stalls, the inverse rule, the quality question, the lever prompt and the
       week-5 deload, with the banners on the exercise cards
-- [ ] 5. Alternatives and pain tracking
+- [x] **5. Alternatives and pain tracking** — the swap sheet with library search,
+      substitutions recorded honestly, the 0–10 pain scale, session and
+      morning-after checks, and the permanent-substitution offer
 - [ ] 6. History and Progress, including the knee chart
 - [ ] 7. PWA shell — manifest, service worker, offline, install prompt
 - [ ] 8. Export/import, settings, polish
@@ -173,14 +175,69 @@ show through, and once set 1 is done, set 2 follows what was actually lifted.
   is used by the set rows, the card headers and the session's completion total
   alike, so they cannot disagree.
 
+### How swapping works
+
+The machine is taken, the sled is in use, or the knee is having a bad day. Swap
+on the exercise card opens a sheet of that exercise's own alternatives — each
+with the reason it is offered and a knee-safe marker — plus a search over the
+whole library for anything the curated list does not name. Knee-safe options are
+listed first when the exercise loads the front of the knee, or when the last
+recorded pain score was 4 or higher.
+
+A swap applies to this session only. The logged entry records what was actually
+performed as `exerciseId` and what the programme prescribed as
+`substitutedForId`, so history stays honest and the programme is untouched. Set
+rows, the progression banner, completion counting and the session total all work
+from what is being performed, and history accrues under the substitute's own id.
+
+After the same substitute has stood in for the same prescribed exercise three
+times, the Today screen offers — once, never mid-workout — to make it permanent.
+Accepting repoints every prescription naming that exercise in the stored
+programme; the seed file is never touched.
+
+#### Free-text alternatives become real exercises
+
+Only 22 of the 105 seeded alternatives name a library exercise; the rest are
+free text. Choosing one of those derives a library exercise from it, with a
+stable id from the name (`custom-reverse-lunge-to-a-box`), so the same
+substitute chosen twice accumulates one history rather than fragmenting.
+
+The derived exercise inherits the tracked fields, muscles and progression rule of
+the exercise it stands in for — section 8 asks that the progression type be
+preserved where possible, and the set row has to show the same inputs. Knee
+sensitivity comes from the alternative's own `kneeSafe` flag rather than the
+source.
+
+### How pain tracking works
+
+Any exercise with `painTracked: true` gets an inline 0–10 row after its final
+set, colour-banded 0–3 green, 4–6 amber, 7–10 red. It is skippable and never
+blocks. Scoring 4 or more shows the programme's own rule — *"Cut range first,
+weight second."* — and 7 or more opens the swap sheet directly with knee-safe
+options first, plus a standing button to reopen it.
+
+`prePainScore` is asked once at the start of a session that tracks pain, and
+`postPainScore` once when finishing, both inline and both skippable. The
+morning-after check appears on Today the day following a session and is stored
+as a `MorningCheck`.
+
+Nothing here interprets a score beyond those bands and that one hint. It is a
+log, not a diagnosis.
+
+#### Judgement calls worth knowing about
+
+- **The morning check is offered on the next day only.** The programme's rule is
+  that pain settling within 24 hours is acceptable, so the morning after is the
+  reading that matters; asking again three days later would measure nothing, and
+  the app does not nag. Dismissing it is remembered for that day.
+- **The 0–10 scale is a 4×3 grid, not a row of eleven.** Eleven 48px targets do
+  not fit across a 320px screen. Three rows of four keep every target at least
+  48px wide on the smallest phone, and the twelfth cell is the Skip.
+
 ### What is deliberately left out
 
 These belong to later milestones and are not oversights:
 
-- **No Swap button.** Alternatives are milestone 5, so the action is absent
-  rather than present and dead.
-- **No pain prompts.** `prePainScore`, `postPainScore` and the per-exercise 0–10
-  scale come with milestone 5.
 - **Notes are session-level.** The data model gives `WorkoutSession` a `notes`
   field and `LoggedExercise` none, so the card's Notes action opens the session
   note rather than inventing a per-exercise field.
@@ -229,6 +286,11 @@ unit tests. What exists so far:
   inverse rule, the quality question and its two-no warning, the lever prompt and
   the deload cut. The section 12 acceptance criteria are written as tests, and
   the "never add load" rule is checked across every exercise in the real library
+- `core/alternatives` — resolving and sorting alternatives, library search,
+  deriving an exercise from a free-text substitute, and the substitution tallies
+  behind the permanent-swap offer
+- `core/pain` — the traffic-light bands, the single permitted hint, the red-band
+  swap threshold, the most recent score, and when a morning check is due
 - `core/timer` — remaining time, overdue reporting, pause and resume without
   drift, the ±15s adjustment, interval phase transitions, and the countdown
   formatting. Acceptance criteria 5 and 6 are written directly as tests

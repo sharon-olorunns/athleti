@@ -17,6 +17,7 @@ import type {
   TrackedField,
   WorkoutSession,
 } from '@/types';
+import { effectiveExerciseId } from './alternatives';
 import { logsPerSide, setRowCount } from './prescription';
 import { bottomOfRange, parseReps } from './reps';
 
@@ -335,8 +336,10 @@ export function itemComplete(
   exerciseById: (id: string) => Exercise | undefined,
 ): boolean {
   return itemPrescriptions(item).every((prescription) => {
-    const entry = session?.entries.find((e) => e.exerciseId === prescription.exerciseId);
-    return prescriptionProgress(prescription, exerciseById(prescription.exerciseId), entry).complete;
+    // A swapped slot is judged on what is actually being performed.
+    const performedId = effectiveExerciseId(session, prescription.exerciseId);
+    const entry = session?.entries.find((e) => e.exerciseId === performedId);
+    return prescriptionProgress(prescription, exerciseById(performedId), entry).complete;
   });
 }
 

@@ -67,6 +67,10 @@ export const META_KEYS = {
   lastExportAt: 'lastExportAt',
   /** True once notifications have been offered, so the ask happens only once. */
   notificationOffered: 'notificationOffered',
+  /** Substitutions the user declined to make permanent, so they are offered once. */
+  dismissedSubstitutions: 'dismissedSubstitutions',
+  /** ISO days whose morning check was dismissed rather than answered. */
+  dismissedMorningChecks: 'dismissedMorningChecks',
 } as const;
 
 export class TrainerDb extends Dexie {

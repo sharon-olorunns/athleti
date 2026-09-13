@@ -281,3 +281,28 @@
   padding-top: var(--sp-4);
   border-top: 1px dashed var(--border-strong);
 }
+
+/* The substitution marker, so history reads honestly on the card too. */
+.swapped {
+  display: block;
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
+.pain {
+  margin-top: var(--sp-3);
+}
+
+/* Offered directly when a score lands in the red band. */
+.painSwap {
+  width: 100%;
+  min-height: var(--tap);
+  margin-top: var(--sp-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--pain-red) 55%, transparent);
+  background: color-mix(in srgb, var(--pain-red) 14%, transparent);
+  color: var(--pain-red);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}

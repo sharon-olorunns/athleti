@@ -1,0 +1,91 @@
+.wrap {
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  padding: var(--sp-3);
+}
+
+.question {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  margin-bottom: var(--sp-2);
+}
+
+/*
+ * Four columns, three rows: 0-10 plus a Skip fills the grid exactly, and every
+ * cell clears 48px even on a 320px screen. An eleven-across row could not.
+ */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: var(--sp-2);
+}
+
+.score {
+  min-height: var(--tap);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+/* Banded by the programme's traffic light, so the colour is the reading. */
+.green { border-color: color-mix(in srgb, var(--pain-green) 45%, transparent); color: var(--pain-green); }
+.amber { border-color: color-mix(in srgb, var(--pain-amber) 45%, transparent); color: var(--pain-amber); }
+.red { border-color: color-mix(in srgb, var(--pain-red) 45%, transparent); color: var(--pain-red); }
+
+.selected {
+  color: var(--bg);
+  font-weight: 800;
+}
+
+.selectedGreen { background: var(--pain-green); border-color: var(--pain-green); }
+.selectedAmber { background: var(--pain-amber); border-color: var(--pain-amber); }
+.selectedRed { background: var(--pain-red); border-color: var(--pain-red); }
+
+.skip {
+  min-height: var(--tap);
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--border-strong);
+  background: none;
+  color: var(--text-faint);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.hint {
+  display: block;
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--pain-amber);
+}
+
+.recorded {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  font-size: var(--fs-sm);
+}
+
+.recordedValue {
+  font-family: var(--font-mono);
+  font-weight: 800;
+  font-size: var(--fs-lg);
+}
+
+.change {
+  margin-left: auto;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}

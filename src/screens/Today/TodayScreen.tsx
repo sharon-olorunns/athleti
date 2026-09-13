@@ -1,7 +1,11 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { isDeloadWeek, nextDayId } from '@/core/schedule';
 import { durationLabel, sessionStats } from '@/core/session';
+import { morningCheckDue } from '@/core/pain';
+import { permanentSubstitutionCandidate, substitutionKey } from '@/core/alternatives';
+import { getMeta, META_KEYS, setMeta } from '@/db/db';
 import { Chip } from '@/components/Chip';
+import { PainScale } from '@/components/pain/PainScale';
 import { CNS_LABEL, CNS_TINT, minutesLabel } from '@/components/labels';
 import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
@@ -27,11 +31,25 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
   const exerciseById = useApp((s) => s.exercise);
   const currentWeek = useApp((s) => s.currentWeek());
 
+  const morningChecks = useApp((s) => s.morningChecks);
+  const saveMorningCheck = useApp((s) => s.saveMorningCheck);
+  const makeSubstitutionPermanent = useApp((s) => s.makeSubstitutionPermanent);
+
   const session = useWorkout((s) => s.session);
   const history = useWorkout((s) => s.history);
   const start = useWorkout((s) => s.start);
 
   const [pickerOpen, setPickerOpen] = useState(false);
+  const [dismissedMornings, setDismissedMornings] = useState<string[]>([]);
+  const [dismissedSwaps, setDismissedSwaps] = useState<string[]>([]);
+
+  // Both prompts are offered once and remembered, so neither becomes a nag.
+  useEffect(() => {
+    void getMeta<string[]>(META_KEYS.dismissedMorningChecks).then((v) =>
+      setDismissedMornings(v ?? []),
+    );
+    void getMeta<string[]>(META_KEYS.dismissedSubstitutions).then((v) => setDismissedSwaps(v ?? []));
+  }, []);
 
   if (programme === undefined) return null;
 
@@ -53,6 +71,23 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
     void start(dayId).then(onStarted);
   };
 
+  const morning = morningCheckDue(history, morningChecks, Date.now(), dismissedMornings);
+  const swapCandidate = permanentSubstitutionCandidate(history, dismissedSwaps);
+  const swapPrescribed = swapCandidate === undefined ? undefined : exerciseById(swapCandidate.prescribedId);
+  const swapPerformed = swapCandidate === undefined ? undefined : exerciseById(swapCandidate.performedId);
+
+  const dismissMorning = (date: string) => {
+    const next = [...dismissedMornings, date];
+    setDismissedMornings(next);
+    void setMeta(META_KEYS.dismissedMorningChecks, next);
+  };
+
+  const dismissSwap = (key: string) => {
+    const next = [...dismissedSwaps, key];
+    setDismissedSwaps(next);
+    void setMeta(META_KEYS.dismissedSubstitutions, next);
+  };
+
   return (
     <div className={styles.screen}>
       <p className={styles.greeting}>{programme.name}</p>
@@ -67,6 +102,64 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
           </Chip>
         )}
       </div>
+
+      {morning !== undefined && (
+        <section className={styles.card}>
+          <p className={styles.cardTitle}>How was the knee this morning?</p>
+          <p className={styles.cardBody}>
+            The morning after matters more than the score during a session.
+          </p>
+          <div className={styles.scale}>
+            <PainScale
+              question=""
+              value={undefined}
+              onSelect={(score) => {
+                void saveMorningCheck({
+                  date: morning.date,
+                  kneeScore: score,
+                  priorSessionId: morning.priorSessionId,
+                });
+              }}
+              onSkip={() => dismissMorning(morning.date)}
+              skipLabel="Dismiss"
+            />
+          </div>
+        </section>
+      )}
+
+      {swapCandidate !== undefined && swapPrescribed !== undefined && swapPerformed !== undefined && (
+        <section className={styles.card}>
+          <p className={styles.cardTitle}>Make this substitution permanent?</p>
+          <p className={styles.cardBody}>
+            You have done {swapPerformed.name} in place of {swapPrescribed.name}{' '}
+            {swapCandidate.count} times. Update the programme to prescribe it?
+          </p>
+          <div className={styles.cardActions}>
+            <button
+              type="button"
+              className={styles.cardButton}
+              onClick={() =>
+                dismissSwap(substitutionKey(swapCandidate.prescribedId, swapCandidate.performedId))
+              }
+            >
+              Keep as is
+            </button>
+            <button
+              type="button"
+              className={`${styles.cardButton} ${styles.cardPrimary}`}
+              onClick={() => {
+                void makeSubstitutionPermanent(
+                  swapCandidate.prescribedId,
+                  swapCandidate.performedId,
+                );
+                dismissSwap(substitutionKey(swapCandidate.prescribedId, swapCandidate.performedId));
+              }}
+            >
+              Update programme
+            </button>
+          </div>
+        </section>
+      )}
 
       <section className={styles.next}>
         <p className={styles.nextLabel}>{active ? 'In progress' : 'Up next'}</p>

@@ -11,17 +11,21 @@
  * so the loss is close to invisible.
  */
 import { create } from 'zustand';
-import type { LoggedSet, ProgrammeDay, WorkoutSession } from '@/types';
+import type { Exercise, LoggedSet, ProgrammeDay, WorkoutSession } from '@/types';
 import { db } from '@/db/db';
 import { getSessions, putSession } from '@/db/repo';
 import {
+  clearSubstitution,
   createSession,
   finishSession,
   logSet,
+  setPainScore,
   setQualityConfirmed,
   setSessionNotes,
+  setSessionPainScore,
   setSkipped,
   skipUnloggedExercises,
+  substituteExercise,
   unlogSet,
 } from '@/core/session';
 import type { PlannedRow, RowValues } from '@/core/workout';
@@ -69,6 +73,11 @@ interface WorkoutState {
   addSet: (exerciseId: string) => void;
   skipExercise: (exerciseId: string, skipped: boolean) => Promise<void>;
   confirmQuality: (exerciseId: string, confirmed: boolean) => Promise<void>;
+  /** Replace a prescribed exercise for this session only. */
+  swapExercise: (prescribedId: string, substitute: Exercise, reason: string) => Promise<void>;
+  revertSwap: (prescribedId: string) => Promise<void>;
+  savePainScore: (exerciseId: string, score: number) => Promise<void>;
+  saveSessionPain: (which: 'pre' | 'post', score: number) => Promise<void>;
   saveNotes: (notes: string) => Promise<void>;
   finish: (markRemainingSkipped: boolean, day: ProgrammeDay | undefined) => Promise<void>;
   discard: () => Promise<void>;
@@ -198,6 +207,35 @@ export const useWorkout = create<WorkoutState>((set, get) => {
       const current = get().session;
       if (current === undefined) return;
       await persist(setQualityConfirmed(current, exerciseId, confirmed));
+    },
+
+    swapExercise: async (prescribedId, substitute, reason) => {
+      const current = get().session;
+      if (current === undefined) return;
+      // A substitute the library does not have yet is added first, so the logged
+      // entry points at a real exercise and builds history under its own id.
+      if (useApp.getState().library.get(substitute.id) === undefined) {
+        await useApp.getState().addExercise(substitute);
+      }
+      await persist(substituteExercise(current, prescribedId, substitute.id, reason));
+    },
+
+    revertSwap: async (prescribedId) => {
+      const current = get().session;
+      if (current === undefined) return;
+      await persist(clearSubstitution(current, prescribedId));
+    },
+
+    savePainScore: async (exerciseId, score) => {
+      const current = get().session;
+      if (current === undefined) return;
+      await persist(setPainScore(current, exerciseId, score));
+    },
+
+    saveSessionPain: async (which, score) => {
+      const current = get().session;
+      if (current === undefined) return;
+      await persist(setSessionPainScore(current, which, score));
     },
 
     saveNotes: async (notes) => {

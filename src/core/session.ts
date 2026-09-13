@@ -12,6 +12,7 @@ import type {
   ProgrammeDay,
   WorkoutSession,
 } from '@/types';
+import { effectiveExerciseId } from './alternatives';
 import { prescriptionsOf, setRowCount } from './prescription';
 import { suggestedSetsFor } from './progression';
 import { plannedSetCount } from './workout';
@@ -101,6 +102,77 @@ export function unlogSet(
 }
 
 /**
+ * Record a substitution for this session. The entry logs what is actually being
+ * performed and what the programme prescribed, so history stays honest; the
+ * programme itself is never touched.
+ */
+export function substituteExercise(
+  session: WorkoutSession,
+  prescribedId: string,
+  performedId: string,
+  reason?: string,
+): WorkoutSession {
+  // Clear any earlier substitution for the same slot, and any untouched entry
+  // for the prescribed exercise, so swapping twice does not leave a trail.
+  const entries = session.entries.filter((entry) => {
+    if (entry.substitutedForId === prescribedId) return entry.sets.length > 0;
+    if (entry.exerciseId === prescribedId) return entry.sets.length > 0;
+    return true;
+  });
+
+  if (performedId === prescribedId) return { ...session, entries };
+
+  const existing = entries.find((entry) => entry.exerciseId === performedId);
+  const substituted: LoggedExercise = {
+    ...(existing ?? { exerciseId: performedId, sets: [] }),
+    exerciseId: performedId,
+    substitutedForId: prescribedId,
+    ...(reason !== undefined && reason !== '' ? { substitutionReason: reason } : {}),
+  };
+
+  return {
+    ...session,
+    entries:
+      existing === undefined
+        ? [...entries, substituted]
+        : entries.map((entry) => (entry.exerciseId === performedId ? substituted : entry)),
+  };
+}
+
+/** Undo a substitution, returning the slot to what the programme prescribes. */
+export function clearSubstitution(
+  session: WorkoutSession,
+  prescribedId: string,
+): WorkoutSession {
+  return {
+    ...session,
+    entries: session.entries.filter(
+      (entry) => !(entry.substitutedForId === prescribedId && entry.sets.length === 0),
+    ),
+  };
+}
+
+/** The 0–10 score for one exercise. Optional, and never blocking. */
+export function setPainScore(
+  session: WorkoutSession,
+  exerciseId: string,
+  score: number,
+): WorkoutSession {
+  return withEntry(session, exerciseId, (entry) => ({ ...entry, painScore: score }));
+}
+
+/** Asked once at the start of a session, and once at the end. Both optional. */
+export function setSessionPainScore(
+  session: WorkoutSession,
+  which: 'pre' | 'post',
+  score: number,
+): WorkoutSession {
+  return which === 'pre'
+    ? { ...session, prePainScore: score }
+    : { ...session, postPainScore: score };
+}
+
+/**
  * The answer to the binary quality question asked after a `quality` exercise:
  * was bar speed, height or distance maintained on every rep.
  */
@@ -146,9 +218,12 @@ export function skipUnloggedExercises(
 ): WorkoutSession {
   let next = session;
   for (const prescription of prescriptionsOf(day)) {
-    const entry = entryFor(next, prescription.exerciseId);
+    // A swapped slot is skipped under what was actually going to be performed,
+    // so finishing does not invent an entry for the exercise that was replaced.
+    const performedId = effectiveExerciseId(next, prescription.exerciseId);
+    const entry = entryFor(next, performedId);
     if (entry === undefined || entry.sets.length === 0) {
-      next = setSkipped(next, prescription.exerciseId, true);
+      next = setSkipped(next, performedId, true);
     }
   }
   return next;
@@ -177,8 +252,9 @@ export function sessionStats(
 
   let plannedSets = 0;
   for (const prescription of prescriptionsOf(day ?? emptyDay)) {
-    const exercise = exerciseById(prescription.exerciseId);
-    const entry = entryFor(session, prescription.exerciseId);
+    const performedId = effectiveExerciseId(session, prescription.exerciseId);
+    const exercise = exerciseById(performedId);
+    const entry = entryFor(session, performedId);
     // The same deload-aware count the cards show, so the total cannot disagree.
     const suggested = suggestedSetsFor(exercise, prescription, session.weekNumber);
     const setCount = plannedSetCount({ ...prescription, sets: suggested }, entry);

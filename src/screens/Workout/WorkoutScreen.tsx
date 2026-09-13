@@ -2,6 +2,9 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import { currentItemIndex, workoutItems } from '@/core/workout';
 import { formatClock, sessionStats } from '@/core/session';
 import { deloadBanner } from '@/core/progression';
+import { effectiveExerciseId } from '@/core/alternatives';
+import { prescriptionsOf } from '@/core/prescription';
+import { PainScale } from '@/components/pain/PainScale';
 import { minutesLabel } from '@/components/labels';
 import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
@@ -29,9 +32,12 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
   const finish = useWorkout((s) => s.finish);
   const discard = useWorkout((s) => s.discard);
   const saveNotes = useWorkout((s) => s.saveNotes);
+  const saveSessionPain = useWorkout((s) => s.saveSessionPain);
 
   const [expandedIndex, setExpandedIndex] = useState<number | undefined>(undefined);
   const [confirmingFinish, setConfirmingFinish] = useState(false);
+  const [prePainSkipped, setPrePainSkipped] = useState(false);
+  const [askingPostPain, setAskingPostPain] = useState(false);
   const [notesOpen, setNotesOpen] = useState(false);
   const [notesDraft, setNotesDraft] = useState('');
 
@@ -56,6 +62,14 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
 
   const stats = sessionStats(session, day, exerciseById, now);
   const deloadNote = deloadBanner(session.weekNumber);
+
+  // The session-level prompts only appear where the day actually tracks pain.
+  const tracksPain = prescriptionsOf(day).some(
+    (prescription) =>
+      exerciseById(effectiveExerciseId(session, prescription.exerciseId))?.painTracked === true,
+  );
+  const askPrePain =
+    tracksPain && session.prePainScore === undefined && !prePainSkipped && stats.completedSets === 0;
   const targetMs = day.targetMinutes * 60000;
   const overTarget = stats.durationMs > targetMs;
   const unlogged = stats.plannedSets - stats.completedSets;
@@ -90,6 +104,17 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
       </button>
 
       <main className={styles.content}>
+        {askPrePain && (
+          <div className={styles.prePain}>
+            <PainScale
+              question="Knee before you start?"
+              value={session.prePainScore}
+              onSelect={(score) => void saveSessionPain('pre', score)}
+              onSkip={() => setPrePainSkipped(true)}
+            />
+          </div>
+        )}
+
         {deloadNote !== undefined && (
           <div className={styles.deload}>
             <span className={styles.deloadTitle}>DELOAD WEEK</span>
@@ -130,6 +155,20 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
       </main>
 
       <div className={styles.finishBar}>
+        {askingPostPain && (
+          <div className={styles.postPain}>
+            <PainScale
+              question="Knee after that session?"
+              value={session.postPainScore}
+              onSelect={(score) => {
+                void saveSessionPain('post', score).then(() => doFinish(unlogged > 0));
+              }}
+              onSkip={() => doFinish(unlogged > 0)}
+              skipLabel="Skip"
+            />
+          </div>
+        )}
+
         {confirmingFinish && unlogged > 0 && (
           <div className={styles.prompt}>
             <p className={styles.promptText}>
@@ -146,7 +185,7 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
               <button
                 type="button"
                 className={`${styles.promptButton} ${styles.promptPrimary}`}
-                onClick={() => doFinish(true)}
+                onClick={() => (tracksPain ? setAskingPostPain(true) : doFinish(true))}
               >
                 Skip &amp; finish
               </button>
@@ -177,7 +216,15 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
           <button
             type="button"
             className={styles.finish}
-            onClick={() => (unlogged > 0 ? setConfirmingFinish(true) : doFinish(false))}
+            onClick={() => {
+              if (unlogged > 0 && !confirmingFinish) {
+                setConfirmingFinish(true);
+              } else if (tracksPain) {
+                setAskingPostPain(true);
+              } else {
+                doFinish(unlogged > 0);
+              }
+            }}
           >
             Finish workout
           </button>

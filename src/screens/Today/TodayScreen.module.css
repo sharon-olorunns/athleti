@@ -149,6 +149,53 @@
   font-weight: 650;
 }
 
+/* Dismissible prompts, above the fold but never blocking. */
+.card {
+  margin-top: var(--sp-4);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.cardTitle {
+  font-size: var(--fs-md);
+  font-weight: 650;
+}
+
+.cardBody {
+  margin-top: var(--sp-1);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.cardActions {
+  display: flex;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.cardButton {
+  flex: 1 1 0;
+  min-height: var(--tap);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.cardPrimary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.scale {
+  margin-top: var(--sp-3);
+}
+
 .section {
   margin-top: var(--sp-6);
 }

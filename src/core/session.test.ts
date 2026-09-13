@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest';
 import type { Exercise, ProgrammeDay } from '@/types';
 import { anExercise as exercise, aSet as set } from '@/test/factories';
 import {
+  clearSubstitution,
   createSession,
   durationLabel,
   entryFor,
@@ -10,10 +11,13 @@ import {
   logSet,
   newSessionId,
   sessionStats,
+  setPainScore,
   setQualityConfirmed,
+  setSessionPainScore,
   setSessionNotes,
   setSkipped,
   skipUnloggedExercises,
+  substituteExercise,
   unlogSet,
 } from './session';
 
@@ -322,5 +326,127 @@ describe('sessionStats on a deload week', () => {
     const stats = sessionStats(session, day, lookup, 0);
     expect(stats.completedSets).toBe(6);
     expect(stats.allSetsCompleted).toBe(true);
+  });
+});
+
+describe('substituteExercise', () => {
+  /**
+   * Acceptance criterion 10: a swap records both what was performed and what was
+   * prescribed, and leaves the programme alone.
+   */
+  it('records the performed and the prescribed exercise', () => {
+    const session = substituteExercise(
+      createSession('day-1', 1, 0, 's'),
+      'squat',
+      'leg-press',
+      'machine taken',
+    );
+    const entry = entryFor(session, 'leg-press');
+    expect(entry?.exerciseId).toBe('leg-press');
+    expect(entry?.substitutedForId).toBe('squat');
+    expect(entry?.substitutionReason).toBe('machine taken');
+  });
+
+  it('logs the sets under the performed exercise', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = logSet(session, 'leg-press', set({ setIndex: 0, reps: 8, weightKg: 100 }));
+
+    expect(entryFor(session, 'leg-press')?.sets).toHaveLength(1);
+    // The substitution survives logging into it.
+    expect(entryFor(session, 'leg-press')?.substitutedForId).toBe('squat');
+    expect(entryFor(session, 'squat')).toBeUndefined();
+  });
+
+  it('leaves no trail when swapped twice before logging', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = substituteExercise(session, 'squat', 'hack-squat');
+    expect(session.entries).toHaveLength(1);
+    expect(session.entries[0]?.exerciseId).toBe('hack-squat');
+  });
+
+  it('keeps a swapped exercise that already has sets logged against it', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = logSet(session, 'leg-press', set({ setIndex: 0, reps: 8 }));
+    session = substituteExercise(session, 'squat', 'hack-squat');
+
+    expect(entryFor(session, 'leg-press')?.sets).toHaveLength(1);
+    expect(entryFor(session, 'hack-squat')?.substitutedForId).toBe('squat');
+  });
+
+  it('swapping back to the prescribed exercise is not a substitution', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = substituteExercise(session, 'squat', 'squat');
+    expect(session.entries).toHaveLength(0);
+  });
+
+  it('drops an untouched entry for the prescribed exercise when swapping away', () => {
+    let session = setSkipped(createSession('day-1', 1, 0, 's'), 'squat', true);
+    session = substituteExercise(session, 'squat', 'leg-press');
+    expect(entryFor(session, 'squat')).toBeUndefined();
+  });
+});
+
+describe('clearSubstitution', () => {
+  it('returns the slot to the prescribed exercise', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = clearSubstitution(session, 'squat');
+    expect(session.entries).toHaveLength(0);
+  });
+
+  it('keeps a substitution that has sets logged against it', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = logSet(session, 'leg-press', set({ setIndex: 0 }));
+    session = clearSubstitution(session, 'squat');
+    expect(entryFor(session, 'leg-press')?.sets).toHaveLength(1);
+  });
+});
+
+describe('pain scores', () => {
+  it('records a per-exercise score', () => {
+    const session = setPainScore(createSession('day-1', 1, 0, 's'), 'split-squat-box', 7);
+    expect(entryFor(session, 'split-squat-box')?.painScore).toBe(7);
+  });
+
+  it('records zero, which is a real answer', () => {
+    const session = setPainScore(createSession('day-1', 1, 0, 's'), 'split-squat-box', 0);
+    expect(entryFor(session, 'split-squat-box')?.painScore).toBe(0);
+  });
+
+  it('leaves logged sets untouched', () => {
+    let session = logSet(createSession('day-1', 1, 0, 's'), 'squat', set({ setIndex: 0 }));
+    session = setPainScore(session, 'squat', 5);
+    expect(entryFor(session, 'squat')?.sets).toHaveLength(1);
+  });
+
+  it('records the session-level scores separately', () => {
+    let session = setSessionPainScore(createSession('day-1', 1, 0, 's'), 'pre', 3);
+    session = setSessionPainScore(session, 'post', 5);
+    expect(session.prePainScore).toBe(3);
+    expect(session.postPainScore).toBe(5);
+  });
+});
+
+describe('skipUnloggedExercises with a substitution', () => {
+  it('skips the substitute rather than inventing an entry for the prescribed exercise', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    session = skipUnloggedExercises(session, day);
+
+    expect(entryFor(session, 'leg-press')?.skipped).toBe(true);
+    expect(entryFor(session, 'leg-press')?.substitutedForId).toBe('squat');
+    // No phantom entry for the exercise that was swapped out.
+    expect(session.entries.filter((e) => e.exerciseId === 'squat')).toHaveLength(0);
+  });
+});
+
+describe('sessionStats with a substitution', () => {
+  it('counts the substitute against the prescribed slot', () => {
+    let session = substituteExercise(createSession('day-1', 1, 0, 's'), 'squat', 'leg-press');
+    for (let i = 0; i < 4; i += 1) {
+      session = logSet(session, 'leg-press', set({ setIndex: i, reps: 8 }));
+    }
+    const stats = sessionStats(session, day, (id) => library.get(id) ?? exercise({ id }), 0);
+    // The squat's four rows are satisfied by the leg press standing in for it.
+    expect(stats.completedSets).toBe(4);
+    expect(stats.plannedSets).toBe(10);
   });
 });

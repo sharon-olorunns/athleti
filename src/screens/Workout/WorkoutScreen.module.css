@@ -84,6 +84,15 @@
   );
 }
 
+/* The session-level pain prompts: inline, skippable, never blocking. */
+.prePain {
+  margin-bottom: var(--sp-4);
+}
+
+.postPain {
+  margin-bottom: var(--sp-3);
+}
+
 /* Deload weeks say what the trade is, once, at the top of the session. */
 .deload {
   margin-bottom: var(--sp-4);
