@@ -17,6 +17,7 @@ import {
   lastPerformance,
   plannedRows,
   plannedSetCount,
+  performanceHistory,
   prefillForRow,
   previousSetFor,
   stepFor,
@@ -441,5 +442,97 @@ describe('prescriptionProgress', () => {
     const progress = prescriptionProgress(prescription({ sets: 4 }), exercise(), entry);
     expect(progress.complete).toBe(true);
     expect(progress.skipped).toBe(true);
+  });
+});
+
+describe('prefill layering with a progression suggestion', () => {
+  const previous = {
+    exerciseId: 'squat',
+    sets: [
+      set({ setIndex: 0, reps: 8, weightKg: 60 }),
+      set({ setIndex: 1, reps: 8, weightKg: 60 }),
+    ],
+  };
+
+  it('opens at the suggested weight and reps rather than last week', () => {
+    const values = prefillForRow(
+      { setIndex: 0 },
+      {
+        prescription: prescription(),
+        exercise: exercise(),
+        sessionSets: [],
+        previous,
+        suggested: { weightKg: 62.5, reps: 6 },
+      },
+    );
+    expect(values).toEqual({ weightKg: 62.5, reps: 6 });
+  });
+
+  it('lets last week show through for fields the suggestion is silent on', () => {
+    // "Last time 4×8 @ 60. Aim for 8s." names a weight but no rep count.
+    const values = prefillForRow(
+      { setIndex: 0 },
+      {
+        prescription: prescription(),
+        exercise: exercise(),
+        sessionSets: [],
+        previous,
+        suggested: { weightKg: 60 },
+      },
+    );
+    expect(values).toEqual({ weightKg: 60, reps: 8 });
+  });
+
+  it('still follows this session over the suggestion', () => {
+    // Set 1 went heavier than proposed; set 2 follows what was actually done.
+    const values = prefillForRow(
+      { setIndex: 1 },
+      {
+        prescription: prescription(),
+        exercise: exercise(),
+        sessionSets: [set({ setIndex: 0, reps: 7, weightKg: 65, completedAt: 9000 })],
+        previous,
+        suggested: { weightKg: 62.5, reps: 6 },
+      },
+    );
+    expect(values).toEqual({ weightKg: 65, reps: 7 });
+  });
+
+  it('drops a suggested weight for an exercise that tracks none', () => {
+    const values = prefillForRow(
+      { setIndex: 0 },
+      {
+        prescription: prescription(),
+        exercise: exercise({ tracks: ['reps'] }),
+        sessionSets: [],
+        previous,
+        suggested: { weightKg: 62.5, reps: 6 },
+      },
+    );
+    expect(values).toEqual({ reps: 6 });
+  });
+});
+
+describe('performanceHistory', () => {
+  const session = (id: string, startedAt: number, entries: WorkoutSession['entries']): WorkoutSession => ({
+    id, programmeDayId: 'day-1', weekNumber: 1, startedAt, entries,
+  });
+
+  it('returns every past performance, newest first', () => {
+    const sessions = [
+      session('a', 1, [{ exerciseId: 'squat', sets: [set({ setIndex: 0, reps: 5 })] }]),
+      session('c', 3, [{ exerciseId: 'squat', sets: [set({ setIndex: 0, reps: 7 })] }]),
+      session('b', 2, [{ exerciseId: 'squat', sets: [set({ setIndex: 0, reps: 6 })] }]),
+    ];
+    expect(performanceHistory('squat', sessions).map((e) => e.sets[0]?.reps)).toEqual([7, 6, 5]);
+  });
+
+  it('excludes the live session, skipped entries and empty ones', () => {
+    const sessions = [
+      session('old', 1, [{ exerciseId: 'squat', sets: [set({ setIndex: 0, reps: 5 })] }]),
+      session('skip', 2, [{ exerciseId: 'squat', sets: [], skipped: true }]),
+      session('live', 3, [{ exerciseId: 'squat', sets: [set({ setIndex: 0, reps: 9 })] }]),
+    ];
+    expect(performanceHistory('squat', sessions, 'live')).toHaveLength(1);
   });
 });

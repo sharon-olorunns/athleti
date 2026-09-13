@@ -120,6 +120,12 @@ export interface PrefillContext {
   sessionSets: readonly LoggedSet[];
   /** The same exercise the last time it was performed, in an earlier session. */
   previous: LoggedExercise | undefined;
+  /**
+   * What the progression engine proposes. It supplies only the fields it has an
+   * opinion about, so a suggestion that names a weight but not a rep count still
+   * lets last week's reps show through.
+   */
+  suggested?: RowValues;
 }
 
 /** Copy only the fields this exercise actually tracks. */
@@ -159,20 +165,39 @@ function prescribedValues(prescription: Prescription): RowValues {
 export function prefillForRow(row: Pick<PlannedRow, 'setIndex'>, ctx: PrefillContext): RowValues {
   const tracks = ctx.exercise?.tracks ?? [];
 
-  const latestInSession = [...ctx.sessionSets].sort((a, b) => b.completedAt - a.completedAt)[0];
-  if (latestInSession !== undefined) {
-    return pick(latestInSession, tracks);
-  }
+  // Layered lowest to highest. Each layer only overrides the fields it defines.
+  let values: RowValues = prescribedValues(ctx.prescription);
 
   const previousSets = ctx.previous?.sets ?? [];
   if (previousSets.length > 0) {
     const matching =
       previousSets.find((set) => set.setIndex === row.setIndex) ??
       previousSets[previousSets.length - 1];
-    if (matching !== undefined) return pick(matching, tracks);
+    if (matching !== undefined) {
+      values = { ...values, ...stripUndefined(matching) };
+    }
   }
 
-  return pick(prescribedValues(ctx.prescription), tracks);
+  if (ctx.suggested !== undefined) {
+    values = { ...values, ...stripUndefined(ctx.suggested) };
+  }
+
+  const latestInSession = [...ctx.sessionSets].sort((a, b) => b.completedAt - a.completedAt)[0];
+  if (latestInSession !== undefined) {
+    values = { ...values, ...stripUndefined(latestInSession) };
+  }
+
+  return pick(values, tracks);
+}
+
+/** Only the value fields that are actually set, so a layer cannot blank a lower one. */
+function stripUndefined(source: RowValues): RowValues {
+  const out: RowValues = {};
+  if (source.weightKg !== undefined) out.weightKg = source.weightKg;
+  if (source.reps !== undefined) out.reps = source.reps;
+  if (source.seconds !== undefined) out.seconds = source.seconds;
+  if (source.distanceM !== undefined) out.distanceM = source.distanceM;
+  return out;
 }
 
 /** The matching set from last time, for the row's ghost text. */
@@ -327,4 +352,24 @@ export function currentItemIndex(
   const items = workoutItems(day);
   const found = items.find(({ item }) => !itemComplete(item, session, exerciseById));
   return found?.index ?? -1;
+}
+
+/**
+ * Every past performance of an exercise, newest first. The progression engine
+ * needs the run of sessions, not just the last one: stalls are two deep and the
+ * Copenhagen's lever prompt is four.
+ */
+export function performanceHistory(
+  exerciseId: string,
+  sessions: readonly WorkoutSession[],
+  excludeSessionId?: string,
+): LoggedExercise[] {
+  return sessions
+    .filter((session) => session.id !== excludeSessionId)
+    .sort((a, b) => b.startedAt - a.startedAt)
+    .flatMap((session) =>
+      session.entries.filter(
+        (entry) => entry.exerciseId === exerciseId && entry.skipped !== true && entry.sets.length > 0,
+      ),
+    );
 }

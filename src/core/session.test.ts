@@ -10,6 +10,7 @@ import {
   logSet,
   newSessionId,
   sessionStats,
+  setQualityConfirmed,
   setSessionNotes,
   setSkipped,
   skipUnloggedExercises,
@@ -282,5 +283,44 @@ describe('durationLabel', () => {
   it('shows hours for long sessions', () => {
     expect(durationLabel(70 * 60000)).toBe('1h 10m');
     expect(durationLabel(120 * 60000)).toBe('2h');
+  });
+});
+
+describe('setQualityConfirmed', () => {
+  it('records a yes and a no', () => {
+    let session = createSession('day-1', 1, 0, 's');
+    session = setQualityConfirmed(session, 'trap-bar-jump', true);
+    expect(entryFor(session, 'trap-bar-jump')?.qualityConfirmed).toBe(true);
+
+    session = setQualityConfirmed(session, 'trap-bar-jump', false);
+    expect(entryFor(session, 'trap-bar-jump')?.qualityConfirmed).toBe(false);
+  });
+
+  it('leaves the logged sets untouched', () => {
+    let session = logSet(createSession('day-1', 1, 0, 's'), 'trap-bar-jump', set({ setIndex: 0, reps: 3 }));
+    session = setQualityConfirmed(session, 'trap-bar-jump', false);
+    expect(entryFor(session, 'trap-bar-jump')?.sets).toHaveLength(1);
+  });
+});
+
+describe('sessionStats on a deload week', () => {
+  it('counts the reduced sets the cards actually show', () => {
+    // squat 4 -> 2, lunge 3 -> 2 per side. 2 + (2 x 2) = 6, against 10 normally.
+    const normal = sessionStats(createSession('day-1', 4, 0, 's'), day, lookup, 0);
+    const deload = sessionStats(createSession('day-1', 5, 0, 's'), day, lookup, 0);
+    expect(normal.plannedSets).toBe(10);
+    expect(deload.plannedSets).toBe(6);
+  });
+
+  it('reaches 100% on the reduced total', () => {
+    let session = createSession('day-1', 5, 0, 's');
+    for (let i = 0; i < 2; i += 1) session = logSet(session, 'squat', set({ setIndex: i }));
+    for (let i = 0; i < 2; i += 1) {
+      session = logSet(session, 'lunge', set({ setIndex: i, side: 'L' }));
+      session = logSet(session, 'lunge', set({ setIndex: i, side: 'R' }));
+    }
+    const stats = sessionStats(session, day, lookup, 0);
+    expect(stats.completedSets).toBe(6);
+    expect(stats.allSetsCompleted).toBe(true);
   });
 });

@@ -13,6 +13,7 @@ import type {
   WorkoutSession,
 } from '@/types';
 import { prescriptionsOf, setRowCount } from './prescription';
+import { suggestedSetsFor } from './progression';
 import { plannedSetCount } from './workout';
 
 /** Session ids are only ever local, so time plus randomness is enough. */
@@ -99,6 +100,18 @@ export function unlogSet(
   }));
 }
 
+/**
+ * The answer to the binary quality question asked after a `quality` exercise:
+ * was bar speed, height or distance maintained on every rep.
+ */
+export function setQualityConfirmed(
+  session: WorkoutSession,
+  exerciseId: string,
+  confirmed: boolean,
+): WorkoutSession {
+  return withEntry(session, exerciseId, (entry) => ({ ...entry, qualityConfirmed: confirmed }));
+}
+
 /** Mark an exercise skipped, or un-skip it. */
 export function setSkipped(
   session: WorkoutSession,
@@ -166,7 +179,9 @@ export function sessionStats(
   for (const prescription of prescriptionsOf(day ?? emptyDay)) {
     const exercise = exerciseById(prescription.exerciseId);
     const entry = entryFor(session, prescription.exerciseId);
-    const setCount = plannedSetCount(prescription, entry);
+    // The same deload-aware count the cards show, so the total cannot disagree.
+    const suggested = suggestedSetsFor(exercise, prescription, session.weekNumber);
+    const setCount = plannedSetCount({ ...prescription, sets: suggested }, entry);
     plannedSets += setRowCount({ ...prescription, sets: setCount }, exercise);
   }
 

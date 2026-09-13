@@ -84,6 +84,25 @@
   );
 }
 
+/* Deload weeks say what the trade is, once, at the top of the session. */
+.deload {
+  margin-bottom: var(--sp-4);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--cns-moderate) 45%, transparent);
+  background: color-mix(in srgb, var(--cns-moderate) 12%, transparent);
+  font-size: var(--fs-sm);
+  color: var(--text);
+}
+
+.deloadTitle {
+  display: block;
+  font-weight: 750;
+  color: var(--cns-moderate);
+  letter-spacing: 0.04em;
+  margin-bottom: 2px;
+}
+
 .blockHead {
   display: flex;
   align-items: center;

@@ -3,6 +3,7 @@ import type { Exercise, LoggedExercise, Prescription, WorkoutSession } from '@/t
 import {
   findLoggedSet,
   lastPerformance,
+  performanceHistory,
   plannedRows,
   plannedSetCount,
   prefillForRow,
@@ -11,17 +12,14 @@ import {
   summariseSets,
   type RowValues,
 } from '@/core/workout';
+import { qualityQuestion, suggestedSetsFor, suggestProgression } from '@/core/progression';
 import { entryFor } from '@/core/session';
 import { targetText } from '@/core/prescription';
 import { parseReps } from '@/core/reps';
 import { contextLabelFor, type TimerCompletionTarget } from '@/core/timer';
 import { useTimer } from '@/state/timerStore';
 import { Chip } from '@/components/Chip';
-import {
-  equipmentLabel,
-  PROGRESSION_MEANING,
-  PROGRESSION_TINT,
-} from '@/components/labels';
+import { equipmentLabel, PROGRESSION_TINT } from '@/components/labels';
 import { useWorkout } from '@/state/workoutStore';
 import { SetRow } from './SetRow';
 import styles from './ExerciseCard.module.css';
@@ -57,13 +55,33 @@ function ExerciseBody({
   const focusKey = useWorkout((s) => s.focusKey);
   const startHold = useTimer((s) => s.startHold);
   const startInterval = useTimer((s) => s.startInterval);
+  const confirmQuality = useWorkout((s) => s.confirmQuality);
 
   const exerciseId = prescription.exerciseId;
   const entry: LoggedExercise | undefined = entryFor(session, exerciseId);
   const previous = lastPerformance(exerciseId, history, session.id);
-  const setCount = plannedSetCount(prescription, entry, addedSets[exerciseId] ?? 0);
-  const rows = plannedRows(prescription, exercise, setCount);
   const skipped = entry?.skipped === true;
+
+  // The engine decides what to prompt for and how many sets to show today.
+  const suggestion =
+    exercise === undefined
+      ? undefined
+      : suggestProgression({
+          exercise,
+          prescription,
+          history: performanceHistory(exerciseId, history, session.id),
+          weekNumber: session.weekNumber,
+        });
+
+  const setCount = plannedSetCount(
+    { ...prescription, sets: suggestion?.suggestedSets ?? prescription.sets },
+    entry,
+    addedSets[exerciseId] ?? 0,
+  );
+  const rows = plannedRows(prescription, exercise, setCount);
+
+  const question = exercise === undefined ? undefined : qualityQuestion(exercise, prescription);
+  const allSetsLogged = rows.length > 0 && (entry?.sets.length ?? 0) >= rows.length;
 
   // A range or a fixed count can be stepped; a composite flow cannot.
   const repSpec = parseReps(prescription.reps);
@@ -158,14 +176,17 @@ function ExerciseBody({
       {exercise?.cue !== undefined && <p className={styles.cue}>{exercise.cue}</p>}
       {prescription.note !== undefined && <p className={styles.note}>{prescription.note}</p>}
 
-      {progression !== undefined && progression.type !== 'fixed' && (
-        // Milestone 4 replaces this with the engine's suggestion; the currency and
-        // its meaning are already the point, and they come straight from the rule.
+      {suggestion !== undefined && suggestion.message !== '' && (
         <div className={styles.progression} style={{ '--tint': tint } as CSSProperties}>
-          <span className={styles.progressionLabel}>{progression.label}</span>
-          <span className={styles.progressionMeaning}>
-            {PROGRESSION_MEANING[progression.type]}
-          </span>
+          <span className={styles.progressionMessage}>{suggestion.message}</span>
+          {suggestion.hint !== undefined && (
+            <span className={styles.progressionHint}>{suggestion.hint}</span>
+          )}
+          {suggestion.deloaded && (
+            <span className={styles.deloadTag}>
+              DELOAD · {prescription.sets} → {suggestion.suggestedSets} sets
+            </span>
+          )}
         </div>
       )}
 
@@ -201,6 +222,7 @@ function ExerciseBody({
                         (s) => s.completedAt !== undefined,
                       ),
                       previous,
+                      ...(suggestion !== undefined ? { suggested: suggestion.prefill } : {}),
                     }));
 
               return (
@@ -233,6 +255,34 @@ function ExerciseBody({
               );
             })}
           </ul>
+
+          {question !== undefined && allSetsLogged && (
+            <div className={styles.quality}>
+              <span className={styles.qualityQuestion}>{question}</span>
+              <div className={styles.qualityButtons}>
+                <button
+                  type="button"
+                  className={`${styles.qualityButton} ${
+                    entry?.qualityConfirmed === true ? styles.qualityYes : ''
+                  }`}
+                  aria-pressed={entry?.qualityConfirmed === true}
+                  onClick={() => void confirmQuality(exerciseId, true)}
+                >
+                  Yes
+                </button>
+                <button
+                  type="button"
+                  className={`${styles.qualityButton} ${
+                    entry?.qualityConfirmed === false ? styles.qualityNo : ''
+                  }`}
+                  aria-pressed={entry?.qualityConfirmed === false}
+                  onClick={() => void confirmQuality(exerciseId, false)}
+                >
+                  No
+                </button>
+              </div>
+            </div>
+          )}
 
           <div className={styles.actions}>
             <button type="button" className={styles.action} onClick={() => addSet(exerciseId)}>
@@ -303,10 +353,12 @@ function CollapsedExercise({ prescription, exercise, session, onExpand }: Collap
 function UpcomingExercise({
   prescription,
   exercise,
+  sets,
   onExpand,
 }: {
   prescription: Prescription;
   exercise: Exercise | undefined;
+  sets: number;
   onExpand: () => void;
 }) {
   return (
@@ -322,7 +374,7 @@ function UpcomingExercise({
         </span>
       </span>
       <span className={styles.upcomingTarget}>
-        {prescription.sets} × {targetText(prescription)}
+        {sets} × {targetText(prescription)}
       </span>
     </button>
   );
@@ -392,6 +444,11 @@ export function ExerciseCard({
               <UpcomingExercise
                 prescription={prescription}
                 exercise={exerciseById(prescription.exerciseId)}
+                sets={suggestedSetsFor(
+                  exerciseById(prescription.exerciseId),
+                  prescription,
+                  session.weekNumber,
+                )}
                 onExpand={onExpand}
               />
             )}

@@ -136,27 +136,84 @@
   color: var(--text-dim);
 }
 
-/* The progression strip, colour-coded by currency. */
+/*
+ * The progression banner: one line, colour-coded by the exercise's own
+ * progression currency, so the right prompt is recognisable before it is read.
+ */
 .progression {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-2);
   margin-top: var(--sp-3);
   padding: var(--sp-2) var(--sp-3);
   border-radius: var(--radius-sm);
   border: 1px solid color-mix(in srgb, var(--tint) 40%, transparent);
   background: color-mix(in srgb, var(--tint) 12%, transparent);
+  border-left-width: 3px;
 }
 
-.progressionLabel {
+.progressionMessage {
+  display: block;
   font-weight: 700;
   font-size: var(--fs-sm);
   color: var(--tint);
 }
 
-.progressionMeaning {
+.progressionHint {
+  display: block;
+  margin-top: var(--sp-1);
   font-size: var(--fs-xs);
   color: var(--text-dim);
+}
+
+.deloadTag {
+  display: inline-block;
+  margin-top: var(--sp-2);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--cns-moderate);
+}
+
+/* The one binary question a quality exercise asks, once its sets are done. */
+.quality {
+  margin-top: var(--sp-3);
+  padding: var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--quality) 40%, transparent);
+  background: color-mix(in srgb, var(--quality) 10%, transparent);
+}
+
+.qualityQuestion {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  margin-bottom: var(--sp-2);
+}
+
+.qualityButtons {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.qualityButton {
+  flex: 1 1 0;
+  min-height: var(--tap);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: var(--fs-md);
+  font-weight: 650;
+}
+
+.qualityYes {
+  border-color: color-mix(in srgb, var(--cns-low) 55%, transparent);
+  background: color-mix(in srgb, var(--cns-low) 18%, transparent);
+  color: var(--cns-low);
+}
+
+.qualityNo {
+  border-color: color-mix(in srgb, var(--cns-moderate) 55%, transparent);
+  background: color-mix(in srgb, var(--cns-moderate) 18%, transparent);
+  color: var(--cns-moderate);
 }
 
 .lastTime {

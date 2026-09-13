@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { currentItemIndex, workoutItems } from '@/core/workout';
 import { formatClock, sessionStats } from '@/core/session';
+import { deloadBanner } from '@/core/progression';
 import { minutesLabel } from '@/components/labels';
 import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
@@ -54,6 +55,7 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
   if (session === undefined || day === undefined) return null;
 
   const stats = sessionStats(session, day, exerciseById, now);
+  const deloadNote = deloadBanner(session.weekNumber);
   const targetMs = day.targetMinutes * 60000;
   const overTarget = stats.durationMs > targetMs;
   const unlogged = stats.plannedSets - stats.completedSets;
@@ -88,6 +90,13 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
       </button>
 
       <main className={styles.content}>
+        {deloadNote !== undefined && (
+          <div className={styles.deload}>
+            <span className={styles.deloadTitle}>DELOAD WEEK</span>
+            {deloadNote}
+          </div>
+        )}
+
         {items.map(({ block, item, index }, position) => {
           const isFirstOfBlock =
             position === 0 || items[position - 1]?.block.letter !== block.letter;

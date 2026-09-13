@@ -89,7 +89,9 @@ working before the next is started.
       mutation, and resume after a crash. No timer yet.
 - [x] **3. The timer** — all three modes, the pinned bar, the expanded ring view,
       and the background-correctness behaviour in section 6
-- [ ] 4. Progression engine
+- [x] **4. Progression engine** — the four currencies, double progression,
+      stalls, the inverse rule, the quality question, the lever prompt and the
+      week-5 deload, with the banners on the exercise cards
 - [ ] 5. Alternatives and pain tracking
 - [ ] 6. History and Progress, including the knee chart
 - [ ] 7. PWA shell — manifest, service worker, offline, install prompt
@@ -118,14 +120,63 @@ and not yet offline-capable.
   countdown, and it sets the rest for the remaining sets of that exercise in this
   session. It is held in memory and never reaches the programme.
 
+### How progression works
+
+The differentiating feature. Each exercise declares one of four currencies and
+the app prompts for that one only. `suggestProgression` is pure and returns the
+banner line, any secondary hint, the values to open the set rows with, and how
+many sets to show.
+
+- **`load`** runs double progression. Every set at the top of the range, all
+  clean, earns the next weight and pre-fills at the bottom of the range;
+  otherwise it holds the weight and names the target. Two sessions stuck at the
+  same weight and reps is a stall, and it says so.
+- **`quality`** never produces a weight suggestion under any circumstance. The
+  banner states what is actually being progressed, and once the sets are logged
+  the card asks one binary question, built from the rule's own label — "↑ Bar
+  speed" becomes *"Was bar speed maintained on every rep?"*. Two consecutive
+  "no" answers add the warning about reducing sets.
+- **`time`** suggests a longer hold once every hold was completed clean, but
+  only where `holdIncrementSeconds` is positive. A `time` rule does not always
+  mean "hold longer": the banded lateral walk pins the increment to 0 because it
+  progresses by band stiffness.
+- **`fixed`** gets no banner, no prompt and no numbers.
+
+**Pre-fill order.** Each layer overrides only the fields it defines: the
+prescription, then the matching set from last time, then the engine's
+suggestion, then anything already logged for that exercise in this session. So
+a suggestion that names a weight but not a rep count still lets last week's reps
+show through, and once set 1 is done, set 2 follows what was actually lifted.
+
+#### Judgement calls worth knowing about
+
+- **Acceptance criterion 8 and the seed disagree.** The criterion says the trap
+  bar deadlift, after 4×8 all clean, suggests the next weight up at 6 reps —
+  which is section 7.1's worked example (`repRange [6, 8]`, `+2.5 kg`). The
+  seeded trap bar deadlift is prescribed 4×5 with `repRange [5, 5]` and a 5 kg
+  increment, so the same engine lands on +5 kg at 5 reps for it. The seed is the
+  source of truth for programme content, so the engine implements the rule and
+  both cases are tested: the example's numbers produce exactly the criterion's
+  answer, and the seeded lift produces its own.
+- **Stalling on an inverse exercise does not cut to 60%.** On the assisted
+  pull-up the load is assistance, so 60% of it is a *harder* set. The same
+  intent — back off, then rebuild — is expressed as one step more assistance,
+  and the copy says so.
+- **The lever prompt is driven by the rule, not by an exercise id.** The seed
+  marks the Copenhagen with "↑ Lever length"; any `time` rule whose label names
+  the lever gets the prompt after four consecutive sessions holding the
+  prescribed time cleanly. It is text only and changes nothing automatically.
+- **The deload exempts `fixed`.** Section 7.5 cuts suggested sets by roughly 40%
+  on week 5 and every fifth week after, holding the weight suggestion unchanged.
+  Warm-ups and mobility are left at their prescribed sets: they sit outside the
+  progression machinery, and trimming them buys no recovery. The reduced count
+  is used by the set rows, the card headers and the session's completion total
+  alike, so they cannot disagree.
+
 ### What is deliberately left out
 
 These belong to later milestones and are not oversights:
 
-- **The progression strip is the seeded rule, not a suggestion.** It shows the
-  exercise's own progression currency and label, colour-coded. The engine that
-  turns last week's sets into *"All sets at 8 clean last time → try 62.5 kg"* is
-  milestone 4, and so is the week-5 deload cut to suggested sets.
 - **No Swap button.** Alternatives are milestone 5, so the action is absent
   rather than present and dead.
 - **No pain prompts.** `prePainScore`, `postPainScore` and the per-exercise 0–10
@@ -174,6 +225,10 @@ unit tests. What exists so far:
   current
 - `core/session` — immutable session updates (log, un-log, skip, notes, finish),
   completion stats and clock formatting
+- `core/progression` — the four currencies, double progression, stalls, the
+  inverse rule, the quality question and its two-no warning, the lever prompt and
+  the deload cut. The section 12 acceptance criteria are written as tests, and
+  the "never add load" rule is checked across every exercise in the real library
 - `core/timer` — remaining time, overdue reporting, pause and resume without
   drift, the ±15s adjustment, interval phase transitions, and the countdown
   formatting. Acceptance criteria 5 and 6 are written directly as tests

@@ -18,6 +18,7 @@ import {
   createSession,
   finishSession,
   logSet,
+  setQualityConfirmed,
   setSessionNotes,
   setSkipped,
   skipUnloggedExercises,
@@ -67,6 +68,7 @@ interface WorkoutState {
   draftFor: (exerciseId: string, rowKey: string) => RowValues | undefined;
   addSet: (exerciseId: string) => void;
   skipExercise: (exerciseId: string, skipped: boolean) => Promise<void>;
+  confirmQuality: (exerciseId: string, confirmed: boolean) => Promise<void>;
   saveNotes: (notes: string) => Promise<void>;
   finish: (markRemainingSkipped: boolean, day: ProgrammeDay | undefined) => Promise<void>;
   discard: () => Promise<void>;
@@ -190,6 +192,12 @@ export const useWorkout = create<WorkoutState>((set, get) => {
       const current = get().session;
       if (current === undefined) return;
       await persist(setSkipped(current, exerciseId, skipped));
+    },
+
+    confirmQuality: async (exerciseId, confirmed) => {
+      const current = get().session;
+      if (current === undefined) return;
+      await persist(setQualityConfirmed(current, exerciseId, confirmed));
     },
 
     saveNotes: async (notes) => {
