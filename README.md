@@ -48,8 +48,23 @@ Vercel or GitHub Pages with no configuration beyond:
 - Publish directory: `dist`
 
 The service worker and manifest are emitted by the build; `base` is relative, so
-an install from a project-pages subpath scopes correctly. A service worker needs
-HTTPS (or localhost), which all three provide.
+the app works served from a domain root or from a project-pages subpath. A
+service worker needs HTTPS (or localhost), which all three provide.
+
+`vercel.json` sets cache headers: the service worker, the manifest and the page
+itself are revalidated on every load, because none of them carries a content
+hash and a stale `sw.js` means a new deploy never reaches an installed app.
+Everything under `/assets` is hashed by the build and cached for a year.
+
+### On an iPhone
+
+Open the deployed URL in **Safari** — not Chrome, which cannot install a PWA on
+iOS — then Share → Add to Home Screen. It then launches without browser chrome
+and works in aeroplane mode.
+
+iOS evicts a web app's storage after roughly seven weeks without use, so the
+export in Settings is the thing that makes a long training history safe. That is
+what the 30-day backup nudge is for.
 
 ## Project layout
 
