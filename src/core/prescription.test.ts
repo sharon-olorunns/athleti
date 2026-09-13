@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
-import type { Exercise, Prescription, ProgrammeDay } from '@/types';
+import type { ProgrammeDay } from '@/types';
+import { anExercise as exercise, aPrescription as prescription } from '@/test/factories';
 import {
   exerciseIdsOf,
   logsPerSide,
@@ -10,33 +11,6 @@ import {
   totalSetRows,
   tracks,
 } from './prescription';
-
-const exercise = (over: Partial<Exercise> = {}): Exercise => ({
-  id: 'x',
-  name: 'X',
-  equipment: ['barbell'],
-  primaryMuscles: [],
-  secondaryMuscles: [],
-  tracks: ['weight', 'reps'],
-  unilateral: false,
-  progression: { type: 'load', label: '+2.5 kg' },
-  kneeSensitive: false,
-  painTracked: false,
-  phase1Excluded: false,
-  alternatives: [],
-  ...over,
-});
-
-const prescription = (over: Partial<Prescription> = {}): Prescription => ({
-  exerciseId: 'x',
-  sets: 3,
-  restSeconds: 60,
-  perSide: false,
-  cutFirst: false,
-  kneeModified: false,
-  timerMode: 'rest',
-  ...over,
-});
 
 describe('logsPerSide', () => {
   it('is true for a unilateral exercise', () => {
@@ -78,7 +52,7 @@ describe('targetText', () => {
   });
 
   it('shows a distance in metres', () => {
-    expect(targetText(prescription({ distanceM: 20 }))).toBe('20 m');
+    expect(targetText(prescription({ reps: undefined, distanceM: 20 }))).toBe('20 m');
   });
 
   it('shows interval work and rest', () => {
@@ -95,7 +69,7 @@ describe('targetText', () => {
   });
 
   it('is empty when there is nothing to show', () => {
-    expect(targetText(prescription())).toBe('');
+    expect(targetText(prescription({ reps: undefined }))).toBe('');
   });
 });
 
@@ -120,8 +94,12 @@ describe('prescriptionText', () => {
   });
 
   it('falls back to a set count when there is no target', () => {
-    expect(prescriptionText(prescription({ sets: 2 }), exercise())).toBe('2 sets');
-    expect(prescriptionText(prescription({ sets: 1 }), exercise())).toBe('1 set');
+    expect(prescriptionText(prescription({ sets: 2, reps: undefined }), exercise())).toBe(
+      '2 sets',
+    );
+    expect(prescriptionText(prescription({ sets: 1, reps: undefined }), exercise())).toBe(
+      '1 set',
+    );
   });
 });
 

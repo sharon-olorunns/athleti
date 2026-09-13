@@ -84,7 +84,9 @@ working before the next is started.
 
 - [x] **1. Data layer** — types, IndexedDB schema, seed loader, and a read-only
       Programme screen that renders all five days and the reintroduction schedule
-- [ ] 2. Active workout, logging only
+- [x] **2. Active workout, logging only** — Today screen, set rows with steppers,
+      pre-fill from history, one-tap completion, session persistence on every
+      mutation, and resume after a crash. No timer yet.
 - [ ] 3. The timer (three modes, background-correct)
 - [ ] 4. Progression engine
 - [ ] 5. Alternatives and pain tracking
@@ -94,6 +96,43 @@ working before the next is started.
 
 Until milestone 7 lands the app is a normal web page: it is not yet installable
 and not yet offline-capable.
+
+### What milestone 2 deliberately leaves out
+
+These belong to later milestones and are not oversights:
+
+- **No rest timer.** Completing a set records it and moves on; auto-starting the
+  timer arrives with milestone 3.
+- **The progression strip is the seeded rule, not a suggestion.** It shows the
+  exercise's own progression currency and label, colour-coded. The engine that
+  turns last week's sets into *"All sets at 8 clean last time → try 62.5 kg"* is
+  milestone 4, and so is the week-5 deload cut to suggested sets.
+- **No Swap button.** Alternatives are milestone 5, so the action is absent
+  rather than present and dead.
+- **No pain prompts.** `prePainScore`, `postPainScore` and the per-exercise 0–10
+  scale come with milestone 5.
+- **Notes are session-level.** The data model gives `WorkoutSession` a `notes`
+  field and `LoggedExercise` none, so the card's Notes action opens the session
+  note rather than inventing a per-exercise field.
+
+### How logging behaves
+
+- **Pre-fill order.** A row opens with the most recent set of that exercise
+  already logged in this session, so set 2 follows what set 1 actually did and
+  the R side follows the L side. Failing that, the matching set from the last
+  time the exercise was performed. Failing that, the prescription — the bottom of
+  the rep range, the prescribed hold or distance. Weight is left empty rather
+  than guessed, so the first-ever session of a lift asks for it once.
+- **Drafts are in memory; logged sets are not.** Every completion, un-completion,
+  skip and note writes the whole session to IndexedDB before the UI updates. A
+  number typed into a stepper but not confirmed is not persisted — losing that to
+  a crash is acceptable, losing a logged set is not.
+- **Steppers only where there is a number to step.** The mobility flows prescribe
+  `"6 / 30s / 8"` across three movements; there is no single rep count, so the row
+  shows the target and the tick logs it as done.
+- **Add set** extends the rows for that exercise. Once logged, an extra set
+  survives a reload because the row count is derived from what the log contains,
+  not from a separate counter.
 
 ## Testing
 
@@ -111,6 +150,11 @@ unit tests. What exists so far:
 - `core/prescription` — per-side set rows, target and prescription display text
 - `core/seedValidation` — the seed integrity rules, plus assertions against the
   real seed file covering the progression cases in the acceptance criteria
+- `core/workout` — planned set rows, the pre-fill priority above, previous-set
+  ghosts, per-currency step sizes, performance summaries, and which card is
+  current
+- `core/session` — immutable session updates (log, un-log, skip, notes, finish),
+  completion stats and clock formatting
 - `db/seed` — first-run seeding, idempotence, and that a re-seed preserves user
   settings, user-added exercises and logged sessions
 

@@ -1,0 +1,80 @@
+.stepper {
+  display: flex;
+  align-items: center;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  overflow: hidden;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.button {
+  flex: 0 0 auto;
+  width: var(--tap);
+  height: var(--tap);
+  display: grid;
+  place-items: center;
+  font-size: var(--fs-xl);
+  font-weight: 400;
+  color: var(--text);
+  background: var(--surface-raised);
+}
+
+.button:active {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+.button:disabled {
+  color: var(--text-faint);
+  opacity: 0.5;
+}
+
+.field {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 2px;
+  padding: 0 2px;
+}
+
+/*
+ * The number is an input so tapping it opens the numeric keypad directly, but it
+ * reads as text: steppers are the primary input, this is the direct-edit escape.
+ * 16px minimum or iOS zooms the page on focus.
+ */
+.input {
+  width: 100%;
+  min-width: 0;
+  border: none;
+  background: none;
+  color: var(--text);
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  text-align: right;
+  padding: 0;
+  min-height: var(--tap);
+  -moz-appearance: textfield;
+}
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.unit {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  font-weight: 600;
+  flex: 0 0 auto;
+}
+
+.empty {
+  color: var(--text-faint);
+}

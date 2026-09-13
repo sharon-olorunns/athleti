@@ -1,0 +1,226 @@
+.card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+  margin-bottom: var(--sp-3);
+}
+
+.current {
+  border-color: var(--border-strong);
+  box-shadow: 0 0 0 1px var(--border-strong);
+}
+
+.doneCard {
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-sunken);
+}
+
+/* Collapsed: one line, tappable to reopen. */
+.summaryRow {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  text-align: left;
+}
+
+.summaryName {
+  flex: 1 1 auto;
+  font-weight: 650;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  overflow-wrap: anywhere;
+}
+
+.summaryValue {
+  font-size: var(--fs-sm);
+  font-family: var(--font-mono);
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.tick {
+  color: var(--cns-low);
+  font-weight: 800;
+  flex: 0 0 auto;
+}
+
+.skippedTag {
+  color: var(--text-faint);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+/* Upcoming: name, target, muscles — enough to know what is coming. */
+.upcomingRow {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  width: 100%;
+  text-align: left;
+}
+
+.upcomingName {
+  font-weight: 650;
+  overflow-wrap: anywhere;
+}
+
+.upcomingTarget {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text-dim);
+  white-space: nowrap;
+}
+
+.muscles {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-1);
+  margin-top: var(--sp-2);
+}
+
+/* Expanded */
+.name {
+  font-size: var(--fs-lg);
+  overflow-wrap: anywhere;
+}
+
+.target {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: var(--fs-lg);
+  white-space: nowrap;
+}
+
+.nameRow {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: var(--sp-1) var(--sp-3);
+}
+
+.nameRow .name {
+  flex: 1 1 60%;
+  min-width: 0;
+}
+
+/* A long target ("1 × 6 / 30s / 8") drops to its own line rather than
+   squeezing the name into a narrow column. */
+.nameRow .target {
+  flex: 0 1 auto;
+  margin-left: auto;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.cue {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.note {
+  margin-top: var(--sp-2);
+  padding-left: var(--sp-3);
+  border-left: 2px solid var(--border-strong);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+/* The progression strip, colour-coded by currency. */
+.progression {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--tint) 40%, transparent);
+  background: color-mix(in srgb, var(--tint) 12%, transparent);
+}
+
+.progressionLabel {
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  color: var(--tint);
+}
+
+.progressionMeaning {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.lastTime {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  font-family: var(--font-mono);
+}
+
+.sets {
+  margin-top: var(--sp-2);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.action {
+  flex: 1 1 auto;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.skipped {
+  margin-top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-2);
+}
+
+/* A superset is one card with a rail joining its exercises. */
+.supersetLabel {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: var(--sp-2);
+}
+
+.rail {
+  padding-left: var(--sp-3);
+  border-left: 3px solid var(--accent-dim);
+  border-radius: 2px;
+}
+
+.railPart + .railPart {
+  margin-top: var(--sp-4);
+  padding-top: var(--sp-4);
+  border-top: 1px dashed var(--border-strong);
+}

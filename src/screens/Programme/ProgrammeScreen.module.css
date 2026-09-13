@@ -42,19 +42,19 @@
    * The selector is the one thing tapped repeatedly on this screen, so it sits in
    * the bottom third rather than under the header.
    */
-  padding-bottom: calc(var(--tap) + var(--sp-5) + var(--safe-bottom));
+  padding-bottom: calc(var(--tap) + var(--tabbar-h) + var(--sp-5) + var(--safe-bottom));
 }
 
 .selector {
   position: fixed;
-  bottom: 0;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: 100%;
   max-width: 640px;
   display: flex;
   gap: var(--sp-2);
-  padding: var(--sp-2) var(--sp-3) calc(var(--sp-2) + var(--safe-bottom));
+  padding: var(--sp-2) var(--sp-3);
   background: color-mix(in srgb, var(--bg) 92%, transparent);
   backdrop-filter: blur(12px);
   border-top: 1px solid var(--border);

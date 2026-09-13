@@ -1,0 +1,46 @@
+.bar {
+  position: fixed;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 640px;
+  z-index: 10;
+  display: flex;
+  height: calc(var(--tabbar-h) + var(--safe-bottom));
+  padding-bottom: var(--safe-bottom);
+  background: var(--surface-sunken);
+  border-top: 1px solid var(--border);
+}
+
+.tab {
+  flex: 1 1 0;
+  min-height: var(--tabbar-h);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  color: var(--text-faint);
+  font-size: var(--fs-xs);
+  font-weight: 650;
+}
+
+.active {
+  color: var(--accent);
+}
+
+.glyph {
+  font-size: var(--fs-md);
+  line-height: 1;
+}
+
+/* A live workout is worth marking, since the tab is how you get back to it. */
+.dot {
+  position: absolute;
+  transform: translate(14px, -12px);
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--cns-low);
+}

@@ -1,0 +1,207 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+  padding: calc(var(--safe-top) + var(--sp-4)) var(--sp-4);
+  padding-bottom: calc(var(--tabbar-h) + 64px + var(--sp-6) * 2 + var(--safe-bottom));
+}
+
+.greeting {
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.next {
+  margin-top: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.nextLabel {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+}
+
+.nextTitle {
+  font-size: var(--fs-xl);
+  margin-top: var(--sp-1);
+}
+
+.nextMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+}
+
+.summary {
+  display: flex;
+  gap: var(--sp-5);
+  margin-top: var(--sp-4);
+}
+
+.stat {
+  display: flex;
+  flex-direction: column;
+}
+
+.statValue {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+.statLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+/*
+ * The largest thing on the screen, pinned in the bottom third where the thumb
+ * already is — the same place the Finish button sits during a workout.
+ */
+.actionBar {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 640px;
+  padding: var(--sp-3) var(--sp-4);
+  background: color-mix(in srgb, var(--bg) 94%, transparent);
+  backdrop-filter: blur(12px);
+  border-top: 1px solid var(--border);
+}
+
+.start {
+  width: 100%;
+  min-height: 64px;
+  border-radius: var(--radius);
+  background: var(--accent);
+  color: var(--accent-text);
+  font-size: var(--fs-xl);
+  font-weight: 750;
+}
+
+.resume {
+  background: var(--cns-low);
+  color: #08120c;
+}
+
+.secondary {
+  width: 100%;
+  min-height: var(--tap);
+  margin-top: var(--sp-4);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.picker {
+  margin-top: var(--sp-3);
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.pickerDay {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  width: 100%;
+  min-height: var(--tap);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  text-align: left;
+}
+
+.pickerLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  width: 3.5em;
+  flex: 0 0 auto;
+}
+
+.pickerTitle {
+  flex: 1 1 auto;
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.section {
+  margin-top: var(--sp-6);
+}
+
+.sectionTitle {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: var(--sp-2);
+}
+
+.last {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-3) var(--sp-4);
+}
+
+.lastHead {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.lastTitle {
+  font-weight: 650;
+}
+
+.lastDate {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.lastMeta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.complete {
+  color: var(--cns-low);
+  font-weight: 650;
+}
+
+.incomplete {
+  color: var(--text-dim);
+}
+
+.empty {
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+}

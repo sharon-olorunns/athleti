@@ -1,6 +1,10 @@
-import { useEffect } from 'react';
-import { useApp } from './state/store';
+import { useEffect, useState } from 'react';
+import { TabBar, type Tab } from './components/TabBar';
 import { ProgrammeScreen } from './screens/Programme/ProgrammeScreen';
+import { TodayScreen } from './screens/Today/TodayScreen';
+import { WorkoutScreen } from './screens/Workout/WorkoutScreen';
+import { useApp } from './state/store';
+import { useWorkout } from './state/workoutStore';
 import styles from './App.module.css';
 
 export default function App() {
@@ -8,9 +12,19 @@ export default function App() {
   const error = useApp((s) => s.error);
   const boot = useApp((s) => s.boot);
 
+  const session = useWorkout((s) => s.session);
+  const resumeActive = useWorkout((s) => s.resumeActive);
+
+  const [tab, setTab] = useState<Tab>('today');
+
   useEffect(() => {
     void boot();
   }, [boot]);
+
+  // Pick up an unfinished session left by a crash, a closed tab or a dead battery.
+  useEffect(() => {
+    if (status === 'ready') void resumeActive();
+  }, [status, resumeActive]);
 
   if (status === 'error') {
     return (
@@ -25,7 +39,6 @@ export default function App() {
   }
 
   if (status !== 'ready') {
-    // First run reads the seed and writes the library; subsequent loads are instant.
     return (
       <div className={styles.boot}>
         <p className={styles.bootBody}>Loading programme…</p>
@@ -33,5 +46,18 @@ export default function App() {
     );
   }
 
-  return <ProgrammeScreen />;
+  return (
+    <>
+      {tab === 'today' ? (
+        session === undefined ? (
+          <TodayScreen onStarted={() => setTab('today')} />
+        ) : (
+          <WorkoutScreen onFinished={() => setTab('today')} />
+        )
+      ) : (
+        <ProgrammeScreen />
+      )}
+      <TabBar active={tab} onChange={setTab} workoutActive={session !== undefined} />
+    </>
+  );
 }
