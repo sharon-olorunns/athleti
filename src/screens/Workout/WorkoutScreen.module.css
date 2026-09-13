@@ -80,7 +80,8 @@
   flex: 1;
   padding: var(--sp-4) var(--sp-4) 0;
   padding-bottom: calc(
-    var(--tap) * 2 + var(--tabbar-h) + var(--timer-offset) + var(--sp-6) + var(--safe-bottom)
+    var(--tap) * 2 + var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) +
+      var(--sp-6) + var(--safe-bottom)
   );
 }
 
@@ -148,7 +149,7 @@
 /* Finish sits in the bottom third, pinned, where the thumb already is. */
 .finishBar {
   position: fixed;
-  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--safe-bottom));
+  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + var(--safe-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: 100%;

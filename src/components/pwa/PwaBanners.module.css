@@ -1,0 +1,58 @@
+/*
+ * Both banners sit above the tab bar, inline and dismissible. Neither ever
+ * blocks, and neither appears during a workout.
+ */
+.banner {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 640px;
+  z-index: 14;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-3) var(--sp-4);
+  background: var(--surface-raised);
+  border-top: 1px solid var(--border-strong);
+}
+
+.text {
+  flex: 1 1 auto;
+  min-width: 0;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.strong {
+  display: block;
+  font-weight: 650;
+  color: var(--text);
+}
+
+.button {
+  flex: 0 0 auto;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.dismiss {
+  flex: 0 0 auto;
+  min-width: var(--tap);
+  min-height: var(--tap);
+  color: var(--text-faint);
+  font-size: var(--fs-lg);
+}

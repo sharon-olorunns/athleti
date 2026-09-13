@@ -81,6 +81,8 @@
   /* Height of the pinned timer bar, and 0 when no timer is running. */
   --timerbar-h: 56px;
   --timer-offset: 0px;
+  /* Height of a PWA banner when one is showing, and 0 otherwise. */
+  --banner-offset: 0px;
 
   /* Safe areas, so nothing lands under the iOS home indicator */
   --safe-bottom: env(safe-area-inset-bottom, 0px);

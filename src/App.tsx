@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { TabBar, type Tab } from './components/TabBar';
+import { PwaBanners } from './components/pwa/PwaBanners';
 import { TimerRunner } from './components/timer/TimerRunner';
 import { useWakeLock } from './hooks/useWakeLock';
 import { ExerciseDetail } from './screens/ExerciseDetail/ExerciseDetail';
@@ -78,6 +79,7 @@ export default function App() {
         <ExerciseDetail exerciseId={detailId} onClose={() => setDetailId(undefined)} />
       )}
       <TimerRunner />
+      <PwaBanners />
       <TabBar active={tab} onChange={setTab} workoutActive={session !== undefined} />
     </>
   );

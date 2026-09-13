@@ -43,13 +43,14 @@
    * the bottom third rather than under the header.
    */
   padding-bottom: calc(
-    var(--tap) + var(--tabbar-h) + var(--timer-offset) + var(--sp-5) + var(--safe-bottom)
+    var(--tap) + var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + var(--sp-5) +
+      var(--safe-bottom)
   );
 }
 
 .selector {
   position: fixed;
-  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--safe-bottom));
+  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + var(--safe-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: 100%;

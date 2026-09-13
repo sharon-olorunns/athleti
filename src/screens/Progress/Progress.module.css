@@ -6,7 +6,9 @@
   max-width: 640px;
   margin-inline: auto;
   padding: calc(var(--safe-top) + var(--sp-4)) var(--sp-4);
-  padding-bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--sp-6) + var(--safe-bottom));
+  padding-bottom: calc(
+    var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + var(--sp-6) + var(--safe-bottom)
+  );
 }
 
 .title {

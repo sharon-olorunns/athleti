@@ -7,7 +7,8 @@
   margin-inline: auto;
   padding: calc(var(--safe-top) + var(--sp-4)) var(--sp-4);
   padding-bottom: calc(
-    var(--tabbar-h) + var(--timer-offset) + 64px + var(--sp-6) * 2 + var(--safe-bottom)
+    var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + 64px + var(--sp-6) * 2 +
+      var(--safe-bottom)
   );
 }
 
@@ -79,7 +80,7 @@
  */
 .actionBar {
   position: fixed;
-  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--safe-bottom));
+  bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--banner-offset) + var(--safe-bottom));
   left: 50%;
   transform: translateX(-50%);
   width: 100%;

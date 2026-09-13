@@ -25,16 +25,32 @@ export async function requestNotificationPermission(): Promise<NotificationPermi
 }
 
 /**
- * Post a notification if permission is already granted. Android Chrome refuses
- * the `Notification` constructor and wants a service worker registration, which
- * arrives with the PWA shell — until then this degrades to nothing rather than
- * throwing into a workout.
+ * Post a notification if permission is already granted.
+ *
+ * The service worker is tried first: Android Chrome refuses the `Notification`
+ * constructor outright and only accepts `ServiceWorkerRegistration.showNotification`.
+ * The constructor remains as the fallback for desktop browsers, and anything that
+ * refuses both degrades to nothing rather than throwing into a workout.
  */
 export function postTimerNotification(title: string, body: string): void {
   if (typeof Notification === 'undefined' || Notification.permission !== 'granted') return;
+
+  const options: NotificationOptions = { body, tag: 'trainer-timer', icon: 'icons/icon-192.png' };
+
+  if ('serviceWorker' in navigator) {
+    void navigator.serviceWorker.ready
+      .then((registration) => registration.showNotification(title, options))
+      .catch(() => fallbackNotification(title, options));
+    return;
+  }
+
+  fallbackNotification(title, options);
+}
+
+function fallbackNotification(title: string, options: NotificationOptions): void {
   try {
-    new Notification(title, { body, tag: 'trainer-timer', silent: false });
+    new Notification(title, options);
   } catch {
-    // ignore
+    // Not supported here; the sound and vibration already carried the alert.
   }
 }

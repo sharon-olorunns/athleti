@@ -47,6 +47,10 @@ Vercel or GitHub Pages with no configuration beyond:
 - Build command: `npm run build`
 - Publish directory: `dist`
 
+The service worker and manifest are emitted by the build; `base` is relative, so
+an install from a project-pages subpath scopes correctly. A service worker needs
+HTTPS (or localhost), which all three provide.
+
 ## Project layout
 
 ```
@@ -98,11 +102,33 @@ working before the next is started.
 - [x] **6. History and Progress** — exercise detail with per-currency charts, the
       session history and read-only session view, the knee chart, weekly volume
       and adherence, plus the Today knee trend
-- [ ] 7. PWA shell — manifest, service worker, offline, install prompt
+- [x] **7. PWA shell** — manifest, service worker, precached offline shell,
+      install offer and a gated update flow
 - [ ] 8. Export/import, settings, polish
 
-Until milestone 7 lands the app is a normal web page: it is not yet installable
-and not yet offline-capable.
+### The PWA shell
+
+Installable and fully offline after first load. The build emits a manifest and a
+Workbox service worker that precaches every asset — HTML, JS, CSS, icons — so
+opening the app in aeroplane mode gives the whole thing, not a shell.
+
+- **Updates are never applied on their own.** Registration is manual and the
+  waiting worker only takes over when the user taps Update. The offer is withheld
+  entirely while a workout is in progress: a reload is safe, since the session is
+  persisted on every mutation, but offering one mid-set is exactly the
+  interruption the app exists to avoid.
+- **The install offer** uses the native prompt where the browser has one, and
+  falls back to *Share → Add to Home Screen* on iOS, which has no install API at
+  all. It is offered once, remembered when dismissed, and never raised
+  mid-workout.
+- **Notifications now work on Android**, which refuses the bare `Notification`
+  constructor and only accepts `ServiceWorkerRegistration.showNotification`. The
+  constructor stays as the desktop fallback.
+- **Icons are generated, not committed blind.** `scripts/generate-icons.mjs`
+  draws the mark procedurally and writes the PNGs directly, so they are
+  reproducible from source with no image toolchain to install.
+
+Run `npm run icons` after changing that script.
 
 ### How the timer behaves
 

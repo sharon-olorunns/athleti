@@ -71,6 +71,8 @@ export const META_KEYS = {
   dismissedSubstitutions: 'dismissedSubstitutions',
   /** ISO days whose morning check was dismissed rather than answered. */
   dismissedMorningChecks: 'dismissedMorningChecks',
+  /** True once the install offer has been made, so it is made only once. */
+  installOffered: 'installOffered',
 } as const;
 
 export class TrainerDb extends Dexie {
