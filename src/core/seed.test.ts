@@ -19,7 +19,7 @@ describe('seed-programme.json', () => {
   });
 
   it('carries the whole library and all five days', () => {
-    expect(seed.schemaVersion).toBe(2);
+    expect(seed.schemaVersion).toBe(3);
     expect(seed.exercises).toHaveLength(57);
     expect(seed.days).toHaveLength(5);
   });

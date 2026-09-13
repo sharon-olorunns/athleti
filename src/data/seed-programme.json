@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 2,
+  "schemaVersion": 3,
   "programme": {
     "id": "footballers-week",
     "name": "The Footballer's Week",
@@ -256,7 +256,7 @@
       "secondaryMuscles": ["Quads", "Erectors", "Traps", "Grip"],
       "tracks": ["weight", "reps"],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [6, 8], "incrementKg": 5, "note": "The day's force-production lift. Hip-dominant and knee-friendly, which is why it survived the knee modifications intact. Heavy, but stop two reps short of failure." },
+      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [6, 8], "incrementKg": 2.5, "note": "The day's force-production lift. Hip-dominant and knee-friendly, which is why it survived the knee modifications intact. Heavy, but stop two reps short of failure." },
       "cue": "Push the floor away. Neutral spine, chest up, lock out tall.",
       "kneeSensitive": false,
       "painTracked": false,

@@ -569,9 +569,9 @@ describe('against the seeded programme', () => {
 
   it('suggests the next weight up at 6 reps after a clean 4×8', () => {
     /*
-     * Acceptance criterion 8, now against the seeded lift itself: the trap bar
-     * deadlift runs 6-8 with a 5 kg increment, so a session of 4×8 all clean
-     * earns 85 kg and the rows reopen at the bottom of the range.
+     * Acceptance criterion 8, against the seeded lift itself: the trap bar
+     * deadlift runs 6-8 in 2.5 kg steps, so a session of 4×8 all clean earns
+     * 82.5 kg and the rows reopen at the bottom of the range.
      */
     const exercise = seeded('trap-bar-deadlift');
     const prescription = seededPrescription('trap-bar-deadlift');
@@ -585,8 +585,9 @@ describe('against the seeded programme', () => {
       weekNumber: 1,
     });
     expect(result.kind).toBe('load-progress');
-    expect(result.message).toBe('All sets at 8 clean last time → try 85 kg');
-    expect(result.prefill.weightKg).toBe(85);
+    expect(exercise.progression.incrementKg).toBe(2.5);
+    expect(result.message).toBe('All sets at 8 clean last time → try 82.5 kg');
+    expect(result.prefill.weightKg).toBe(82.5);
     expect(result.prefill.reps).toBe(6);
   });
 

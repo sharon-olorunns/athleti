@@ -202,9 +202,9 @@ show through, and once set 1 is done, set 2 follows what was actually lifted.
 - **The trap bar deadlift runs 6-8.** The seed originally prescribed a fixed 4×5
   with `repRange [5, 5]`, which could not satisfy acceptance criterion 8 — after
   4×8 all clean, suggest the next weight up at 6 reps. Both the rule and the Day
-  1 prescription now say 6-8, so the criterion holds against the seeded lift
-  itself: 4×8 clean at 80 kg earns 85 kg, and the rows reopen at 6. The increment
-  stays at the seeded 5 kg, which its own label (`↑ 2.5–5 kg/wk`) allows.
+  1 prescription now say 6-8, and it steps in 2.5 kg, so the criterion holds
+  against the seeded lift itself: 4×8 clean at 80 kg earns 82.5 kg, and the rows
+  reopen at 6.
 - **Stalling on an inverse exercise does not cut to 60%.** On the assisted
   pull-up the load is assistance, so 60% of it is a *harder* set. The same
   intent — back off, then rebuild — is expressed as one step more assistance,
