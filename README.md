@@ -73,7 +73,9 @@ exercises and five days. It is loaded into IndexedDB on first run and is not
 re-read afterwards, so the user can edit the programme in place without an app
 update overwriting them. A newer `schemaVersion` refreshes the seeded library and
 programme while leaving user-added exercises, settings and all logged history
-untouched.
+untouched — which is how the 6-8 deadlift change reached installs that had
+already seeded version 1. The one thing a refresh does overwrite is a
+substitution made permanent, since that edit lives in the stored programme.
 
 The 12 exercises marked `phase1Excluded` are deliberately absent from every day's
 blocks and appear only under **Deferred**, with the week they are reintroduced.
@@ -182,14 +184,12 @@ show through, and once set 1 is done, set 2 follows what was actually lifted.
 
 #### Judgement calls worth knowing about
 
-- **Acceptance criterion 8 and the seed disagree.** The criterion says the trap
-  bar deadlift, after 4×8 all clean, suggests the next weight up at 6 reps —
-  which is section 7.1's worked example (`repRange [6, 8]`, `+2.5 kg`). The
-  seeded trap bar deadlift is prescribed 4×5 with `repRange [5, 5]` and a 5 kg
-  increment, so the same engine lands on +5 kg at 5 reps for it. The seed is the
-  source of truth for programme content, so the engine implements the rule and
-  both cases are tested: the example's numbers produce exactly the criterion's
-  answer, and the seeded lift produces its own.
+- **The trap bar deadlift runs 6-8.** The seed originally prescribed a fixed 4×5
+  with `repRange [5, 5]`, which could not satisfy acceptance criterion 8 — after
+  4×8 all clean, suggest the next weight up at 6 reps. Both the rule and the Day
+  1 prescription now say 6-8, so the criterion holds against the seeded lift
+  itself: 4×8 clean at 80 kg earns 85 kg, and the rows reopen at 6. The increment
+  stays at the seeded 5 kg, which its own label (`↑ 2.5–5 kg/wk`) allows.
 - **Stalling on an inverse exercise does not cut to 60%.** On the assisted
   pull-up the load is assistance, so 60% of it is a *harder* set. The same
   intent — back off, then rebuild — is expressed as one step more assistance,

@@ -1,5 +1,5 @@
 {
-  "schemaVersion": 1,
+  "schemaVersion": 2,
   "programme": {
     "id": "footballers-week",
     "name": "The Footballer's Week",
@@ -256,7 +256,7 @@
       "secondaryMuscles": ["Quads", "Erectors", "Traps", "Grip"],
       "tracks": ["weight", "reps"],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [5, 5], "incrementKg": 5, "note": "The day's force-production lift. Hip-dominant and knee-friendly, which is why it survived the knee modifications intact. Heavy, but stop two reps short of failure." },
+      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [6, 8], "incrementKg": 5, "note": "The day's force-production lift. Hip-dominant and knee-friendly, which is why it survived the knee modifications intact. Heavy, but stop two reps short of failure." },
       "cue": "Push the floor away. Neutral spine, chest up, lock out tall.",
       "kneeSensitive": false,
       "painTracked": false,
@@ -1019,7 +1019,7 @@
           "name": "Strength",
           "estimatedMinutes": 26,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "trap-bar-deadlift", "sets": 4, "reps": "5", "restSeconds": 120, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
+            { "kind": "single", "prescription": { "exerciseId": "trap-bar-deadlift", "sets": 4, "reps": "6-8", "restSeconds": 120, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
             {
               "kind": "superset",
               "label": "Superset — alternate, 60s between pairs",

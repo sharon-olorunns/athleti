@@ -567,26 +567,38 @@ describe('against the seeded programme', () => {
     }
   });
 
-  it('suggests the seeded trap bar deadlift step, which is 5 kg at 5 reps', () => {
+  it('suggests the next weight up at 6 reps after a clean 4×8', () => {
     /*
-     * Acceptance criterion 8 is written with section 7.1's example rule
-     * (repRange [6,8], +2.5 kg), which the generic test above covers exactly.
-     * The seeded trap bar deadlift is prescribed 4×5 with repRange [5,5] and a
-     * 5 kg increment, so the same engine lands on 5 reps and +5 kg here.
+     * Acceptance criterion 8, now against the seeded lift itself: the trap bar
+     * deadlift runs 6-8 with a 5 kg increment, so a session of 4×8 all clean
+     * earns 85 kg and the rows reopen at the bottom of the range.
      */
     const exercise = seeded('trap-bar-deadlift');
     const prescription = seededPrescription('trap-bar-deadlift');
-    expect(exercise.progression.repRange).toEqual([5, 5]);
+    expect(exercise.progression.repRange).toEqual([6, 8]);
+    expect(prescription.reps).toBe('6-8');
 
     const result = suggestProgression({
       exercise,
       prescription,
-      history: [performance([5, 5, 5, 5], 80)],
+      history: [performance([8, 8, 8, 8], 80)],
       weekNumber: 1,
     });
     expect(result.kind).toBe('load-progress');
-    expect(result.message).toBe('All sets at 5 clean last time → try 85 kg');
+    expect(result.message).toBe('All sets at 8 clean last time → try 85 kg');
     expect(result.prefill.weightKg).toBe(85);
-    expect(result.prefill.reps).toBe(5);
+    expect(result.prefill.reps).toBe(6);
+  });
+
+  it('holds the weight while the deadlift is still short of 8s', () => {
+    const exercise = seeded('trap-bar-deadlift');
+    const result = suggestProgression({
+      exercise,
+      prescription: seededPrescription('trap-bar-deadlift'),
+      history: [performance([8, 8, 7, 6], 80)],
+      weekNumber: 1,
+    });
+    expect(result.kind).toBe('load-hold');
+    expect(result.prefill.weightKg).toBe(80);
   });
 });
