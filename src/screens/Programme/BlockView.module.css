@@ -1,0 +1,69 @@
+.block {
+  margin-top: var(--sp-5);
+}
+
+.head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+
+/* The letter badge — how the programme itself refers to blocks. */
+.letter {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  font-weight: 700;
+  font-size: var(--fs-sm);
+  display: grid;
+  place-items: center;
+}
+
+.name {
+  flex: 1;
+  font-size: var(--fs-md);
+  font-weight: 650;
+  letter-spacing: 0.01em;
+}
+
+.estimate {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  white-space: nowrap;
+}
+
+.items {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0 var(--sp-4);
+}
+
+/*
+ * A superset is one visual unit with a connecting rail, matching how it is drawn on
+ * the active workout screen.
+ */
+.superset {
+  margin: var(--sp-3) 0;
+  padding-left: var(--sp-3);
+  border-left: 3px solid var(--accent-dim);
+  border-radius: 2px;
+}
+
+.supersetLabel {
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--accent);
+  padding-top: var(--sp-2);
+}
+
+.supersetItems {
+  list-style: none;
+}

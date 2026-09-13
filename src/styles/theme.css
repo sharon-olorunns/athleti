@@ -1,0 +1,114 @@
+/*
+ * Design tokens.
+ *
+ * Dark is the default, not a preference: gym lighting and battery life. The light
+ * theme is opt-in via [data-theme="light"] on the root.
+ *
+ * Progression colours are defined here rather than in the progression UI because
+ * the same four currencies get colour-coded everywhere they appear — programme
+ * reference, exercise cards, the progression banner.
+ */
+
+:root {
+  /* Surfaces, darkest to lightest */
+  --bg: #0c0d10;
+  --surface: #15171c;
+  --surface-raised: #1d2027;
+  --surface-sunken: #0f1115;
+  --border: #282c35;
+  --border-strong: #3a3f4b;
+
+  /* Text */
+  --text: #f2f4f8;
+  --text-dim: #a3abba;
+  --text-faint: #6c7482;
+
+  /* Brand / primary action */
+  --accent: #4c8dff;
+  --accent-text: #ffffff;
+  --accent-dim: #2b5fb5;
+
+  /* Progression currencies (section 7) */
+  --load: #4c8dff;        /* add weight */
+  --quality: #b07cff;     /* never add weight — bar speed, height, intent */
+  --time: #35c3a6;        /* hold longer, progress the lever */
+  --fixed: #7b8393;       /* nothing goes up */
+
+  /* CNS load chips */
+  --cns-high: #ff6b5e;
+  --cns-moderate: #ffb02e;
+  --cns-low: #4ec97a;
+
+  /* Pain bands — the programme's traffic light: 0-3 / 4-6 / 7-10 */
+  --pain-green: #4ec97a;
+  --pain-amber: #ffb02e;
+  --pain-red: #ff5e5e;
+
+  /* Knee-modified marker */
+  --knee: #ffb02e;
+
+  /* Spacing scale */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-pill: 999px;
+
+  /*
+   * Minimum tap target. Sweaty hands, sometimes gloves — every interactive
+   * element is sized off this, never smaller.
+   */
+  --tap: 48px;
+
+  /* Type scale. Numbers read mid-set are at the top end. */
+  --fs-mono-xl: 2.75rem;
+  --fs-xl: 1.5rem;
+  --fs-lg: 1.125rem;
+  --fs-md: 1rem;
+  --fs-sm: 0.875rem;
+  --fs-xs: 0.75rem;
+
+  --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', SFMono-Regular, Menlo, monospace;
+
+  /* Safe areas, so nothing lands under the iOS home indicator */
+  --safe-bottom: env(safe-area-inset-bottom, 0px);
+  --safe-top: env(safe-area-inset-top, 0px);
+}
+
+:root[data-theme='light'] {
+  --bg: #f6f7f9;
+  --surface: #ffffff;
+  --surface-raised: #ffffff;
+  --surface-sunken: #eceef2;
+  --border: #dde1e8;
+  --border-strong: #c3c9d4;
+
+  --text: #14161a;
+  --text-dim: #535b69;
+  --text-faint: #7d8595;
+
+  --accent: #1f66e0;
+  --accent-text: #ffffff;
+  --accent-dim: #7ea9f0;
+
+  --load: #1f66e0;
+  --quality: #7f3fd6;
+  --time: #12866f;
+  --fixed: #6b7280;
+
+  --cns-high: #d93b2b;
+  --cns-moderate: #b06c00;
+  --cns-low: #1f8a4c;
+
+  --pain-green: #1f8a4c;
+  --pain-amber: #b06c00;
+  --pain-red: #cf2f2f;
+
+  --knee: #b06c00;
+}

@@ -1,0 +1,74 @@
+.row {
+  display: block;
+  padding: var(--sp-3) 0;
+}
+
+.row + .row {
+  border-top: 1px solid var(--border);
+}
+
+.head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+}
+
+.name {
+  font-size: var(--fs-md);
+  font-weight: 650;
+  color: var(--text);
+  /* Long names (mobility flows list three movements) wrap rather than truncate. */
+  overflow-wrap: anywhere;
+}
+
+/* The prescription itself is what the eye goes to. */
+.target {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--text);
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.perSide {
+  display: block;
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  color: var(--text-faint);
+  text-align: right;
+  letter-spacing: 0.02em;
+}
+
+.meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.rest {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
+.cue {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.note {
+  margin-top: var(--sp-2);
+  padding-left: var(--sp-3);
+  border-left: 2px solid var(--border-strong);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.missing {
+  color: var(--pain-red);
+  font-size: var(--fs-sm);
+}

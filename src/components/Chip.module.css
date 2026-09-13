@@ -1,0 +1,33 @@
+.chip {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: 2px var(--sp-2);
+  border-radius: var(--radius-pill);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  line-height: 1.5;
+  white-space: nowrap;
+  border: 1px solid var(--border-strong);
+  color: var(--text-dim);
+  background: var(--surface-sunken);
+}
+
+/* Muscles and equipment: quiet, informational. */
+.muted {
+  color: var(--text-faint);
+  border-color: var(--border);
+}
+
+/* Tinted variants take their colour from --chip-tint, set inline by the caller. */
+.tinted {
+  color: var(--chip-tint);
+  border-color: color-mix(in srgb, var(--chip-tint) 45%, transparent);
+  background: color-mix(in srgb, var(--chip-tint) 14%, transparent);
+}
+
+.solid {
+  color: var(--bg);
+  background: var(--chip-tint);
+  border-color: var(--chip-tint);
+}

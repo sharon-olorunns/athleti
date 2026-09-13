@@ -1,0 +1,32 @@
+.boot {
+  flex: 1;
+  display: grid;
+  place-items: center;
+  padding: var(--sp-5);
+  text-align: center;
+  gap: var(--sp-3);
+}
+
+.bootTitle {
+  font-size: var(--fs-lg);
+}
+
+.bootBody {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  max-width: 40ch;
+}
+
+.error {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  color: var(--pain-red);
+  white-space: pre-wrap;
+  text-align: left;
+  background: var(--surface-sunken);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: var(--sp-3);
+  max-width: 100%;
+  overflow-x: auto;
+}

@@ -1,0 +1,83 @@
+.wrap {
+  padding: var(--sp-4);
+}
+
+.title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-2);
+}
+
+.intro {
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  margin-bottom: var(--sp-5);
+}
+
+.entry {
+  margin-bottom: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+}
+
+.entryHead {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: var(--sp-3) var(--sp-4);
+  border-bottom: 1px solid var(--border);
+  background: var(--surface-raised);
+}
+
+.week {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+.startAt {
+  padding: var(--sp-3) var(--sp-4);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  border-bottom: 1px solid var(--border);
+}
+
+.startAtLabel {
+  display: block;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.list {
+  padding: 0 var(--sp-4);
+}
+
+.item {
+  padding: var(--sp-3) 0;
+}
+
+.item + .item {
+  border-top: 1px solid var(--border);
+}
+
+.name {
+  font-size: var(--fs-md);
+  font-weight: 650;
+}
+
+.chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-2);
+  margin-top: var(--sp-2);
+}
+
+.cue {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  font-style: italic;
+}
