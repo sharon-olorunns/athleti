@@ -1,0 +1,146 @@
+.sheet {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  background: var(--bg);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: calc(var(--safe-top) + var(--sp-4)) var(--sp-4)
+    calc(var(--safe-bottom) + var(--sp-4));
+}
+
+.close {
+  align-self: flex-end;
+  min-width: var(--tap);
+  color: var(--text-dim);
+  font-size: var(--fs-lg);
+}
+
+.context {
+  font-size: var(--fs-md);
+  font-weight: 650;
+  text-align: center;
+  color: var(--text-dim);
+  margin-bottom: var(--sp-1);
+}
+
+.round {
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.ringWrap {
+  position: relative;
+  flex: 1 1 auto;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  min-height: 0;
+}
+
+.ring {
+  display: block;
+  width: min(72vw, 300px);
+  height: min(72vw, 300px);
+  transform: rotate(-90deg);
+}
+
+.ringTrack {
+  fill: none;
+  stroke: var(--surface-raised);
+}
+
+.ringFill {
+  fill: none;
+  stroke: var(--accent);
+  stroke-linecap: round;
+  transition: stroke-dashoffset 250ms linear;
+}
+
+.ringUrgent {
+  stroke: var(--cns-moderate);
+}
+
+.ringWork {
+  stroke: var(--cns-low);
+}
+
+.ringDone {
+  stroke: var(--cns-low);
+}
+
+/* The ring pulses through the last ten seconds. */
+.pulse {
+  animation: pulse 1s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.45; }
+}
+
+.readout {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  pointer-events: none;
+}
+
+.count {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: clamp(3.5rem, 20vw, 6rem);
+  font-weight: 800;
+  line-height: 1;
+}
+
+.urgent {
+  color: var(--cns-moderate);
+}
+
+.done {
+  color: var(--cns-low);
+}
+
+.caption {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+.controls {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: var(--sp-3);
+  width: 100%;
+  max-width: 420px;
+}
+
+.control {
+  min-height: 64px;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.wide {
+  grid-column: 1 / -1;
+}

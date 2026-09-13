@@ -24,10 +24,22 @@ import {
   unlogSet,
 } from '@/core/session';
 import type { PlannedRow, RowValues } from '@/core/workout';
+import { primeAudio, releaseAudio } from '@/platform/audio';
+import { useTimer } from './timerStore';
 import { useApp } from './store';
 
 /** Draft values are keyed per exercise and row, since a superset shows two at once. */
 const draftKey = (exerciseId: string, rowKey: string) => `${exerciseId}|${rowKey}`;
+
+export interface CompleteRowOptions {
+  /** The row to bring into view next. */
+  nextFocusKey?: string;
+  /**
+   * The rest to start once the set is logged. `seconds` is what the programme
+   * prescribes; any ±15s override for this exercise is applied here.
+   */
+  rest?: { seconds: number; contextLabel: string };
+}
 
 interface WorkoutState {
   session: WorkoutSession | undefined;
@@ -48,7 +60,7 @@ interface WorkoutState {
     row: PlannedRow,
     values: RowValues,
     wasClean: boolean,
-    nextFocusKey?: string,
+    options?: CompleteRowOptions,
   ) => Promise<void>;
   uncompleteRow: (exerciseId: string, row: PlannedRow) => Promise<void>;
   setDraft: (exerciseId: string, rowKey: string, values: RowValues) => void;
@@ -101,6 +113,9 @@ export const useWorkout = create<WorkoutState>((set, get) => {
     },
 
     start: async (dayId) => {
+      // The AudioContext must be created inside a user gesture or iOS Safari will
+      // never play the alert. This runs on the tap that starts the workout.
+      primeAudio();
       const now = Date.now();
       const weekNumber = useApp.getState().currentWeek(now);
       const next = createSession(dayId, weekNumber, now);
@@ -108,7 +123,7 @@ export const useWorkout = create<WorkoutState>((set, get) => {
       await persist(next);
     },
 
-    completeRow: async (exerciseId, row, values, wasClean, nextFocusKey) => {
+    completeRow: async (exerciseId, row, values, wasClean, options) => {
       const current = get().session;
       if (current === undefined) return;
 
@@ -123,8 +138,19 @@ export const useWorkout = create<WorkoutState>((set, get) => {
         ...(values.distanceM !== undefined ? { distanceM: values.distanceM } : {}),
       };
 
-      set({ focusKey: nextFocusKey });
+      set({ focusKey: options?.nextFocusKey });
       await persist(logSet(current, exerciseId, logged));
+
+      // Auto-start the rest at the prescribed duration. A prescription with no
+      // rest (the warm-up flows) starts nothing.
+      const rest = options?.rest;
+      if (rest !== undefined && useApp.getState().settings.autoStartRestTimer) {
+        const timer = useTimer.getState();
+        const seconds = timer.restSecondsFor(exerciseId, rest.seconds);
+        if (seconds > 0) {
+          await timer.startRest({ seconds, contextLabel: rest.contextLabel, exerciseId });
+        }
+      }
     },
 
     uncompleteRow: async (exerciseId, row) => {
@@ -183,6 +209,8 @@ export const useWorkout = create<WorkoutState>((set, get) => {
       const finished = finishSession(withSkips, Date.now());
 
       await putSession(finished);
+      await useTimer.getState().skip();
+      releaseAudio();
       set({
         session: undefined,
         addedSets: {},
@@ -197,6 +225,8 @@ export const useWorkout = create<WorkoutState>((set, get) => {
       const current = get().session;
       if (current === undefined) return;
       await db.sessions.delete(current.id);
+      await useTimer.getState().skip();
+      releaseAudio();
       set({ session: undefined, addedSets: {}, drafts: {}, focusKey: undefined });
     },
   };

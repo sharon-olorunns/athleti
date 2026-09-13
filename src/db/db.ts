@@ -5,6 +5,7 @@
  * Every table here is written on mutation, never on session end.
  */
 import Dexie, { type EntityTable } from 'dexie';
+import type { IntervalSpec, TimerCompletionTarget } from '@/core/timer';
 import type {
   Exercise,
   MorningCheck,
@@ -22,9 +23,25 @@ export interface SettingsRow extends Settings {
   id: typeof SINGLETON_ID;
 }
 
-export interface TimerRow extends TimerState {
+/**
+ * What the timer needs beyond the spec's `TimerState` to survive a reload: which
+ * exercise it belongs to, the interval durations (TimerState.interval carries
+ * only the round and phase), the set a hold completes, and whether its alert has
+ * already sounded so a reload does not beep again.
+ */
+export interface TimerExtras {
+  exerciseId?: string;
+  intervalSpec?: IntervalSpec;
+  completionTarget?: TimerCompletionTarget;
+  alerted?: boolean;
+}
+
+export interface TimerRow extends TimerState, TimerExtras {
   id: typeof SINGLETON_ID;
 }
+
+/** The stored timer as the app uses it: the spec's state plus the extras. */
+export type StoredTimer = TimerState & TimerExtras;
 
 /** The active programme, stored as one row so the user can edit it in place. */
 export interface ProgrammeRow extends Programme {
@@ -48,6 +65,8 @@ export const META_KEYS = {
   seededVersion: 'seededVersion',
   /** Epoch ms of the last export, for the 30-day reminder. */
   lastExportAt: 'lastExportAt',
+  /** True once notifications have been offered, so the ask happens only once. */
+  notificationOffered: 'notificationOffered',
 } as const;
 
 export class TrainerDb extends Dexie {

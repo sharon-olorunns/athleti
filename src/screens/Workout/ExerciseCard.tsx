@@ -14,6 +14,8 @@ import {
 import { entryFor } from '@/core/session';
 import { targetText } from '@/core/prescription';
 import { parseReps } from '@/core/reps';
+import { contextLabelFor, type TimerCompletionTarget } from '@/core/timer';
+import { useTimer } from '@/state/timerStore';
 import { Chip } from '@/components/Chip';
 import {
   equipmentLabel,
@@ -53,6 +55,8 @@ function ExerciseBody({
   const addedSets = useWorkout((s) => s.addedSets);
   const skipExercise = useWorkout((s) => s.skipExercise);
   const focusKey = useWorkout((s) => s.focusKey);
+  const startHold = useTimer((s) => s.startHold);
+  const startInterval = useTimer((s) => s.startInterval);
 
   const exerciseId = prescription.exerciseId;
   const entry: LoggedExercise | undefined = entryFor(session, exerciseId);
@@ -68,6 +72,58 @@ function ExerciseBody({
 
   const progression = exercise?.progression;
   const tint = progression === undefined ? 'var(--fixed)' : PROGRESSION_TINT[progression.type];
+
+  const exerciseName = exercise?.name ?? exerciseId;
+  const restLabelFor = (setIndex: number) =>
+    contextLabelFor(exerciseName, setIndex + 1, setCount);
+
+  const targetFor = (row: { key: string; setIndex: number; side?: 'L' | 'R' }, values: RowValues) =>
+    ({
+      exerciseId,
+      setIndex: row.setIndex,
+      rowKey: row.key,
+      values,
+      restSeconds: prescription.restSeconds,
+      restContextLabel: restLabelFor(row.setIndex),
+      ...(row.side !== undefined ? { side: row.side } : {}),
+    }) satisfies TimerCompletionTarget;
+
+  /**
+   * A hold is started by the user once they are in position, and an interval by
+   * the round. Both log their set when they reach the end, so the phone can stay
+   * on the floor.
+   */
+  const timerActionFor = (row: { key: string; setIndex: number; side?: 'L' | 'R' }) => {
+    if (prescription.timerMode === 'hold' && prescription.holdSeconds !== undefined) {
+      const seconds = prescription.holdSeconds;
+      return {
+        label: `Hold ${seconds}s`,
+        onStart: () =>
+          void startHold({
+            seconds,
+            contextLabel: restLabelFor(row.setIndex),
+            exerciseId,
+            target: targetFor(row, { seconds }),
+          }),
+      };
+    }
+
+    if (prescription.timerMode === 'interval' && prescription.interval !== undefined) {
+      const spec = prescription.interval;
+      return {
+        label: `Start ${spec.rounds} rounds`,
+        onStart: () =>
+          void startInterval({
+            spec,
+            contextLabel: exerciseName,
+            exerciseId,
+            target: targetFor(row, { seconds: spec.workSeconds * spec.rounds }),
+          }),
+      };
+    }
+
+    return undefined;
+  };
 
   return (
     <div>
@@ -161,15 +217,18 @@ function ExerciseBody({
                   onChange={(next) => setDraft(exerciseId, row.key, next)}
                   onComplete={(next, wasClean) => {
                     const nextRow = rows[rowIndex + 1];
-                    void completeRow(
-                      exerciseId,
-                      row,
-                      next,
-                      wasClean,
-                      nextRow === undefined ? undefined : `${exerciseId}|${nextRow.key}`,
-                    );
+                    void completeRow(exerciseId, row, next, wasClean, {
+                      ...(nextRow === undefined
+                        ? {}
+                        : { nextFocusKey: `${exerciseId}|${nextRow.key}` }),
+                      rest: {
+                        seconds: prescription.restSeconds,
+                        contextLabel: restLabelFor(row.setIndex),
+                      },
+                    });
                   }}
                   onUncomplete={() => void uncompleteRow(exerciseId, row)}
+                  timerAction={timerActionFor(row)}
                 />
               );
             })}

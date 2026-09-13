@@ -1,9 +1,12 @@
 import { useEffect, useState } from 'react';
 import { TabBar, type Tab } from './components/TabBar';
+import { TimerRunner } from './components/timer/TimerRunner';
+import { useWakeLock } from './hooks/useWakeLock';
 import { ProgrammeScreen } from './screens/Programme/ProgrammeScreen';
 import { TodayScreen } from './screens/Today/TodayScreen';
 import { WorkoutScreen } from './screens/Workout/WorkoutScreen';
 import { useApp } from './state/store';
+import { useTimer } from './state/timerStore';
 import { useWorkout } from './state/workoutStore';
 import styles from './App.module.css';
 
@@ -14,17 +17,25 @@ export default function App() {
 
   const session = useWorkout((s) => s.session);
   const resumeActive = useWorkout((s) => s.resumeActive);
+  const restoreTimer = useTimer((s) => s.restore);
+  const settings = useApp((s) => s.settings);
 
   const [tab, setTab] = useState<Tab>('today');
+
+  // Keep the screen awake during a workout, if the setting allows it.
+  useWakeLock(session !== undefined && settings.keepScreenAwake);
 
   useEffect(() => {
     void boot();
   }, [boot]);
 
-  // Pick up an unfinished session left by a crash, a closed tab or a dead battery.
+  // Pick up an unfinished session left by a crash, a closed tab or a dead battery,
+  // and the timer that was running with it.
   useEffect(() => {
-    if (status === 'ready') void resumeActive();
-  }, [status, resumeActive]);
+    if (status !== 'ready') return;
+    void resumeActive();
+    void restoreTimer();
+  }, [status, resumeActive, restoreTimer]);
 
   if (status === 'error') {
     return (
@@ -57,6 +68,7 @@ export default function App() {
       ) : (
         <ProgrammeScreen />
       )}
+      <TimerRunner />
       <TabBar active={tab} onChange={setTab} workoutActive={session !== undefined} />
     </>
   );

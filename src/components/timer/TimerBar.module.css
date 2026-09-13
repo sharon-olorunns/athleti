@@ -1,0 +1,130 @@
+/*
+ * The pinned bar, directly above the tab bar and visible on every screen while a
+ * timer runs. Slim, because it is permanent furniture during a workout.
+ */
+.bar {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 640px;
+  z-index: 12;
+  display: flex;
+  align-items: stretch;
+  height: var(--timerbar-h);
+  background: var(--surface-raised);
+  border-top: 1px solid var(--border-strong);
+  border-bottom: 1px solid var(--border);
+}
+
+/* A thin bleed of progress along the top edge, readable without looking down. */
+.progress {
+  position: absolute;
+  top: -1px;
+  left: 0;
+  height: 2px;
+  background: var(--accent);
+  transition: width 250ms linear;
+}
+
+.main {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  padding: 0 var(--sp-3);
+  text-align: left;
+}
+
+.time {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-xl);
+  font-weight: 750;
+  flex: 0 0 auto;
+  min-width: 2.6em;
+}
+
+/* Last ten seconds. */
+.urgent {
+  color: var(--cns-moderate);
+}
+
+.done {
+  color: var(--cns-low);
+}
+
+.labels {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.context {
+  display: block;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-dim);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.mode {
+  display: block;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.skip {
+  flex: 0 0 auto;
+  width: 72px;
+  border-left: 1px solid var(--border);
+  color: var(--text-dim);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+/* The one-time notification offer, inline and dismissible. */
+.offer {
+  position: fixed;
+  bottom: calc(var(--tabbar-h) + var(--timerbar-h) + var(--safe-bottom));
+  left: 50%;
+  transform: translateX(-50%);
+  width: 100%;
+  max-width: 640px;
+  z-index: 12;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  padding: var(--sp-2) var(--sp-3);
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.offerText {
+  flex: 1 1 auto;
+}
+
+.offerButton {
+  flex: 0 0 auto;
+  min-height: var(--tap);
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-raised);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.offerPrimary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}

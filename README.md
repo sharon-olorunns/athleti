@@ -87,7 +87,8 @@ working before the next is started.
 - [x] **2. Active workout, logging only** — Today screen, set rows with steppers,
       pre-fill from history, one-tap completion, session persistence on every
       mutation, and resume after a crash. No timer yet.
-- [ ] 3. The timer (three modes, background-correct)
+- [x] **3. The timer** — all three modes, the pinned bar, the expanded ring view,
+      and the background-correctness behaviour in section 6
 - [ ] 4. Progression engine
 - [ ] 5. Alternatives and pain tracking
 - [ ] 6. History and Progress, including the knee chart
@@ -97,12 +98,30 @@ working before the next is started.
 Until milestone 7 lands the app is a normal web page: it is not yet installable
 and not yet offline-capable.
 
-### What milestone 2 deliberately leaves out
+### How the timer behaves
+
+- **Three modes, one surface.** `rest` auto-starts when a set is completed, at
+  `prescription.restSeconds`. `hold` is started by the user once they are in
+  position and, on reaching zero, logs its own set and rolls into the rest.
+  `interval` alternates work and rest for the prescribed rounds, announcing each
+  transition with a distinct tone and showing round *n* of *N*.
+- **Nothing counts down in JavaScript.** `endsAt` is an absolute timestamp and
+  every displayed number is derived from `Date.now()` at render time. The 250ms
+  interval exists only to re-render. A throttled or suspended tab can make the
+  display stale, never wrong.
+- **Returning from the background recomputes immediately** rather than waiting
+  for the next tick, so a rest that ran out while the phone was locked reports
+  "Rest finished 40s ago" instead of silently resetting.
+- **The final interval round has no trailing rest.** The work is over at the end
+  of the last work period; a countdown that kept going would only be in the way.
+- **±15s does two things**, as the spec describes: it moves the running
+  countdown, and it sets the rest for the remaining sets of that exercise in this
+  session. It is held in memory and never reaches the programme.
+
+### What is deliberately left out
 
 These belong to later milestones and are not oversights:
 
-- **No rest timer.** Completing a set records it and moves on; auto-starting the
-  timer arrives with milestone 3.
 - **The progression strip is the seeded rule, not a suggestion.** It shows the
   exercise's own progression currency and label, colour-coded. The engine that
   turns last week's sets into *"All sets at 8 clean last time → try 62.5 kg"* is
@@ -155,8 +174,31 @@ unit tests. What exists so far:
   current
 - `core/session` — immutable session updates (log, un-log, skip, notes, finish),
   completion stats and clock formatting
+- `core/timer` — remaining time, overdue reporting, pause and resume without
+  drift, the ±15s adjustment, interval phase transitions, and the countdown
+  formatting. Acceptance criteria 5 and 6 are written directly as tests
+- `state/timerStore` — the ±15s override rule, and that it never touches the
+  programme
 - `db/seed` — first-run seeding, idempotence, and that a re-seed preserves user
   settings, user-added exercises and logged sessions
+
+### Platform behaviour
+
+- **Audio** is synthesised with an oscillator rather than loaded from a file, so
+  it needs no asset, no fetch and no decode — the app has to work offline from
+  first load. The `AudioContext` is created and unlocked on the tap that starts
+  the workout, because iOS Safari will not play audio from a context created
+  outside a user gesture, and by the time the first timer fires it is too late.
+- **Vibration** fires on Android and is absent on iOS Safari, which is why the
+  alert is never vibration alone. Both sound and vibration honour their settings.
+- **Wake Lock** is held while a workout is active if `keepScreenAwake` is set,
+  and re-requested on every return to visibility, since the browser drops it
+  whenever the page is hidden.
+- **Notifications** are a supplementary alert only. Permission is never
+  requested on first launch: it is offered once, inline, after a rest has
+  actually elapsed while the app was backgrounded. Until the service worker
+  arrives in milestone 7, Android Chrome will refuse the notification
+  constructor, and it degrades to nothing rather than throwing into a workout.
 
 ## Known limitation — iOS background audio
 

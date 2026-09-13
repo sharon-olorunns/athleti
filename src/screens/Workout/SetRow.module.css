@@ -78,6 +78,20 @@
   background: color-mix(in srgb, var(--cns-moderate) 14%, transparent);
 }
 
+/* Starts a hold or an interval; the timer logs the set when it reaches the end. */
+.timerStart {
+  flex: 1 1 auto;
+  min-height: var(--tap);
+  padding: 0 var(--sp-2);
+  border-radius: var(--radius-sm);
+  border: 1px solid color-mix(in srgb, var(--time) 50%, transparent);
+  background: color-mix(in srgb, var(--time) 14%, transparent);
+  color: var(--time);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
 /* The most important target on the screen. */
 .complete {
   flex: 0 0 auto;

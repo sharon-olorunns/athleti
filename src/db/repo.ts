@@ -2,15 +2,17 @@
  * Typed accessors over Dexie. Screens talk to this, never to raw tables, so the
  * storage shape stays swappable and every write goes through one place.
  */
-import type {
-  Exercise,
-  MorningCheck,
-  Settings,
-  TimerState,
-  WorkoutSession,
-} from '@/types';
+import type { Exercise, MorningCheck, Settings, WorkoutSession } from '@/types';
 import { DEFAULT_SETTINGS } from '@/types';
-import { db, getMeta, META_KEYS, setMeta, SINGLETON_ID, type ProgrammeRow } from './db';
+import {
+  db,
+  getMeta,
+  META_KEYS,
+  setMeta,
+  SINGLETON_ID,
+  type ProgrammeRow,
+  type StoredTimer,
+} from './db';
 
 export async function getProgramme(): Promise<ProgrammeRow | undefined> {
   const all = await db.programmes.toArray();
@@ -76,14 +78,15 @@ export async function putMorningCheck(check: MorningCheck): Promise<void> {
   await db.morningChecks.put(check);
 }
 
-export async function getTimerState(): Promise<TimerState | undefined> {
+export async function getTimerState(): Promise<StoredTimer | undefined> {
   const row = await db.timer.get(SINGLETON_ID);
   if (row === undefined) return undefined;
   const { id: _id, ...state } = row;
   return state;
 }
 
-export async function saveTimerState(state: TimerState): Promise<void> {
+/** Written on every change, so a reload mid-rest resumes at the right second. */
+export async function saveTimerState(state: StoredTimer): Promise<void> {
   await db.timer.put({ id: SINGLETON_ID, ...state });
 }
 

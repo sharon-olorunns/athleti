@@ -18,6 +18,8 @@ interface Props {
    * to step — the mobility flows prescribe "6 / 30s / 8" across three movements.
    */
   staticRepText: string | undefined;
+  /** Present for hold and interval prescriptions, which the user starts by hand. */
+  timerAction: { label: string; onStart: () => void } | undefined;
   onChange: (values: RowValues) => void;
   onComplete: (values: RowValues, wasClean: boolean) => void;
   onUncomplete: () => void;
@@ -43,6 +45,7 @@ export function SetRow({
   focused,
   plateIncrementKg,
   staticRepText,
+  timerAction,
   onChange,
   onComplete,
   onUncomplete,
@@ -138,6 +141,12 @@ export function SetRow({
         >
           {clean ? 'Clean' : 'Grind'}
         </button>
+
+        {timerAction !== undefined && !isDone && (
+          <button type="button" className={styles.timerStart} onClick={timerAction.onStart}>
+            ▶ {timerAction.label}
+          </button>
+        )}
 
         <button
           type="button"
