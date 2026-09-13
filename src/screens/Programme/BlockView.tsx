@@ -5,13 +5,14 @@ import styles from './BlockView.module.css';
 interface Props {
   block: Block;
   exercise: (id: string) => Exercise | undefined;
+  onOpenExercise: (id: string) => void;
 }
 
 /**
  * One block of a day. `estimatedMinutes` is shown for pacing and never used to
  * drive anything.
  */
-export function BlockView({ block, exercise }: Props) {
+export function BlockView({ block, exercise, onOpenExercise }: Props) {
   return (
     <section className={styles.block}>
       <div className={styles.head}>
@@ -27,6 +28,7 @@ export function BlockView({ block, exercise }: Props) {
               key={`${item.prescription.exerciseId}-${index}`}
               prescription={item.prescription}
               exercise={exercise(item.prescription.exerciseId)}
+              onOpenExercise={onOpenExercise}
             />
           ) : (
             <li key={`superset-${index}`} className={styles.superset}>
@@ -37,6 +39,7 @@ export function BlockView({ block, exercise }: Props) {
                     key={`${prescription.exerciseId}-${pairIndex}`}
                     prescription={prescription}
                     exercise={exercise(prescription.exerciseId)}
+                    onOpenExercise={onOpenExercise}
                   />
                 ))}
               </ul>

@@ -1,7 +1,9 @@
 import { useEffect, useState } from 'react';
 import { isDeloadWeek, nextDayId } from '@/core/schedule';
 import { durationLabel, sessionStats } from '@/core/session';
-import { morningCheckDue } from '@/core/pain';
+import { morningCheckDue, painTint } from '@/core/pain';
+import { kneeTrend, painTimeline, recentPainPoints } from '@/core/stats';
+import { Sparkline } from '@/components/charts/Sparkline';
 import { permanentSubstitutionCandidate, substitutionKey } from '@/core/alternatives';
 import { getMeta, META_KEYS, setMeta } from '@/db/db';
 import { Chip } from '@/components/Chip';
@@ -70,6 +72,14 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
   const begin = (dayId: string) => {
     void start(dayId).then(onStarted);
   };
+
+  const timeline = painTimeline(history, morningChecks);
+  const kneePoints = recentPainPoints(timeline, Date.now());
+  const trend = kneeTrend(
+    timeline.morning.length > 0 ? timeline.morning : timeline.session,
+    Date.now(),
+  );
+  const latestKnee = kneePoints[kneePoints.length - 1];
 
   const morning = morningCheckDue(history, morningChecks, Date.now(), dismissedMornings);
   const swapCandidate = permanentSubstitutionCandidate(history, dismissedSwaps);
@@ -212,6 +222,25 @@ export function TodayScreen({ onStarted }: { onStarted: () => void }) {
           </>
         )}
       </section>
+
+      {kneePoints.length > 0 && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Knee · last 14 days</h2>
+          <div className={styles.knee}>
+            {latestKnee !== undefined && (
+              <span className={styles.kneeLatest} style={{ color: painTint(latestKnee.value) }}>
+                {latestKnee.value}
+              </span>
+            )}
+            <Sparkline points={kneePoints} />
+            <span className={styles.kneeWords}>
+              <span className={`${styles.kneeTrend} ${styles[trend] ?? ''}`}>
+                {trend === 'unknown' ? 'not enough readings yet' : trend}
+              </span>
+            </span>
+          </div>
+        </section>
+      )}
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Last session</h2>

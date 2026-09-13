@@ -196,6 +196,34 @@
   margin-top: var(--sp-3);
 }
 
+/* The knee trend: a sparkline, with the direction said in words beside it. */
+.knee {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+.kneeWords {
+  flex: 1 1 auto;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.kneeTrend {
+  font-weight: 700;
+}
+
+.settling { color: var(--pain-green); }
+.worsening { color: var(--pain-red); }
+.flat { color: var(--text-dim); }
+
+.kneeLatest {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xl);
+  font-weight: 800;
+}
+
 .section {
   margin-top: var(--sp-6);
 }

@@ -95,7 +95,9 @@ working before the next is started.
 - [x] **5. Alternatives and pain tracking** — the swap sheet with library search,
       substitutions recorded honestly, the 0–10 pain scale, session and
       morning-after checks, and the permanent-substitution offer
-- [ ] 6. History and Progress, including the knee chart
+- [x] **6. History and Progress** — exercise detail with per-currency charts, the
+      session history and read-only session view, the knee chart, weekly volume
+      and adherence, plus the Today knee trend
 - [ ] 7. PWA shell — manifest, service worker, offline, install prompt
 - [ ] 8. Export/import, settings, polish
 
@@ -234,6 +236,41 @@ log, not a diagnosis.
   not fit across a 320px screen. Three rows of four keep every target at least
   48px wide on the smallest phone, and the twelfth cell is the Skip.
 
+### Charts
+
+All charts are hand-rolled inline SVG. No chart library: these are a handful of
+bespoke plots, and the app has to work offline from first load.
+
+**Only what the progression currency measures gets plotted.** Estimated 1RM
+(Epley) for `load`, total hold seconds for `time`, and nothing at all for
+`quality` and `fixed` — those get the history list and a line saying why. An
+inverse load exercise charts the assistance itself rather than an estimated 1RM,
+because the number on the machine going down is the progress, and it is labelled
+*lower is better*.
+
+The **knee chart** is the one that answers "is this actually getting better", so
+it takes the most care:
+
+- The 0–3 / 4–6 / 7–10 bands are shaded behind the marks. Those are status
+  colours and they genuinely mean good/bad, which is the only thing status
+  colours are for.
+- The two series therefore wear **accent and gray, not two more hues**: the
+  morning-after score is the subject and the in-session score is context. That
+  is emphasis rather than a categorical pair, and it puts the morning scores
+  prominently forward as the spec asks, without a colour competing with the
+  bands. Validated at ΔE 18.8 (dark) and 17.2 (light) under simulated
+  protanopia and deuteranopia, both well clear of the threshold, with every mark
+  over 3:1 against its surface.
+- Gridlines sit on the band boundaries, so the scale and the traffic light agree.
+- Both series are named in a legend, so identity is never colour alone.
+
+Bars are one hue with the numbers printed beside them: these are nominal
+categories, and colouring them by value would spend the identity channel
+re-encoding what bar length already shows.
+
+**Inspection is by tap, not hover.** There is no hover on a phone, so touching a
+line chart selects the nearest reading and prints it under the plot.
+
 ### What is deliberately left out
 
 These belong to later milestones and are not oversights:
@@ -286,6 +323,10 @@ unit tests. What exists so far:
   inverse rule, the quality question and its two-no warning, the lever prompt and
   the deload cut. The section 12 acceptance criteria are written as tests, and
   the "never add load" rule is checked across every exercise in the real library
+- `core/stats` — estimated 1RM, which series an exercise may plot, the pain
+  timeline, the knee trend wording, weekly volume by muscle and adherence
+- `core/scale` — axis domains on the 1-2-5 ladder, linear scaling and
+  nearest-point lookup, so tick placement is tested rather than eyeballed
 - `core/alternatives` — resolving and sorting alternatives, library search,
   deriving an exercise from a free-text substitute, and the substitution tallies
   behind the permanent-swap offer

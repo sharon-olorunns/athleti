@@ -2,7 +2,10 @@ import { useEffect, useState } from 'react';
 import { TabBar, type Tab } from './components/TabBar';
 import { TimerRunner } from './components/timer/TimerRunner';
 import { useWakeLock } from './hooks/useWakeLock';
+import { ExerciseDetail } from './screens/ExerciseDetail/ExerciseDetail';
+import { HistoryScreen } from './screens/History/HistoryScreen';
 import { ProgrammeScreen } from './screens/Programme/ProgrammeScreen';
+import { ProgressScreen } from './screens/Progress/ProgressScreen';
 import { TodayScreen } from './screens/Today/TodayScreen';
 import { WorkoutScreen } from './screens/Workout/WorkoutScreen';
 import { useApp } from './state/store';
@@ -21,6 +24,8 @@ export default function App() {
   const settings = useApp((s) => s.settings);
 
   const [tab, setTab] = useState<Tab>('today');
+  // Exercise detail is reachable from anywhere, so it overlays rather than routes.
+  const [detailId, setDetailId] = useState<string | undefined>(undefined);
 
   // Keep the screen awake during a workout, if the setting allows it.
   useWakeLock(session !== undefined && settings.keepScreenAwake);
@@ -59,14 +64,18 @@ export default function App() {
 
   return (
     <>
-      {tab === 'today' ? (
-        session === undefined ? (
+      {tab === 'today' &&
+        (session === undefined ? (
           <TodayScreen onStarted={() => setTab('today')} />
         ) : (
           <WorkoutScreen onFinished={() => setTab('today')} />
-        )
-      ) : (
-        <ProgrammeScreen />
+        ))}
+      {tab === 'history' && <HistoryScreen onOpenExercise={setDetailId} />}
+      {tab === 'progress' && <ProgressScreen />}
+      {tab === 'programme' && <ProgrammeScreen onOpenExercise={setDetailId} />}
+
+      {detailId !== undefined && (
+        <ExerciseDetail exerciseId={detailId} onClose={() => setDetailId(undefined)} />
       )}
       <TimerRunner />
       <TabBar active={tab} onChange={setTab} workoutActive={session !== undefined} />

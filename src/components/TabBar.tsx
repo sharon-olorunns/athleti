@@ -1,9 +1,11 @@
 import styles from './TabBar.module.css';
 
-export type Tab = 'today' | 'programme';
+export type Tab = 'today' | 'history' | 'progress' | 'programme';
 
 const TABS: { id: Tab; label: string; glyph: string }[] = [
   { id: 'today', label: 'Today', glyph: '●' },
+  { id: 'history', label: 'History', glyph: '☷' },
+  { id: 'progress', label: 'Progress', glyph: '◔' },
   { id: 'programme', label: 'Programme', glyph: '☰' },
 ];
 

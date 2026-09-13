@@ -14,7 +14,7 @@ const DEFERRED = 'deferred';
  * One day at a time with a pinned selector, rather than one long scroll: five days
  * of blocks is a lot of content to thumb through on a phone.
  */
-export function ProgrammeScreen() {
+export function ProgrammeScreen({ onOpenExercise }: { onOpenExercise: (id: string) => void }) {
   const programme = useApp((s) => s.programme);
   const exercise = useApp((s) => s.exercise);
   const currentWeek = useApp((s) => s.currentWeek());
@@ -51,7 +51,7 @@ export function ProgrammeScreen() {
             currentWeek={currentWeek}
           />
         ) : day !== undefined ? (
-          <DayView day={day} exercise={exercise} />
+          <DayView day={day} exercise={exercise} onOpenExercise={onOpenExercise} />
         ) : null}
       </main>
 

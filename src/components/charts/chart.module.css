@@ -1,0 +1,196 @@
+.figure {
+  margin: 0;
+}
+
+.caption {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-2);
+}
+
+.title {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+}
+
+.axisLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}
+
+.svg {
+  display: block;
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  touch-action: pan-y;
+}
+
+/* Recessive chrome: hairline, never dashed. */
+.grid {
+  stroke: var(--border);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.axisText {
+  fill: var(--text-faint);
+  font-size: 9px;
+  font-family: var(--font-mono);
+}
+
+.line {
+  fill: none;
+  stroke-width: 2;
+  stroke-linejoin: round;
+  stroke-linecap: round;
+  vector-effect: non-scaling-stroke;
+}
+
+/* The series that is the point. */
+.primary {
+  stroke: var(--accent);
+}
+
+/* Context, deliberately recessive rather than a competing hue. */
+.secondary {
+  stroke: var(--text-faint);
+  stroke-width: 1.5;
+}
+
+.marker {
+  fill: var(--accent);
+  /* A surface ring keeps overlapping marks separable. */
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.markerSecondary {
+  fill: var(--text-faint);
+  stroke: var(--surface);
+  stroke-width: 2;
+}
+
+.selected {
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.bar {
+  fill: var(--accent);
+}
+
+.barTrack {
+  fill: var(--surface-sunken);
+}
+
+.target {
+  stroke: var(--text-faint);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.legend {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-top: var(--sp-2);
+}
+
+.legendItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.swatch {
+  width: 14px;
+  height: 3px;
+  border-radius: 2px;
+  flex: 0 0 auto;
+}
+
+.readout {
+  margin-top: var(--sp-2);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  min-height: 1.4em;
+}
+
+.readoutValue {
+  font-family: var(--font-mono);
+  font-weight: 700;
+  color: var(--text);
+}
+
+.empty {
+  padding: var(--sp-4) 0;
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+}
+
+/* Horizontal bars, direct-labelled so no length has to be read precisely. */
+.barList {
+  display: grid;
+  gap: var(--sp-2);
+}
+
+.barRow {
+  display: grid;
+  grid-template-columns: minmax(6.5em, 38%) 1fr auto;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.barLabel {
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.barTrackOuter {
+  position: relative;
+  display: block;
+  height: 12px;
+  border-radius: 6px;
+  background: var(--surface-sunken);
+  overflow: hidden;
+}
+
+.barFill {
+  display: block;
+  height: 100%;
+  /* Rounded data-end, anchored flat to the baseline. */
+  border-radius: 0 4px 4px 0;
+  background: var(--accent);
+}
+
+.barTarget {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  border-radius: 1px;
+  background: var(--text-faint);
+}
+
+.barValue {
+  font-family: var(--font-mono);
+  font-variant-numeric: tabular-nums;
+  font-size: var(--fs-sm);
+  font-weight: 700;
+  white-space: nowrap;
+}
+
+.barNote {
+  font-family: var(--font);
+  font-weight: 400;
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+}

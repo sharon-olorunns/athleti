@@ -7,10 +7,11 @@ import styles from './PrescriptionRow.module.css';
 interface Props {
   prescription: Prescription;
   exercise: Exercise | undefined;
+  onOpenExercise: (id: string) => void;
 }
 
 /** One prescribed exercise, exactly as the programme specifies it. Read-only. */
-export function PrescriptionRow({ prescription, exercise }: Props) {
+export function PrescriptionRow({ prescription, exercise, onOpenExercise }: Props) {
   if (exercise === undefined) {
     // The seed is validated on load, so this only shows if the library lost a row.
     return (
@@ -30,7 +31,15 @@ export function PrescriptionRow({ prescription, exercise }: Props) {
   return (
     <li className={styles.row}>
       <div className={styles.head}>
-        <h4 className={styles.name}>{exercise.name}</h4>
+        <h4 className={styles.name}>
+          <button
+            type="button"
+            className={styles.nameButton}
+            onClick={() => onOpenExercise(exercise.id)}
+          >
+            {exercise.name}
+          </button>
+        </h4>
         <div>
           <span className={`${styles.target} num`}>
             {target === '' ? `${rounds}×` : `${rounds} × ${target}`}

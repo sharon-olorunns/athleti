@@ -8,10 +8,11 @@ import styles from './DayView.module.css';
 interface Props {
   day: ProgrammeDay;
   exercise: (id: string) => Exercise | undefined;
+  onOpenExercise: (id: string) => void;
 }
 
 /** One programme day, read-only, exactly as prescribed. */
-export function DayView({ day, exercise }: Props) {
+export function DayView({ day, exercise, onOpenExercise }: Props) {
   const setRows = totalSetRows(day, exercise);
   const exerciseCount = exerciseIdsOf(day).length;
 
@@ -46,7 +47,12 @@ export function DayView({ day, exercise }: Props) {
       {day.note !== undefined && <p className={styles.note}>{day.note}</p>}
 
       {day.blocks.map((block) => (
-        <BlockView key={block.letter} block={block} exercise={exercise} />
+        <BlockView
+          key={block.letter}
+          block={block}
+          exercise={exercise}
+          onOpenExercise={onOpenExercise}
+        />
       ))}
     </div>
   );

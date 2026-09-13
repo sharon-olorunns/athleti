@@ -72,3 +72,21 @@
   color: var(--pain-red);
   font-size: var(--fs-sm);
 }
+
+/*
+ * Tapping a name anywhere opens the exercise detail. The padding gives a full
+ * 48px hit area and the matching negative margin keeps the row's layout where it
+ * was, so the target grows without the design moving.
+ */
+.nameButton {
+  text-align: left;
+  font: inherit;
+  color: inherit;
+  display: inline-flex;
+  align-items: center;
+  min-height: var(--tap);
+  min-width: var(--tap);
+  text-decoration: underline;
+  text-decoration-color: var(--border-strong);
+  text-underline-offset: 3px;
+}

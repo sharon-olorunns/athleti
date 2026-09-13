@@ -1,0 +1,127 @@
+.screen {
+  display: flex;
+  flex-direction: column;
+  min-height: 100dvh;
+  width: 100%;
+  max-width: 640px;
+  margin-inline: auto;
+  padding: calc(var(--safe-top) + var(--sp-4)) var(--sp-4);
+  padding-bottom: calc(var(--tabbar-h) + var(--timer-offset) + var(--sp-6) + var(--safe-bottom));
+}
+
+.title {
+  font-size: var(--fs-xl);
+  margin-bottom: var(--sp-4);
+}
+
+.section {
+  margin-bottom: var(--sp-5);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: var(--sp-4);
+}
+
+.sectionTitle {
+  font-size: var(--fs-md);
+  margin-bottom: var(--sp-1);
+}
+
+.sectionNote {
+  font-size: var(--fs-xs);
+  color: var(--text-faint);
+  margin-bottom: var(--sp-3);
+}
+
+/* The band key for the knee chart: colour plus a written label, never colour alone. */
+.bandKey {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-3);
+  margin-bottom: var(--sp-3);
+}
+
+.bandItem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.bandSwatch {
+  width: 10px;
+  height: 10px;
+  border-radius: 3px;
+  flex: 0 0 auto;
+}
+
+.trend {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-sm);
+}
+
+.trendWord {
+  font-weight: 700;
+  text-transform: lowercase;
+}
+
+.settling { color: var(--pain-green); }
+.worsening { color: var(--pain-red); }
+.flat { color: var(--text-dim); }
+
+.picker {
+  width: 100%;
+  min-height: var(--tap);
+  margin-bottom: var(--sp-3);
+  padding: 0 var(--sp-3);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border-strong);
+  background: var(--surface-sunken);
+  color: var(--text);
+  font: inherit;
+  font-size: var(--fs-md);
+}
+
+.results {
+  max-height: 240px;
+  overflow-y: auto;
+  margin-bottom: var(--sp-3);
+}
+
+.result {
+  display: block;
+  width: 100%;
+  text-align: left;
+  padding: var(--sp-2) 0;
+  border-top: 1px solid var(--border);
+  font-size: var(--fs-sm);
+  min-height: var(--tap);
+}
+
+.resultActive {
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.weekBlock {
+  margin-bottom: var(--sp-4);
+}
+
+.weekLabel {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-faint);
+  margin-bottom: var(--sp-2);
+}
+
+.empty {
+  font-size: var(--fs-sm);
+  color: var(--text-faint);
+}

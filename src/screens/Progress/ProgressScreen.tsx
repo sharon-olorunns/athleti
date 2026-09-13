@@ -1,0 +1,203 @@
+import { useMemo, useState } from 'react';
+import { searchLibrary } from '@/core/alternatives';
+import {
+  kneeTrend,
+  painTimeline,
+  performancesOf,
+  strengthSeries,
+  weeklyAdherence,
+  weeklyVolumeByMuscle,
+} from '@/core/stats';
+import { BarChart } from '@/components/charts/BarChart';
+import { LineChart, type Band } from '@/components/charts/LineChart';
+import { useApp } from '@/state/store';
+import { useWorkout } from '@/state/workoutStore';
+import styles from './Progress.module.css';
+
+/**
+ * The pain traffic light as shaded ranges. These are status colours and they mean
+ * good/bad, which is exactly the case status colours are reserved for — so the
+ * two data series wear accent and gray instead and never impersonate a band.
+ */
+const PAIN_BANDS: Band[] = [
+  { from: 0, to: 3, tint: 'var(--pain-green)', label: '0–3' },
+  { from: 3, to: 6, tint: 'var(--pain-amber)', label: '4–6' },
+  { from: 6, to: 10, tint: 'var(--pain-red)', label: '7–10' },
+];
+
+const TREND_WORD = {
+  settling: 'settling',
+  flat: 'flat',
+  worsening: 'worsening',
+  unknown: 'not enough readings yet',
+} as const;
+
+export function ProgressScreen() {
+  const library = useApp((s) => s.library);
+  const exerciseById = useApp((s) => s.exercise);
+  const morningChecks = useApp((s) => s.morningChecks);
+  const history = useWorkout((s) => s.history);
+
+  const [query, setQuery] = useState('');
+  const [picked, setPicked] = useState<string | undefined>(undefined);
+
+  const timeline = useMemo(() => painTimeline(history, morningChecks), [history, morningChecks]);
+  const trend = kneeTrend(
+    timeline.morning.length > 0 ? timeline.morning : timeline.session,
+    Date.now(),
+  );
+
+  const volume = useMemo(() => weeklyVolumeByMuscle(history, exerciseById), [history, exerciseById]);
+  const adherence = useMemo(() => weeklyAdherence(history), [history]);
+
+  // Only exercises that have actually been performed can be charted.
+  const performed = useMemo(() => {
+    const ids = new Set(
+      history.flatMap((session) =>
+        session.entries.filter((entry) => entry.sets.length > 0).map((entry) => entry.exerciseId),
+      ),
+    );
+    return new Map([...library.entries()].filter(([id]) => ids.has(id)));
+  }, [history, library]);
+
+  const results = useMemo(
+    () => (query.trim() === '' ? [...performed.values()] : searchLibrary(query, performed)),
+    [query, performed],
+  );
+
+  const pickedExercise = picked === undefined ? undefined : library.get(picked);
+  const series = strengthSeries(
+    pickedExercise,
+    picked === undefined ? [] : performancesOf(picked, history),
+  );
+
+  const latestWeek = volume[volume.length - 1];
+
+  return (
+    <div className={styles.screen}>
+      <h1 className={styles.title}>Progress</h1>
+
+      {/* The chart that answers "is this actually getting better". */}
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Knee</h2>
+        <p className={styles.sectionNote}>
+          Morning-after scores matter more than the number during a session — pain
+          settling within 24 hours is the rule.
+        </p>
+
+        <div className={styles.bandKey}>
+          {PAIN_BANDS.map((band) => (
+            <span key={band.label} className={styles.bandItem}>
+              <span
+                className={styles.bandSwatch}
+                style={{ background: band.tint, opacity: 0.45 }}
+              />
+              {band.label}
+            </span>
+          ))}
+        </div>
+
+        <LineChart
+          title="Knee pain"
+          valueLabel="0–10"
+          bands={PAIN_BANDS}
+          domain={{ min: 0, max: 10 }}
+          // Gridlines on the band boundaries, so the scale and the traffic light
+          // agree rather than cutting across each other.
+          ticks={[0, 3, 6, 10]}
+          formatValue={(v) => String(Math.round(v))}
+          series={[
+            { id: 'morning', label: 'Morning after', points: timeline.morning, emphasis: true },
+            { id: 'session', label: 'During session', points: timeline.session, emphasis: false },
+          ]}
+        />
+
+        <p className={styles.trend}>
+          Last 14 days:{' '}
+          <span className={`${styles.trendWord} ${styles[trend] ?? ''}`}>{TREND_WORD[trend]}</span>
+        </p>
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Strength</h2>
+        <p className={styles.sectionNote}>
+          Pick an exercise. Jumps and warm-ups have no chart by design.
+        </p>
+
+        <input
+          className={styles.picker}
+          type="search"
+          placeholder="Search performed exercises…"
+          value={query}
+          onChange={(event) => setQuery(event.currentTarget.value)}
+          aria-label="Search exercises"
+        />
+
+        {results.length === 0 ? (
+          <p className={styles.empty}>Nothing logged yet.</p>
+        ) : (
+          <div className={styles.results}>
+            {results.map((exercise) => (
+              <button
+                key={exercise.id}
+                type="button"
+                className={`${styles.result} ${picked === exercise.id ? styles.resultActive : ''}`}
+                onClick={() => setPicked(exercise.id)}
+              >
+                {exercise.name}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {pickedExercise !== undefined &&
+          (series.kind === 'none' ? (
+            <p className={styles.empty}>
+              {pickedExercise.name} progresses by {pickedExercise.progression.label.replace(/^[↑↓]\s*/u, '').toLowerCase()},
+              not by a number worth plotting.
+            </p>
+          ) : (
+            <LineChart
+              title={pickedExercise.name}
+              valueLabel={series.lowerIsBetter ? `${series.label} · lower is better` : series.label}
+              series={[{ id: 'main', label: series.label, points: series.points, emphasis: true }]}
+            />
+          ))}
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Weekly volume</h2>
+        <p className={styles.sectionNote}>
+          Working sets per muscle. A set counts for each of the exercise&apos;s primary muscles.
+        </p>
+        {latestWeek === undefined ? (
+          <p className={styles.empty}>Nothing logged yet.</p>
+        ) : (
+          <div className={styles.weekBlock}>
+            <p className={styles.weekLabel}>Week {latestWeek.weekNumber}</p>
+            <BarChart
+              title=""
+              valueLabel="sets"
+              rows={latestWeek.muscles.slice(0, 8).map((m) => ({ label: m.muscle, value: m.sets }))}
+            />
+          </div>
+        )}
+      </section>
+
+      <section className={styles.section}>
+        <h2 className={styles.sectionTitle}>Adherence</h2>
+        <p className={styles.sectionNote}>Sessions completed each week, against four.</p>
+        <BarChart
+          title=""
+          valueLabel="of 4"
+          target={4}
+          rows={adherence.map((week) => ({
+            label: `Week ${week.weekNumber}`,
+            value: week.completed,
+            note: `of ${week.target}`,
+          }))}
+        />
+      </section>
+    </div>
+  );
+}
