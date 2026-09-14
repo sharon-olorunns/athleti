@@ -5,7 +5,7 @@
  */
 import 'fake-indexeddb/auto';
 import { beforeEach, describe, expect, it } from 'vitest';
-import { db, getMeta, META_KEYS, SINGLETON_ID } from './db';
+import { db, getMeta, META_KEYS, SINGLETON_ID, type SettingsRow } from './db';
 import { seed, seedIfNeeded } from './seed';
 import { getExerciseMap, getProgramme, getSettings } from './repo';
 
@@ -123,12 +123,55 @@ describe('seedIfNeeded', () => {
     expect((await db.sessions.get('s1'))?.programmeDayId).toBe('day-1');
   });
 
+  it('replaces the stored programme on a re-seed, so a new split actually lands', async () => {
+    await seedIfNeeded();
+    const stored = await getProgramme();
+    // Pretend the install is on an older programme: four gym days, no ladder.
+    await db.programmes.put({
+      ...stored!,
+      days: stored!.days.slice(0, 1),
+      pullUpLadder: [],
+    });
+    await db.meta.put({ key: META_KEYS.seededVersion, value: seed.schemaVersion - 1 });
+
+    await seedIfNeeded();
+
+    const after = await getProgramme();
+    expect(after?.days).toHaveLength(seed.days.length);
+    expect(after?.pullUpLadder).toHaveLength(seed.pullUpLadder.length);
+  });
+
+  it('fills in settings an older version never wrote', async () => {
+    await seedIfNeeded();
+    // A row from before alertVolume and currentLadderStage existed. Returned
+    // verbatim, an undefined alertVolume reaches the gain node as NaN.
+    const stored: Record<string, unknown> = { id: SINGLETON_ID, ...(await getSettings()) };
+    delete stored['alertVolume'];
+    delete stored['currentLadderStage'];
+    delete stored['backgroundAudioKeepAlive'];
+    await db.settings.put(stored as unknown as SettingsRow);
+
+    const settings = await getSettings();
+    expect(settings.alertVolume).toBe(1);
+    expect(settings.currentLadderStage).toBe(1);
+    expect(settings.backgroundAudioKeepAlive).toBe(false);
+  });
+
   it('stores the excluded exercises in the library so the Programme screen can show them', async () => {
     await seedIfNeeded();
     const excluded = await db.exercises.filter((e) => e.phase1Excluded).toArray();
     expect(excluded.length).toBe(12);
     for (const exercise of excluded) {
       expect(exercise.reintroduceWeek).toBeGreaterThanOrEqual(5);
+    }
+  });
+
+  it('stores the user-removed exercises too, so their history still resolves', async () => {
+    await seedIfNeeded();
+    const removed = await db.exercises.filter((e) => e.userExcluded).toArray();
+    expect(removed.length).toBe(3);
+    for (const exercise of removed) {
+      expect(exercise.userExcludedReason).toBeTruthy();
     }
   });
 });
