@@ -28,6 +28,8 @@ import { Chip } from '@/components/Chip';
 import { equipmentLabel, PROGRESSION_TINT } from '@/components/labels';
 import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
+import { ladderExerciseIds } from '@/core/ladder';
+import { LadderPanel } from './LadderPanel';
 import { SetRow } from './SetRow';
 import styles from './ExerciseCard.module.css';
 
@@ -69,6 +71,7 @@ function ExerciseBody({
   const revertSwap = useWorkout((s) => s.revertSwap);
   const savePainScore = useWorkout((s) => s.savePainScore);
   const library = useApp((s) => s.library);
+  const ladder = useApp((s) => s.ladder)();
 
   const [swapOpen, setSwapOpen] = useState(false);
   const [swapFromPain, setSwapFromPain] = useState(false);
@@ -207,6 +210,13 @@ function ExerciseBody({
 
       {exercise?.cue !== undefined && <p className={styles.cue}>{exercise.cue}</p>}
       {prescription.note !== undefined && <p className={styles.note}>{prescription.note}</p>}
+
+      {/*
+        Keyed off what the programme prescribes, not what is being performed: a
+        slot swapped out for the day is still the ladder's slot, and the stage
+        still has to be visible.
+      */}
+      {ladderExerciseIds(ladder).has(prescribedId) && <LadderPanel session={session} />}
 
       {suggestion !== undefined && suggestion.message !== '' && (
         <div className={styles.progression} style={{ '--tint': tint } as CSSProperties}>

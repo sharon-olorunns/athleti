@@ -24,6 +24,7 @@ import {
   setSessionNotes,
   setSessionPainScore,
   setSkipped,
+  setUnassistedAttempt,
   skipUnloggedExercises,
   substituteExercise,
   unlogSet,
@@ -78,6 +79,8 @@ interface WorkoutState {
   revertSwap: (prescribedId: string) => Promise<void>;
   savePainScore: (exerciseId: string, score: number) => Promise<void>;
   saveSessionPain: (which: 'pre' | 'post', score: number) => Promise<void>;
+  /** The fresh unassisted pull-up attempt, logged once per session. */
+  saveUnassistedAttempt: (attempted: boolean, succeeded: boolean) => Promise<void>;
   saveNotes: (notes: string) => Promise<void>;
   finish: (markRemainingSkipped: boolean, day: ProgrammeDay | undefined) => Promise<void>;
   discard: () => Promise<void>;
@@ -236,6 +239,12 @@ export const useWorkout = create<WorkoutState>((set, get) => {
       const current = get().session;
       if (current === undefined) return;
       await persist(setSessionPainScore(current, which, score));
+    },
+
+    saveUnassistedAttempt: async (attempted, succeeded) => {
+      const current = get().session;
+      if (current === undefined) return;
+      await persist(setUnassistedAttempt(current, attempted, succeeded));
     },
 
     saveNotes: async (notes) => {

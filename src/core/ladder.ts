@@ -17,6 +17,7 @@ import type {
   LadderStage,
   Prescription,
   ProgrammeDay,
+  WorkoutSession,
 } from '@/types';
 
 /** Every exercise the ladder can ever prescribe. A slot is any prescription of one. */
@@ -86,11 +87,11 @@ function applyStage(slot: Prescription, stage: LadderPrescription): Prescription
     // An interval slot would make no sense for a hang or a negative, so the mode
     // follows what the stage actually prescribes.
     timerMode: timed ? 'hold' : 'rest',
-    ...(stage.note !== undefined
-      ? { note: stage.note }
-      : slot.note !== undefined
-        ? { note: slot.note }
-        : {}),
+    // Only the stage's note survives. The slot notes in the seed are written for
+    // whichever rung the slot held when it was authored ("Ladder stage 2"), so
+    // carrying one onto a different stage's exercise would be a lie — and what
+    // they say is shown structurally now anyway, as the stage name and its gate.
+    ...(stage.note !== undefined ? { note: stage.note } : {}),
   };
 }
 
@@ -188,4 +189,46 @@ export function resolveLadder(
       }),
     })),
   }));
+}
+
+/** What the unassisted attempts add up to, for the Progress screen. */
+export interface AttemptRecord {
+  /** Sessions that asked the question at all — stage 3 and up. */
+  asked: number;
+  attempted: number;
+  /** Consecutive most recent asked sessions where the attempt was made. */
+  streak: number;
+  successes: number;
+  /** When the first rep went up. The milestone the ladder exists for. */
+  firstSuccessAt?: number;
+}
+
+/**
+ * Attempts across the history.
+ *
+ * The streak counts the habit — showing up to the bar fresh — and stops at the
+ * first session that was asked and skipped it. A failed attempt keeps the streak:
+ * missing the rep is the expected outcome right up until it is not.
+ */
+export function unassistedAttempts(sessions: readonly WorkoutSession[]): AttemptRecord {
+  const asked = sessions
+    .filter((session) => session.unassistedAttempt !== undefined)
+    .sort((a, b) => b.startedAt - a.startedAt);
+
+  let streak = 0;
+  for (const session of asked) {
+    if (session.unassistedAttempt !== true) break;
+    streak += 1;
+  }
+
+  const successes = asked.filter((session) => session.unassistedSuccess === true);
+  const first = successes.at(-1);
+
+  return {
+    asked: asked.length,
+    attempted: asked.filter((session) => session.unassistedAttempt === true).length,
+    streak,
+    successes: successes.length,
+    ...(first !== undefined ? { firstSuccessAt: first.startedAt } : {}),
+  };
 }

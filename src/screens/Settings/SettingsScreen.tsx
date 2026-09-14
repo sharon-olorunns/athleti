@@ -9,6 +9,7 @@ import {
   type MergePlan,
   type BackupFile,
 } from '@/core/backup';
+import { clampStage, gateFor, stageFor } from '@/core/ladder';
 import { applyImport, readBackup, seededExerciseIds } from '@/db/backup';
 import { META_KEYS, setMeta } from '@/db/db';
 import { downloadFile } from '@/platform/download';
@@ -81,6 +82,8 @@ export function SettingsScreen() {
   const library = useApp((s) => s.library);
   const boot = useApp((s) => s.boot);
   const exerciseById = useApp((s) => s.exercise);
+
+  const ladder = useApp((s) => s.ladder)();
 
   const history = useWorkout((s) => s.history);
   const loadHistory = useWorkout((s) => s.loadHistory);
@@ -258,6 +261,34 @@ export function SettingsScreen() {
           />
         </div>
       </div>
+
+      {ladder.length > 0 && (
+        <>
+          <h2 className={styles.groupTitle}>Pull-up ladder</h2>
+          <div className={styles.group}>
+            <div className={`${styles.row} ${styles.rowStacked}`}>
+              <span className={styles.label}>
+                <span className={styles.labelText}>Stage</span>
+                <span className={styles.labelNote}>
+                  {stageFor(ladder, settings.currentLadderStage)?.name}
+                  {gateFor(ladder, settings.currentLadderStage) !== undefined
+                    ? ` — move up when: ${gateFor(ladder, settings.currentLadderStage)}`
+                    : ' — the last rung.'}
+                </span>
+              </span>
+              <Segmented
+                label="Pull-up ladder stage"
+                value={String(clampStage(ladder, settings.currentLadderStage))}
+                onChange={(v) => set('currentLadderStage', Number(v))}
+                options={ladder.map((stage) => ({
+                  value: String(stage.stage),
+                  label: String(stage.stage),
+                }))}
+              />
+            </div>
+          </div>
+        </>
+      )}
 
       <h2 className={styles.groupTitle}>Your data</h2>
       <div className={styles.group}>

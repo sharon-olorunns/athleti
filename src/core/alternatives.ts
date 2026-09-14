@@ -184,16 +184,24 @@ export function substitutionTallies(sessions: readonly WorkoutSession[]): Substi
 /**
  * A substitution used often enough to be worth making permanent. Offered on the
  * Today screen, never mid-workout.
+ *
+ * `notPrescribed` holds the exercises the stored programme does not actually name
+ * — today, the pull-up slots, which are resolved from the ladder stage rather than
+ * written into a day. Making one of those permanent would find nothing to rewrite
+ * and quietly do nothing, so the offer is never made for them.
  */
 export function permanentSubstitutionCandidate(
   sessions: readonly WorkoutSession[],
   dismissed: readonly string[] = [],
   threshold = 3,
+  notPrescribed: ReadonlySet<string> = new Set(),
 ): SubstitutionTally | undefined {
   const skip = new Set(dismissed);
   return substitutionTallies(sessions).find(
     (tally) =>
-      tally.count >= threshold && !skip.has(`${tally.prescribedId}->${tally.performedId}`),
+      tally.count >= threshold &&
+      !skip.has(`${tally.prescribedId}->${tally.performedId}`) &&
+      !notPrescribed.has(tally.prescribedId),
   );
 }
 

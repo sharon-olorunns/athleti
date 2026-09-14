@@ -127,3 +127,36 @@
   font-size: var(--fs-sm);
   color: var(--text-faint);
 }
+
+/* The first unassisted pull-up: the one number on this screen worth a badge. */
+.milestone {
+  margin-top: var(--sp-3);
+  padding: var(--sp-2) var(--sp-3);
+  border-radius: var(--radius-sm);
+  background: color-mix(in srgb, var(--pain-green) 18%, transparent);
+  border: 1px solid color-mix(in srgb, var(--pain-green) 45%, transparent);
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--text);
+}
+
+.attemptStats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+  margin-top: var(--sp-3);
+}
+
+.attemptStat {
+  display: flex;
+  flex-direction: column;
+  font-size: var(--fs-xs);
+  color: var(--text-dim);
+}
+
+.attemptValue {
+  font-family: var(--font-mono);
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  color: var(--text);
+}

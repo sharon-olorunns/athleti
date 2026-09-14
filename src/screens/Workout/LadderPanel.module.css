@@ -1,0 +1,123 @@
+.panel {
+  margin: var(--sp-3) 0;
+  padding: var(--sp-3);
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius-sm);
+  background: var(--surface-raised);
+}
+
+.head {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.eyebrow {
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-faint);
+}
+
+.stage {
+  font-size: var(--fs-sm);
+  font-weight: 650;
+  color: var(--text);
+}
+
+.gate {
+  margin-top: var(--sp-3);
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.gateLabel {
+  display: block;
+  font-size: var(--fs-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.button {
+  margin-top: var(--sp-3);
+  min-height: var(--tap);
+  width: 100%;
+  padding: 0 var(--sp-3);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+.primary {
+  background: var(--accent);
+  border-color: var(--accent);
+  color: var(--accent-text);
+}
+
+.confirm {
+  margin-top: var(--sp-3);
+}
+
+.confirmText {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+}
+
+.confirmActions {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.confirmActions .button {
+  flex: 1;
+}
+
+.attempt {
+  margin-top: var(--sp-3);
+  padding-top: var(--sp-3);
+  border-top: 1px solid var(--border);
+}
+
+.attemptQuestion {
+  display: block;
+  font-size: var(--fs-sm);
+  color: var(--text-dim);
+  margin-bottom: var(--sp-2);
+}
+
+.attemptButtons {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.attemptButton {
+  flex: 1;
+  min-height: var(--tap);
+  padding: 0 var(--sp-2);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  color: var(--text);
+  font-size: var(--fs-sm);
+  font-weight: 600;
+}
+
+/* The milestone the whole ladder exists for, so it reads as an achievement. */
+.got {
+  background: var(--pain-green);
+  border-color: var(--pain-green);
+  color: #0b0b0f;
+}
+
+.missed {
+  border-color: var(--text-faint);
+  background: var(--surface-sunken);
+  color: var(--text-dim);
+}

@@ -41,4 +41,12 @@ export interface WorkoutSession {
   prePainScore?: number;
   postPainScore?: number;
   notes?: string;
+  /**
+   * Stage 3 and 4 of the pull-up ladder open with one unassisted attempt, fresh,
+   * before anything else. Undefined means it was never asked — the session was
+   * on an earlier stage, or on a day with no pull-up slot.
+   */
+  unassistedAttempt?: boolean;
+  /** The attempt went up. The first one of these is the milestone. */
+  unassistedSuccess?: boolean;
 }

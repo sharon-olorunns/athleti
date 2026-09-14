@@ -1,5 +1,6 @@
 import { useMemo, useState } from 'react';
 import { searchLibrary } from '@/core/alternatives';
+import { gateFor, stageFor, unassistedAttempts } from '@/core/ladder';
 import {
   kneeTrend,
   painTimeline,
@@ -38,6 +39,8 @@ export function ProgressScreen() {
   const exerciseById = useApp((s) => s.exercise);
   const morningChecks = useApp((s) => s.morningChecks);
   const units = useApp((s) => s.settings.units);
+  const ladder = useApp((s) => s.ladder)();
+  const ladderStage = useApp((s) => s.settings.currentLadderStage);
   const history = useWorkout((s) => s.history);
 
   const [query, setQuery] = useState('');
@@ -84,6 +87,9 @@ export function ProgressScreen() {
 
   const latestWeek = volume[volume.length - 1];
 
+  const stage = stageFor(ladder, ladderStage);
+  const attempts = useMemo(() => unassistedAttempts(history), [history]);
+
   return (
     <div className={styles.screen}>
       <h1 className={styles.title}>Progress</h1>
@@ -128,6 +134,57 @@ export function ProgressScreen() {
           <span className={`${styles.trendWord} ${styles[trend] ?? ''}`}>{TREND_WORD[trend]}</span>
         </p>
       </section>
+
+      {stage !== undefined && (
+        <section className={styles.section}>
+          <h2 className={styles.sectionTitle}>Pull-up ladder</h2>
+          <p className={styles.sectionNote}>
+            Stage {stage.stage} of {ladder.length} · {stage.name}
+          </p>
+
+          {gateFor(ladder, ladderStage) !== undefined && (
+            <p className={styles.trend}>
+              Move up when:{' '}
+              <span className={styles.trendWord}>{gateFor(ladder, ladderStage)}</span>
+            </p>
+          )}
+
+          {attempts.firstSuccessAt !== undefined && (
+            /* The thing this whole feature exists for. It gets a line of its own. */
+            <p className={styles.milestone}>
+              First unassisted rep ·{' '}
+              {new Date(attempts.firstSuccessAt).toLocaleDateString(undefined, {
+                day: 'numeric',
+                month: 'short',
+                year: 'numeric',
+              })}
+            </p>
+          )}
+
+          {attempts.asked === 0 ? (
+            <p className={styles.empty}>
+              Fresh unassisted attempts start being logged at stage 3.
+            </p>
+          ) : (
+            <div className={styles.attemptStats}>
+              <span className={styles.attemptStat}>
+                <span className={styles.attemptValue}>{attempts.streak}</span>
+                session{attempts.streak === 1 ? '' : 's'} in a row attempted
+              </span>
+              <span className={styles.attemptStat}>
+                <span className={styles.attemptValue}>
+                  {attempts.attempted}/{attempts.asked}
+                </span>
+                attempted overall
+              </span>
+              <span className={styles.attemptStat}>
+                <span className={styles.attemptValue}>{attempts.successes}</span>
+                clean rep{attempts.successes === 1 ? '' : 's'}
+              </span>
+            </div>
+          )}
+        </section>
+      )}
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Strength</h2>

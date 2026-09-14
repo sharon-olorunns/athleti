@@ -173,6 +173,25 @@ export function setSessionPainScore(
 }
 
 /**
+ * The fresh unassisted attempt that opens stages 3 and 4 of the pull-up ladder.
+ *
+ * Two flags rather than one: whether it was attempted, which is the habit worth
+ * keeping a streak of, and whether it went up, because the first rep that does is
+ * the milestone the whole ladder exists for. A miss is still an attempt.
+ */
+export function setUnassistedAttempt(
+  session: WorkoutSession,
+  attempted: boolean,
+  succeeded = false,
+): WorkoutSession {
+  return {
+    ...session,
+    unassistedAttempt: attempted,
+    unassistedSuccess: attempted && succeeded,
+  };
+}
+
+/**
  * The answer to the binary quality question asked after a `quality` exercise:
  * was bar speed, height or distance maintained on every rep.
  */

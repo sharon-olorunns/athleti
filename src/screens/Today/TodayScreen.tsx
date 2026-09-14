@@ -6,6 +6,7 @@ import { exportReminderDue } from '@/core/backup';
 import { kneeTrend, painTimeline, recentPainPoints } from '@/core/stats';
 import { Sparkline } from '@/components/charts/Sparkline';
 import { permanentSubstitutionCandidate, substitutionKey } from '@/core/alternatives';
+import { ladderExerciseIds } from '@/core/ladder';
 import { getMeta, META_KEYS, setMeta } from '@/db/db';
 import { Chip } from '@/components/Chip';
 import { PainScale } from '@/components/pain/PainScale';
@@ -38,6 +39,7 @@ export function TodayScreen({
 }) {
   const programme = useApp((s) => s.programme);
   const days = useApp((s) => s.days);
+  const ladder = useApp((s) => s.ladder)();
   const exerciseById = useApp((s) => s.exercise);
   const currentWeek = useApp((s) => s.currentWeek());
 
@@ -116,7 +118,12 @@ export function TodayScreen({
   const latestKnee = kneePoints[kneePoints.length - 1];
 
   const morning = morningCheckDue(history, morningChecks, Date.now(), dismissedMornings);
-  const swapCandidate = permanentSubstitutionCandidate(history, dismissedSwaps);
+  const swapCandidate = permanentSubstitutionCandidate(
+    history,
+    dismissedSwaps,
+    3,
+    ladderExerciseIds(ladder),
+  );
   const swapPrescribed = swapCandidate === undefined ? undefined : exerciseById(swapCandidate.prescribedId);
   const swapPerformed = swapCandidate === undefined ? undefined : exerciseById(swapCandidate.performedId);
 
