@@ -74,3 +74,36 @@ export interface ReintroductionEntry {
   /** "Low box, 3 × 3. Step down, never jump down." */
   startAt: string;
 }
+
+/**
+ * One rung of the pull-up ladder (section 8b). The user is working toward a first
+ * unassisted rep, which is a staged progression rather than a single exercise, so
+ * the stages are data rather than something to remember.
+ */
+export interface LadderStage {
+  /** 1-indexed, contiguous. */
+  stage: number;
+  /** "Negatives — the one that works" */
+  name: string;
+  prescriptions: LadderPrescription[];
+  /**
+   * Plain-English criterion for moving up, e.g. "A controlled 8-second negative".
+   * `null` on the last stage, which has nowhere to go.
+   */
+  gate: string | null;
+  /** "Attempt one unassisted rep, fresh, before anything else." */
+  attemptUnassistedFirst?: boolean;
+}
+
+/**
+ * A stage's prescription. Deliberately thinner than `Prescription`: rest, timer
+ * mode and the per-side flag come from the programme slot it lands in, so the
+ * ladder describes the work and the day describes how it is run.
+ */
+export interface LadderPrescription {
+  exerciseId: string;
+  sets: number;
+  reps?: string;
+  holdSeconds?: number;
+  note?: string;
+}

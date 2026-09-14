@@ -33,7 +33,10 @@ export async function getSettings(): Promise<Settings> {
   const row = await db.settings.get(SINGLETON_ID);
   if (row === undefined) return { ...DEFAULT_SETTINGS };
   const { id: _id, ...settings } = row;
-  return settings;
+  // Spread over the defaults rather than returning the row: a row written by an
+  // older version is missing whatever the new version added, and an undefined
+  // alertVolume would reach the gain node as NaN.
+  return { ...DEFAULT_SETTINGS, ...settings };
 }
 
 export async function saveSettings(settings: Settings): Promise<void> {

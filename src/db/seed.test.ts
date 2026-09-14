@@ -26,7 +26,8 @@ describe('seedIfNeeded', () => {
 
     const programme = await getProgramme();
     expect(programme?.id).toBe(seed.programme.id);
-    expect(programme?.days).toHaveLength(5);
+    expect(programme?.days).toHaveLength(seed.days.length);
+    expect(programme?.pullUpLadder).toHaveLength(seed.pullUpLadder.length);
     expect(programme?.reintroductionSchedule).toHaveLength(seed.reintroductionSchedule.length);
   });
 
@@ -92,6 +93,7 @@ describe('seedIfNeeded', () => {
       kneeSensitive: false,
       painTracked: false,
       phase1Excluded: false,
+      userExcluded: false,
       alternatives: [],
     });
 

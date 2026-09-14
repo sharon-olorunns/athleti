@@ -37,6 +37,7 @@ export const anExercise = (over: Over<Exercise> = {}): Exercise =>
       kneeSensitive: false,
       painTracked: false,
       phase1Excluded: false,
+      userExcluded: false,
       alternatives: [],
     },
     over,

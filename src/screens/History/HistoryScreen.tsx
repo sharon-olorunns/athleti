@@ -19,7 +19,7 @@ const longDate = (at: number) =>
 
 /** Section 5.4: reverse-chronological sessions, each opening a read-only view. */
 export function HistoryScreen({ onOpenExercise }: { onOpenExercise: (id: string) => void }) {
-  const programme = useApp((s) => s.programme);
+  const days = useApp((s) => s.days);
   const units = useApp((s) => s.settings.units);
   const exerciseById = useApp((s) => s.exercise);
   const history = useWorkout((s) => s.history);
@@ -29,7 +29,7 @@ export function HistoryScreen({ onOpenExercise }: { onOpenExercise: (id: string)
   const sessions = [...history].sort((a, b) => b.startedAt - a.startedAt);
   const open = sessions.find((session) => session.id === openId);
   const dayOf = (session: WorkoutSession) =>
-    programme?.days.find((day) => day.id === session.programmeDayId);
+    days.find((day) => day.id === session.programmeDayId);
 
   return (
     <div className={styles.screen}>
@@ -106,10 +106,10 @@ function SessionView({
   onClose: () => void;
   onOpenExercise: (id: string) => void;
 }) {
-  const programme = useApp((s) => s.programme);
+  const days = useApp((s) => s.days);
   const exerciseById = useApp((s) => s.exercise);
 
-  const day = programme?.days.find((d) => d.id === session.programmeDayId);
+  const day = days.find((d) => d.id === session.programmeDayId);
   const stats = sessionStats(session, day, exerciseById);
 
   return (

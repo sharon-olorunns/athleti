@@ -23,7 +23,7 @@ function useNow(active: boolean): number {
 }
 
 export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
-  const programme = useApp((s) => s.programme);
+  const days = useApp((s) => s.days);
   const exerciseById = useApp((s) => s.exercise);
   const settings = useApp((s) => s.settings);
 
@@ -42,7 +42,7 @@ export function WorkoutScreen({ onFinished }: { onFinished: () => void }) {
   const [notesDraft, setNotesDraft] = useState('');
 
   const now = useNow(session !== undefined);
-  const day = programme?.days.find((d) => d.id === session?.programmeDayId);
+  const day = days.find((d) => d.id === session?.programmeDayId);
   const items = useMemo(() => workoutItems(day), [day]);
 
   const autoIndex = currentItemIndex(day, session, exerciseById);

@@ -8,6 +8,7 @@ import Dexie, { type EntityTable } from 'dexie';
 import type { IntervalSpec, TimerCompletionTarget } from '@/core/timer';
 import type {
   Exercise,
+  LadderStage,
   MorningCheck,
   Programme,
   ReintroductionEntry,
@@ -47,6 +48,8 @@ export type StoredTimer = TimerState & TimerExtras;
 export interface ProgrammeRow extends Programme {
   /** Reintroduction schedule travels with the programme it belongs to. */
   reintroductionSchedule: ReintroductionEntry[];
+  /** The pull-up ladder, which the day's pull-up slots resolve against. */
+  pullUpLadder: LadderStage[];
 }
 
 /**

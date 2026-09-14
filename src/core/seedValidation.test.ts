@@ -14,6 +14,7 @@ const exercise = (id: string, over: Partial<Exercise> = {}): Exercise => ({
   kneeSensitive: false,
   painTracked: false,
   phase1Excluded: false,
+  userExcluded: false,
   alternatives: [],
   ...over,
 });
@@ -53,6 +54,7 @@ const seedWith = (over: Partial<SeedFile> = {}): SeedFile => ({
   exercises: [exercise('squat')],
   days: [dayWith('squat')],
   reintroductionSchedule: [],
+  pullUpLadder: [],
   ...over,
 });
 

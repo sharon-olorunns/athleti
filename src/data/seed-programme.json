@@ -1,1151 +1,3442 @@
 {
-  "schemaVersion": 3,
+  "schemaVersion": 4,
   "programme": {
     "id": "footballers-week",
     "name": "The Footballer's Week",
-    "phase": "Phase 1 — knee-adapted",
-    "notes": "Four gym sessions, one home mobility day, football at the weekend. Sessions capped at 70 minutes. Exercises marked phase1Excluded are deferred until the week-5 reassessment and must not appear in any day's blocks."
+    "phase": "Phase 1 — knee-adapted, 3-day full body",
+    "notes": "Three full-body gym sessions, one mobility day at home, football once or twice a week. Sessions run 62-66 minutes. Exercises with phase1Excluded are deferred to the week-5 reassessment; exercises with userExcluded were removed at the user's request. Neither appears in any day's blocks."
   },
-
   "exercises": [
     {
       "id": "hip-mobility-flow",
       "name": "90/90 rotation · Running pigeon · KB hip opener",
-      "equipment": ["bodyweight", "kettlebell"],
-      "primaryMuscles": ["Hip rotators", "Glute max"],
-      "secondaryMuscles": ["Adductors", "Hip flexors"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight",
+        "kettlebell"
+      ],
+      "primaryMuscles": [
+        "Hip rotators",
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Hip flexors"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "fixed", "label": "Fixed", "note": "Warm-up. Progress range of motion over months, never load." },
+      "progression": {
+        "type": "fixed",
+        "label": "Fixed",
+        "note": "Warm-up. Progress range of motion over months, never load."
+      },
       "cue": "Hips open before anything fast happens.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "World's greatest stretch", "reason": "no space to sit on the floor", "kneeSafe": true },
-        { "name": "Standing hip circles", "reason": "busy gym floor", "kneeSafe": true }
-      ]
+        {
+          "name": "World's greatest stretch",
+          "reason": "no space to sit on the floor",
+          "kneeSafe": true
+        },
+        {
+          "name": "Standing hip circles",
+          "reason": "busy gym floor",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "banded-lateral-walk",
       "name": "Banded lateral walk",
-      "equipment": ["band"],
-      "primaryMuscles": ["Glute medius"],
-      "secondaryMuscles": ["Glute min"],
-      "tracks": ["distance"],
+      "equipment": [
+        "band"
+      ],
+      "primaryMuscles": [
+        "Glute medius"
+      ],
+      "secondaryMuscles": [
+        "Glute min"
+      ],
+      "tracks": [
+        "distance"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Band tension", "holdIncrementSeconds": 0, "note": "Progress by moving to a stiffer band, not by walking further." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Band tension",
+        "holdIncrementSeconds": 0,
+        "note": "Progress by moving to a stiffer band, not by walking further."
+      },
       "cue": "Stay low, no bobbing. Tension on the band the whole way.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "exerciseId": "side-lying-abduction", "name": "Side-lying hip abduction", "reason": "no band available", "kneeSafe": true },
-        { "name": "Cable hip abduction", "reason": "no band available", "kneeSafe": true }
-      ]
+        {
+          "exerciseId": "side-lying-abduction",
+          "name": "Side-lying hip abduction",
+          "reason": "no band available",
+          "kneeSafe": true
+        },
+        {
+          "name": "Cable hip abduction",
+          "reason": "no band available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "shoulder-prep",
       "name": "Scapular rolls · Band rotator cuff · Dead bug",
-      "equipment": ["band", "bodyweight"],
-      "primaryMuscles": ["Rotator cuff", "Serratus"],
-      "secondaryMuscles": ["Mid traps", "Transverse abs"],
-      "tracks": ["reps"],
+      "equipment": [
+        "band",
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Rotator cuff",
+        "Serratus"
+      ],
+      "secondaryMuscles": [
+        "Mid traps",
+        "Transverse abs"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "fixed", "label": "Fixed", "note": "Preparation. Nothing here should get harder." },
+      "progression": {
+        "type": "fixed",
+        "label": "Fixed",
+        "note": "Preparation. Nothing here should get harder."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Band pull-apart · face pull", "reason": "no floor space", "kneeSafe": true }
-      ]
+        {
+          "name": "Band pull-apart · face pull",
+          "reason": "no floor space",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "scap-deadbug",
       "name": "Scapular rolls · Dead bug",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Serratus", "Transverse abs"],
-      "secondaryMuscles": ["Mid traps"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Serratus",
+        "Transverse abs"
+      ],
+      "secondaryMuscles": [
+        "Mid traps"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "fixed", "label": "Fixed", "note": "Maintenance." },
+      "progression": {
+        "type": "fixed",
+        "label": "Fixed",
+        "note": "Maintenance."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
-      "alternatives": []
+      "alternatives": [],
+      "userExcluded": false
     },
     {
       "id": "agility-ladder",
       "name": "Agility ladder",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Calves", "Hip flexors"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Calves",
+        "Hip flexors"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["seconds"],
+      "tracks": [
+        "seconds"
+      ],
       "unilateral": false,
-      "progression": { "type": "fixed", "label": "Fixed", "note": "A coordination warm-up, not agility training — real agility is unplanned. Do not progress it." },
+      "progression": {
+        "type": "fixed",
+        "label": "Fixed",
+        "note": "A coordination warm-up, not agility training — real agility is unplanned. Do not progress it."
+      },
       "cue": "Warm and unfatigued. Quick feet, tall posture.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Line hops · fast feet on a step", "reason": "no ladder available", "kneeSafe": true },
-        { "name": "A-skips and high knees", "reason": "no ladder available", "kneeSafe": true }
-      ]
+        {
+          "name": "Line hops · fast feet on a step",
+          "reason": "no ladder available",
+          "kneeSafe": true
+        },
+        {
+          "name": "A-skips and high knees",
+          "reason": "no ladder available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "quad-hipflexor-stretch",
       "name": "Quad & hip flexor stretch",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Quads", "Hip flexors"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Hip flexors"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["seconds"],
+      "tracks": [
+        "seconds"
+      ],
       "unilateral": true,
-      "progression": { "type": "time", "label": "↑ Range", "holdIncrementSeconds": 5, "note": "Progress range, not load. A desk day plus a bike commute shortens both of these." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Range",
+        "holdIncrementSeconds": 5,
+        "note": "Progress range, not load. A desk day plus a bike commute shortens both of these."
+      },
       "kneeSensitive": true,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Couch stretch", "reason": "want more intensity", "kneeSafe": false },
-        { "name": "Standing quad stretch", "reason": "kneeling is uncomfortable", "kneeSafe": true }
-      ]
+        {
+          "name": "Couch stretch",
+          "reason": "want more intensity",
+          "kneeSafe": false
+        },
+        {
+          "name": "Standing quad stretch",
+          "reason": "kneeling is uncomfortable",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "side-lying-abduction",
       "name": "Side-lying hip abduction",
-      "equipment": ["bodyweight", "band"],
-      "primaryMuscles": ["Glute medius"],
-      "secondaryMuscles": ["Glute min"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight",
+        "band"
+      ],
+      "primaryMuscles": [
+        "Glute medius"
+      ],
+      "secondaryMuscles": [
+        "Glute min"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "time", "label": "↑ Reps, then band", "note": "Add reps to 20, then add a band. Hip strengthening has better evidence for anterior knee pain than anything done at the knee itself." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Reps, then band",
+        "note": "Add reps to 20, then add a band. Hip strengthening has better evidence for anterior knee pain than anything done at the knee itself."
+      },
       "cue": "Slow. No rocking backwards — the foot stays slightly behind the hip.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "exerciseId": "banded-lateral-walk", "name": "Banded lateral walk", "reason": "prefer standing", "kneeSafe": true },
-        { "name": "Cable hip abduction", "reason": "want to load it properly", "kneeSafe": true },
-        { "name": "Side plank with top-leg raise", "reason": "want more trunk involvement", "kneeSafe": true }
-      ]
+        {
+          "exerciseId": "banded-lateral-walk",
+          "name": "Banded lateral walk",
+          "reason": "prefer standing",
+          "kneeSafe": true
+        },
+        {
+          "name": "Cable hip abduction",
+          "reason": "want to load it properly",
+          "kneeSafe": true
+        },
+        {
+          "name": "Side plank with top-leg raise",
+          "reason": "want more trunk involvement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "tib-calf-raise-bw",
       "name": "Tib raise · Calf raise",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Tibialis anterior", "Gastrocnemius", "Soleus"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Tibialis anterior",
+        "Gastrocnemius",
+        "Soleus"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["reps"],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Reps", "note": "Bodyweight maintenance. The loaded version lives on Day 5." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Reps",
+        "note": "Bodyweight maintenance. The loaded version lives on Day 5."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
-      "alternatives": []
+      "alternatives": [],
+      "userExcluded": false
     },
-
     {
       "id": "heavy-sled-push",
       "name": "Heavy sled push",
-      "equipment": ["sled"],
-      "primaryMuscles": ["Quads", "Glutes"],
-      "secondaryMuscles": ["Calves", "Hip flexors"],
-      "tracks": ["weight", "distance"],
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Calves",
+        "Hip flexors"
+      ],
+      "tracks": [
+        "weight",
+        "distance"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Load", "incrementKg": 5, "note": "Your in-gym acceleration work, and the most knee-tolerant leg exercise available. Heavy enough that you're driving, not jogging." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Load",
+        "incrementKg": 5,
+        "note": "Your in-gym acceleration work, and the most knee-tolerant leg exercise available. Heavy enough that you're driving, not jogging."
+      },
       "cue": "Low body angle, long drives, full extension each step.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Steep incline treadmill walk, holding dumbbells", "reason": "no sled available", "kneeSafe": true },
-        { "name": "Heavy walking lunges", "reason": "no sled available", "kneeSafe": false },
-        { "exerciseId": "single-leg-press-partial", "name": "Single-leg press, partial range", "reason": "no sled available", "kneeSafe": true }
-      ]
+        {
+          "name": "Steep incline treadmill walk, holding dumbbells",
+          "reason": "no sled available",
+          "kneeSafe": true
+        },
+        {
+          "name": "Heavy walking lunges",
+          "reason": "no sled available",
+          "kneeSafe": false
+        },
+        {
+          "exerciseId": "single-leg-press-partial",
+          "name": "Single-leg press, partial range",
+          "reason": "no sled available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "trap-bar-jump",
       "name": "Trap bar jump",
-      "equipment": ["trap-bar"],
-      "primaryMuscles": ["Quads", "Glutes"],
-      "secondaryMuscles": ["Hamstrings", "Calves"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "trap-bar"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Hamstrings",
+        "Calves"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Bar speed", "neverAddLoad": true, "note": "Around 20–30% of your trap bar deadlift and it stays there. Bar speed is the metric — when it slows, the set is over. Adding load turns this into a strength exercise and deletes the point of it." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Bar speed",
+        "neverAddLoad": true,
+        "note": "Around 20–30% of your trap bar deadlift and it stays there. Bar speed is the metric — when it slows, the set is over. Adding load turns this into a strength exercise and deletes the point of it."
+      },
       "cue": "Land soft and shallow.",
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Countermovement jump, bodyweight", "reason": "knee sore, or no trap bar", "kneeSafe": true },
-        { "exerciseId": "heavy-sled-push", "name": "Extra sled push set", "reason": "knee sore — swap the jump out entirely", "kneeSafe": true }
-      ]
+        {
+          "name": "Countermovement jump, bodyweight",
+          "reason": "knee sore, or no trap bar",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "heavy-sled-push",
+          "name": "Extra sled push set",
+          "reason": "knee sore — swap the jump out entirely",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "pogo-jump",
       "name": "Pogo jump · Banded pogo jump",
-      "equipment": ["bodyweight", "band"],
-      "primaryMuscles": ["Calves", "Soleus"],
-      "secondaryMuscles": ["Achilles"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight",
+        "band"
+      ],
+      "primaryMuscles": [
+        "Calves",
+        "Soleus"
+      ],
+      "secondaryMuscles": [
+        "Achilles"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Ground contact", "neverAddLoad": true, "note": "Progress is shorter, stiffer ground contact — not height and not load." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Ground contact",
+        "neverAddLoad": true,
+        "note": "Progress is shorter, stiffer ground contact — not height and not load."
+      },
       "cue": "Stiff legs, almost no knee bend, quick off the floor. Nearly all ankle — which is why these survived the knee cut.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Skipping rope", "reason": "no space", "kneeSafe": true },
-        { "name": "Ankle hops in place", "reason": "low ceiling", "kneeSafe": true }
-      ]
+        {
+          "name": "Skipping rope",
+          "reason": "no space",
+          "kneeSafe": true
+        },
+        {
+          "name": "Ankle hops in place",
+          "reason": "low ceiling",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "skater-jump",
       "name": "Skater jump, stick each landing",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Glute medius", "Quads"],
-      "secondaryMuscles": ["Adductors", "Calves"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Glute medius",
+        "Quads"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Calves"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "quality", "label": "↑ Distance, quiet landings", "neverAddLoad": true, "note": "Progress distance and landing control. Never add load." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Distance, quiet landings",
+        "neverAddLoad": true,
+        "note": "Progress distance and landing control. Never add load."
+      },
       "cue": "Sideways, shallow, controlled. Hold each landing for a full second — the stick is the whole point.",
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Lateral step-and-stick, no jump", "reason": "knee sore", "kneeSafe": true },
-        { "name": "Single-leg balance with reach", "reason": "knee sore", "kneeSafe": true }
-      ]
+        {
+          "name": "Lateral step-and-stick, no jump",
+          "reason": "knee sore",
+          "kneeSafe": true
+        },
+        {
+          "name": "Single-leg balance with reach",
+          "reason": "knee sore",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "med-ball-slam",
       "name": "Med ball slam",
-      "equipment": ["med-ball"],
-      "primaryMuscles": ["Lats", "Rectus abs"],
-      "secondaryMuscles": ["Shoulders"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "med-ball"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Rectus abs"
+      ],
+      "secondaryMuscles": [
+        "Shoulders"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Speed, not ball weight", "neverAddLoad": true, "note": "A power exercise, not a conditioning one. Throw hard, rest fully, stop when speed drops." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Speed, not ball weight",
+        "neverAddLoad": true,
+        "note": "A power exercise, not a conditioning one. Throw hard, rest fully, stop when speed drops."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Cable straight-arm pulldown, explosive", "reason": "no med ball", "kneeSafe": true },
-        { "name": "Band overhead slam", "reason": "no med ball", "kneeSafe": true }
-      ]
+        {
+          "name": "Cable straight-arm pulldown, explosive",
+          "reason": "no med ball",
+          "kneeSafe": true
+        },
+        {
+          "name": "Band overhead slam",
+          "reason": "no med ball",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "med-ball-side-jump",
       "name": "Med ball side jump",
-      "equipment": ["med-ball"],
-      "primaryMuscles": ["Glute medius", "Obliques"],
-      "secondaryMuscles": ["Quads"],
-      "tracks": ["reps"],
+      "equipment": [
+        "med-ball"
+      ],
+      "primaryMuscles": [
+        "Glute medius",
+        "Obliques"
+      ],
+      "secondaryMuscles": [
+        "Quads"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "quality", "label": "↑ Distance", "neverAddLoad": true, "note": "Not in Phase 1 blocks — available as an alternative once the knee settles." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Distance",
+        "neverAddLoad": true,
+        "note": "Not in Phase 1 blocks — available as an alternative once the knee settles."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
-      "alternatives": []
+      "alternatives": [],
+      "userExcluded": false
     },
-
     {
       "id": "trap-bar-deadlift",
       "name": "Trap bar deadlift",
-      "equipment": ["trap-bar"],
-      "primaryMuscles": ["Glutes", "Hamstrings"],
-      "secondaryMuscles": ["Quads", "Erectors", "Traps", "Grip"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "trap-bar"
+      ],
+      "primaryMuscles": [
+        "Glutes",
+        "Hamstrings"
+      ],
+      "secondaryMuscles": [
+        "Quads",
+        "Erectors",
+        "Traps",
+        "Grip"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [6, 8], "incrementKg": 2.5, "note": "The day's force-production lift. Hip-dominant and knee-friendly, which is why it survived the knee modifications intact. Heavy, but stop two reps short of failure." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          6,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Hip-dominant and knee-friendly, which is why it survived the knee modifications intact. Run it 6-8 and step it 2.5 kg at a time. Heavy, but stop two reps short of failure."
+      },
       "cue": "Push the floor away. Neutral spine, chest up, lock out tall.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Barbell Romanian deadlift", "reason": "no trap bar", "kneeSafe": true },
-        { "name": "Conventional deadlift", "reason": "no trap bar", "kneeSafe": true },
-        { "exerciseId": "hip-thrust", "name": "Heavy hip thrust", "reason": "lower back is fatigued", "kneeSafe": true }
-      ]
+        {
+          "name": "Barbell Romanian deadlift",
+          "reason": "no trap bar",
+          "kneeSafe": true
+        },
+        {
+          "name": "Conventional deadlift",
+          "reason": "no trap bar",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "hip-thrust",
+          "name": "Heavy hip thrust",
+          "reason": "lower back is fatigued",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": true,
+      "userExcludedReason": "Removed at the user's request — aggravated the lower back, and the single-leg RDL already covers the hinge."
     },
     {
       "id": "split-squat-box",
       "name": "Split squat to a box, flat-footed",
-      "equipment": ["dumbbell", "box"],
-      "primaryMuscles": ["Quads", "Glute max"],
-      "secondaryMuscles": ["Adductors"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Adductors"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2.5 kg/wk", "repRange": [8, 8], "incrementKg": 2.5, "note": "Knee-modified replacement for the heel-elevated version. Set the box where it's comfortable and lower it slightly each week as symptoms settle — depth is the first progression, load the second." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Knee-modified replacement for the heel-elevated version. Set the box where it's comfortable and lower it slightly each week as symptoms settle — depth is the first progression, load the second."
+      },
       "cue": "Flat back foot, torso tall, sit straight down to the box. No heel elevation in Phase 1.",
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "exerciseId": "single-leg-press-partial", "name": "Single-leg press, partial range", "reason": "knee sore — machine supports the back", "kneeSafe": true },
-        { "name": "Reverse lunge to a box", "reason": "balance is the limiter", "kneeSafe": true },
-        { "exerciseId": "db-step-up-low", "name": "DB step up, low box", "reason": "no space for split stance", "kneeSafe": true }
-      ]
+        {
+          "exerciseId": "single-leg-press-partial",
+          "name": "Single-leg press, partial range",
+          "reason": "knee sore — machine supports the back",
+          "kneeSafe": true
+        },
+        {
+          "name": "Reverse lunge to a box",
+          "reason": "balance is the limiter",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "db-step-up-low",
+          "name": "DB step up, low box",
+          "reason": "no space for split stance",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "hip-thrust",
       "name": "Hip thrust",
-      "equipment": ["barbell", "box"],
-      "primaryMuscles": ["Glute max"],
-      "secondaryMuscles": ["Hamstrings"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "barbell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Hamstrings"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [10, 10], "incrementKg": 5, "note": "Serious posterior chain loading with the knee barely involved — which is exactly why it's in the Phase 1 plan." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5–5 kg/wk",
+        "repRange": [
+          10,
+          10
+        ],
+        "incrementKg": 5,
+        "note": "Serious posterior chain loading with the knee barely involved — which is exactly why it's in the Phase 1 plan."
+      },
       "cue": "Pause a full second at the top. Ribs down, chin tucked.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Dumbbell glute bridge", "reason": "no bench or bar free", "kneeSafe": true },
-        { "name": "45° back extension", "reason": "hip thrust station taken", "kneeSafe": true },
-        { "name": "Cable pull-through", "reason": "hip thrust station taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Dumbbell glute bridge",
+          "reason": "no bench or bar free",
+          "kneeSafe": true
+        },
+        {
+          "name": "45° back extension",
+          "reason": "hip thrust station taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Cable pull-through",
+          "reason": "hip thrust station taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": true,
+      "userExcludedReason": "Removed at the user's request — does not want glute-focused hypertrophy work."
     },
     {
       "id": "single-leg-press-partial",
       "name": "Single-leg press, partial range",
-      "equipment": ["machine"],
-      "primaryMuscles": ["Quads", "Glute max"],
+      "equipment": [
+        "machine"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glute max"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["weight", "reps"],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 5 kg/wk", "repRange": [8, 10], "incrementKg": 5, "note": "Stop well short of deep. The machine supports your back, so this can be loaded hard without the depth that aggravates the knee." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 5 kg/wk",
+        "repRange": [
+          8,
+          10
+        ],
+        "incrementKg": 5,
+        "note": "Stop well short of deep. The machine supports your back, so this can be loaded hard without the depth that aggravates the knee."
+      },
       "cue": "Foot high on the platform. Do not let the knee travel past comfortable.",
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Double-leg press, partial range", "reason": "machine needs both legs", "kneeSafe": true },
-        { "exerciseId": "split-squat-box", "name": "Split squat to a box", "reason": "leg press taken", "kneeSafe": true },
-        { "exerciseId": "backward-sled-pull", "name": "Extra backward sled pull", "reason": "knee sore", "kneeSafe": true }
-      ]
+        {
+          "name": "Double-leg press, partial range",
+          "reason": "machine needs both legs",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "split-squat-box",
+          "name": "Split squat to a box",
+          "reason": "leg press taken",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "backward-sled-pull",
+          "name": "Extra backward sled pull",
+          "reason": "knee sore",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "db-step-up-low",
       "name": "DB step up, low box",
-      "equipment": ["dumbbell", "box"],
-      "primaryMuscles": ["Quads", "Glute max"],
-      "secondaryMuscles": ["Glute medius"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Glute medius"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2.5 kg/wk", "repRange": [8, 8], "incrementKg": 2.5, "note": "Knee-height or lower in Phase 1. Box height is a progression in its own right — raise it only after the knee settles." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Knee-height or lower in Phase 1. Box height is a progression in its own right — raise it only after the knee settles."
+      },
       "cue": "Step down slowly. The lowering is the part that builds control.",
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Reverse lunge to a box", "reason": "no box free", "kneeSafe": true },
-        { "exerciseId": "split-squat-box", "name": "Split squat to a box", "reason": "no box free", "kneeSafe": true }
-      ]
+        {
+          "name": "Reverse lunge to a box",
+          "reason": "no box free",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "split-squat-box",
+          "name": "Split squat to a box",
+          "reason": "no box free",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "single-leg-rdl",
       "name": "Single-leg RDL",
-      "equipment": ["dumbbell"],
-      "primaryMuscles": ["Hamstrings", "Glute max"],
-      "secondaryMuscles": ["Erectors", "Ankle stabilisers"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Hamstrings",
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Erectors",
+        "Ankle stabilisers"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2 kg/wk", "repRange": [8, 8], "incrementKg": 2, "note": "Trains the hip end of the hamstring. Nordics train the knee end. You need both." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2 kg/wk",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2,
+        "note": "Trains the hip end of the hamstring. Nordics train the knee end. You need both."
+      },
       "cue": "Hinge at the hip, flat back, slow on the way down.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "B-stance RDL", "reason": "balance is the limiter", "kneeSafe": true },
-        { "name": "Dumbbell RDL, both legs", "reason": "balance is the limiter", "kneeSafe": true },
-        { "name": "Cable single-leg RDL", "reason": "want constant tension", "kneeSafe": true }
-      ]
+        {
+          "name": "B-stance RDL",
+          "reason": "balance is the limiter",
+          "kneeSafe": true
+        },
+        {
+          "name": "Dumbbell RDL, both legs",
+          "reason": "balance is the limiter",
+          "kneeSafe": true
+        },
+        {
+          "name": "Cable single-leg RDL",
+          "reason": "want constant tension",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
-
     {
       "id": "spanish-squat-iso",
       "name": "Spanish squat isometric",
-      "equipment": ["band"],
-      "primaryMuscles": ["Quads"],
+      "equipment": [
+        "band"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["seconds"],
+      "tracks": [
+        "seconds"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Time, then band", "holdIncrementSeconds": 5, "note": "The best-tolerated quad loading available when the front of the knee is sore, and it often reduces pain during the set itself — that's expected, not a fluke. Progress hold time to 60s, then move to a stiffer band." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Time, then band",
+        "holdIncrementSeconds": 5,
+        "note": "The best-tolerated quad loading available when the front of the knee is sore, and it often reduces pain during the set itself — that's expected, not a fluke. Progress hold time to 60s, then move to a stiffer band."
+      },
       "cue": "Heavy band behind the knees, anchored in front. Shins vertical, sit back, hold around 45°.",
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "exerciseId": "wall-sit", "name": "Wall sit", "reason": "no band or anchor available", "kneeSafe": true },
-        { "name": "Leg extension isometric hold, partial range", "reason": "no band available", "kneeSafe": true }
-      ]
+        {
+          "exerciseId": "wall-sit",
+          "name": "Wall sit",
+          "reason": "no band or anchor available",
+          "kneeSafe": true
+        },
+        {
+          "name": "Leg extension isometric hold, partial range",
+          "reason": "no band available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "wall-sit",
       "name": "Wall sit at a comfortable angle",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Quads"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["seconds"],
+      "tracks": [
+        "seconds"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Time, then depth", "holdIncrementSeconds": 5, "note": "Home version of the Spanish squat. Go only as deep as stays quiet — shallow is fine, holding is the point." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Time, then depth",
+        "holdIncrementSeconds": 5,
+        "note": "Home version of the Spanish squat. Go only as deep as stays quiet — shallow is fine, holding is the point."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "exerciseId": "spanish-squat-iso", "name": "Spanish squat isometric", "reason": "at the gym with a band", "kneeSafe": true }
-      ]
+        {
+          "exerciseId": "spanish-squat-iso",
+          "name": "Spanish squat isometric",
+          "reason": "at the gym with a band",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "backward-sled-pull",
       "name": "Backward sled pull",
-      "equipment": ["sled"],
-      "primaryMuscles": ["Quads"],
-      "secondaryMuscles": ["Calves"],
-      "tracks": ["weight", "distance"],
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
+      "secondaryMuscles": [
+        "Calves"
+      ],
+      "tracks": [
+        "weight",
+        "distance"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Load or distance", "incrementKg": 5, "note": "Loads the quad hard with very little compression through the knee joint. The best knee exercise in the gym and the last thing to cut when short on time." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Load or distance",
+        "incrementKg": 5,
+        "note": "Loads the quad hard with very little compression through the knee joint. The best knee exercise in the gym and the last thing to cut when short on time."
+      },
       "cue": "Walk backwards, stay low, full knee extension each step.",
       "kneeSensitive": false,
       "painTracked": true,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Backward incline treadmill walk", "reason": "no sled available", "kneeSafe": true },
-        { "name": "Reverse Nordic, partial range", "reason": "no sled available", "kneeSafe": false }
-      ]
+        {
+          "name": "Backward incline treadmill walk",
+          "reason": "no sled available",
+          "kneeSafe": true
+        },
+        {
+          "name": "Reverse Nordic, partial range",
+          "reason": "no sled available",
+          "kneeSafe": false
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "forward-sled-push",
       "name": "Forward sled push",
-      "equipment": ["sled"],
-      "primaryMuscles": ["Quads", "Glutes"],
-      "secondaryMuscles": ["Calves", "Hip flexors"],
-      "tracks": ["weight", "distance"],
+      "equipment": [
+        "sled"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Calves",
+        "Hip flexors"
+      ],
+      "tracks": [
+        "weight",
+        "distance"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Load or distance", "incrementKg": 5, "note": "Lighter and faster than the Day 1 heavy push — this one is about repeated drives, not maximal force." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Load or distance",
+        "incrementKg": 5,
+        "note": "Lighter and faster than the Day 1 heavy push — this one is about repeated drives, not maximal force."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Incline treadmill push-walk", "reason": "no sled available", "kneeSafe": true }
-      ]
+        {
+          "name": "Incline treadmill push-walk",
+          "reason": "no sled available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
-
     {
       "id": "nordic-curl",
       "name": "Nordic hamstring curl",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Hamstrings"],
-      "secondaryMuscles": ["Calves"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Hamstrings"
+      ],
+      "secondaryMuscles": [
+        "Calves"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Reps & range", "neverAddLoad": true, "note": "NEVER add weight. Bodyweight is already near the limit of what a hamstring can control eccentrically. Progress by lowering further under control and adding reps: 3×3 → 3×6 → 4×6. The best-evidenced hamstring injury reducer there is, and seriously sore for the first fortnight — which is why it sits six days from the match." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Reps & range",
+        "neverAddLoad": true,
+        "note": "NEVER add weight. Bodyweight is already near the limit of what a hamstring can control eccentrically. Progress by lowering further under control and adding reps: 3×3 → 3×6 → 4×6. The best-evidenced hamstring injury reducer there is, and seriously sore for the first fortnight — which is why it sits six days from the match."
+      },
       "cue": "Lower over four seconds. Hips straight, catch yourself with your hands.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Sliding leg curl", "reason": "no partner or anchor", "kneeSafe": true },
-        { "name": "Razor curl", "reason": "no partner or anchor", "kneeSafe": true },
-        { "name": "Glute-ham raise", "reason": "GHR machine available", "kneeSafe": true }
-      ]
+        {
+          "name": "Sliding leg curl",
+          "reason": "no partner or anchor",
+          "kneeSafe": true
+        },
+        {
+          "name": "Razor curl",
+          "reason": "no partner or anchor",
+          "kneeSafe": true
+        },
+        {
+          "name": "Glute-ham raise",
+          "reason": "GHR machine available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": true,
+      "userExcludedReason": "Removed at the user's request — no practical setup. Replaced by the seated leg curl with a slow eccentric."
     },
     {
       "id": "copenhagen-plank",
       "name": "Copenhagen plank",
-      "equipment": ["bodyweight", "box"],
-      "primaryMuscles": ["Adductors"],
-      "secondaryMuscles": ["Obliques"],
-      "tracks": ["seconds"],
+      "equipment": [
+        "bodyweight",
+        "box"
+      ],
+      "primaryMuscles": [
+        "Adductors"
+      ],
+      "secondaryMuscles": [
+        "Obliques"
+      ],
+      "tracks": [
+        "seconds"
+      ],
       "unilateral": true,
-      "progression": { "type": "time", "label": "↑ Lever length", "holdIncrementSeconds": 5, "note": "The lever is the progression, not weight and not really time. Start knee-on-bench; after four sessions holding the top of the time range, move toward ankle-supported. Strong evidence behind it for groin injury prevention." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Lever length",
+        "holdIncrementSeconds": 5,
+        "note": "The lever is the progression, not weight and not really time. Start knee-on-bench; after four sessions holding the top of the time range, move toward ankle-supported. Strong evidence behind it for groin injury prevention."
+      },
       "cue": "Start on the short lever — knee on the bench. Hips high, body in one line.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Adductor machine", "reason": "no bench free", "kneeSafe": true },
-        { "name": "Side plank with top-leg raise", "reason": "Copenhagen too hard today", "kneeSafe": true },
-        { "name": "Banded adduction, standing", "reason": "no bench free", "kneeSafe": true }
-      ]
+        {
+          "name": "Adductor machine",
+          "reason": "no bench free",
+          "kneeSafe": true
+        },
+        {
+          "name": "Side plank with top-leg raise",
+          "reason": "Copenhagen too hard today",
+          "kneeSafe": true
+        },
+        {
+          "name": "Banded adduction, standing",
+          "reason": "no bench free",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
-
     {
       "id": "assisted-pull-up",
       "name": "Assisted pull-up",
-      "equipment": ["machine"],
-      "primaryMuscles": ["Lats", "Biceps"],
-      "secondaryMuscles": ["Rhomboids", "Mid traps"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "machine"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Rhomboids",
+        "Mid traps"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↓ Assistance 2.5 kg/wk", "repRange": [6, 8], "incrementKg": 2.5, "inverse": true, "note": "The number on the machine goes DOWN each week, not up. Still progressive overload, just running backwards. Unassisted is the target." },
+      "progression": {
+        "type": "load",
+        "label": "↓ Assistance 2.5 kg/wk",
+        "repRange": [
+          6,
+          8
+        ],
+        "incrementKg": 2.5,
+        "inverse": true,
+        "note": "The number on the machine goes DOWN each week, not up. Still progressive overload, just running backwards. Unassisted is the target."
+      },
       "cue": "Full hang at the bottom, chest to the bar at the top.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Lat pulldown", "reason": "assisted machine taken", "kneeSafe": true },
-        { "name": "Banded pull-up", "reason": "assisted machine taken", "kneeSafe": true },
-        { "name": "Inverted row", "reason": "no pull-up station", "kneeSafe": true }
-      ]
+        {
+          "name": "Lat pulldown",
+          "reason": "assisted machine taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Banded pull-up",
+          "reason": "assisted machine taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Inverted row",
+          "reason": "no pull-up station",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "incline-bench-smith",
       "name": "Incline bench press",
-      "equipment": ["smith"],
-      "primaryMuscles": ["Upper pec", "Front delt"],
-      "secondaryMuscles": ["Triceps"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "smith"
+      ],
+      "primaryMuscles": [
+        "Upper pec",
+        "Front delt"
+      ],
+      "secondaryMuscles": [
+        "Triceps"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5 kg/wk", "repRange": [6, 8], "incrementKg": 2.5, "note": "Your only horizontal press. Keep press volume at roughly half your pull volume across the week." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          6,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Your only horizontal press. Keep press volume at roughly half your pull volume across the week."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Incline dumbbell press", "reason": "Smith machine taken", "kneeSafe": true },
-        { "name": "Incline barbell press", "reason": "Smith machine taken", "kneeSafe": true },
-        { "name": "Chest press machine", "reason": "shoulder is irritable", "kneeSafe": true }
-      ]
+        {
+          "name": "Incline dumbbell press",
+          "reason": "Smith machine taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Incline barbell press",
+          "reason": "Smith machine taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Chest press machine",
+          "reason": "shoulder is irritable",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "single-arm-row",
       "name": "Single-arm row",
-      "equipment": ["dumbbell"],
-      "primaryMuscles": ["Lats", "Rhomboids"],
-      "secondaryMuscles": ["Mid traps", "Rear delt", "Biceps"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Rhomboids"
+      ],
+      "secondaryMuscles": [
+        "Mid traps",
+        "Rear delt",
+        "Biceps"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2.5 kg/wk", "repRange": [8, 10], "incrementKg": 2.5, "note": "Pull to the hip, not the chest. Let the shoulder blade travel." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          8,
+          10
+        ],
+        "incrementKg": 2.5,
+        "note": "Pull to the hip, not the chest. Let the shoulder blade travel."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Chest-supported row", "reason": "lower back is fatigued", "kneeSafe": true },
-        { "name": "Single-arm cable row", "reason": "want constant tension", "kneeSafe": true },
-        { "name": "Meadows row", "reason": "landmine free", "kneeSafe": true }
-      ]
+        {
+          "name": "Chest-supported row",
+          "reason": "lower back is fatigued",
+          "kneeSafe": true
+        },
+        {
+          "name": "Single-arm cable row",
+          "reason": "want constant tension",
+          "kneeSafe": true
+        },
+        {
+          "name": "Meadows row",
+          "reason": "landmine free",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "half-kneel-landmine-press",
       "name": "Half-kneeling landmine press",
-      "equipment": ["landmine"],
-      "primaryMuscles": ["Front delt", "Upper pec"],
-      "secondaryMuscles": ["Triceps", "Serratus", "Obliques"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "landmine"
+      ],
+      "primaryMuscles": [
+        "Front delt",
+        "Upper pec"
+      ],
+      "secondaryMuscles": [
+        "Triceps",
+        "Serratus",
+        "Obliques"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ Add a plate", "repRange": [8, 8], "incrementKg": 2.5, "note": "Half-kneeling forces the trunk to brace — it's a core exercise wearing a press costume." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Add a plate",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Half-kneeling forces the trunk to brace — it's a core exercise wearing a press costume."
+      },
       "cue": "Ribs down, glute of the back leg switched on, press across the body.",
       "kneeSensitive": true,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Half-kneeling DB shoulder press", "reason": "no landmine", "kneeSafe": true },
-        { "name": "Standing landmine press", "reason": "kneeling is uncomfortable on the knee", "kneeSafe": true }
-      ]
+        {
+          "name": "Half-kneeling DB shoulder press",
+          "reason": "no landmine",
+          "kneeSafe": true
+        },
+        {
+          "name": "Standing landmine press",
+          "reason": "kneeling is uncomfortable on the knee",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "cable-lateral-raise",
       "name": "Cable lateral raise",
-      "equipment": ["cable"],
-      "primaryMuscles": ["Side delt"],
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "Side delt"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["weight", "reps"],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ Reps, then load", "repRange": [12, 15], "incrementKg": 1.25, "note": "Small muscle, small jumps. Fill the rep range before adding anything." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Reps, then load",
+        "repRange": [
+          12,
+          15
+        ],
+        "incrementKg": 1.25,
+        "note": "Small muscle, small jumps. Fill the rep range before adding anything."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Dumbbell lateral raise", "reason": "cables taken", "kneeSafe": true },
-        { "name": "Machine lateral raise", "reason": "cables taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Dumbbell lateral raise",
+          "reason": "cables taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Machine lateral raise",
+          "reason": "cables taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "rear-delt-fly",
       "name": "Rear delt fly",
-      "equipment": ["cable", "dumbbell"],
-      "primaryMuscles": ["Rear delt"],
-      "secondaryMuscles": ["Rhomboids", "Mid traps"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "cable",
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Rear delt"
+      ],
+      "secondaryMuscles": [
+        "Rhomboids",
+        "Mid traps"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Reps, then load", "repRange": [15, 15], "incrementKg": 1.25, "note": "This plus your rows is what builds the shoulder-to-waist line, and what holds posture together at top speed." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Reps, then load",
+        "repRange": [
+          15,
+          15
+        ],
+        "incrementKg": 1.25,
+        "note": "This plus your rows is what builds the shoulder-to-waist line, and what holds posture together at top speed."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Face pull", "reason": "want more external rotation", "kneeSafe": true },
-        { "name": "Reverse pec deck", "reason": "cables taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Face pull",
+          "reason": "want more external rotation",
+          "kneeSafe": true
+        },
+        {
+          "name": "Reverse pec deck",
+          "reason": "cables taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "farmers-carry",
       "name": "Farmer's carry",
-      "equipment": ["dumbbell"],
-      "primaryMuscles": ["Traps", "Grip"],
-      "secondaryMuscles": ["Obliques", "Glutes"],
-      "tracks": ["weight", "distance"],
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Traps",
+        "Grip"
+      ],
+      "secondaryMuscles": [
+        "Obliques",
+        "Glutes"
+      ],
+      "tracks": [
+        "weight",
+        "distance"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "incrementKg": 2.5, "note": "The cheapest proximal strength there is: trunk, scapulae and grip all braced under real load while walking." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5–5 kg/wk",
+        "incrementKg": 2.5,
+        "note": "The cheapest proximal strength there is: trunk, scapulae and grip all braced under real load while walking."
+      },
       "cue": "Heavy. Walk tall, don't lean.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Suitcase carry, one side at a time", "reason": "want more anti-lateral-flexion", "kneeSafe": true },
-        { "name": "Trap bar carry", "reason": "dumbbells not heavy enough", "kneeSafe": true },
-        { "name": "Heavy dumbbell hold in place", "reason": "no walking space", "kneeSafe": true }
-      ]
+        {
+          "name": "Suitcase carry, one side at a time",
+          "reason": "want more anti-lateral-flexion",
+          "kneeSafe": true
+        },
+        {
+          "name": "Trap bar carry",
+          "reason": "dumbbells not heavy enough",
+          "kneeSafe": true
+        },
+        {
+          "name": "Heavy dumbbell hold in place",
+          "reason": "no walking space",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "seated-row",
       "name": "Seated row",
-      "equipment": ["cable"],
-      "primaryMuscles": ["Lats", "Rhomboids"],
-      "secondaryMuscles": ["Mid traps", "Biceps"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Rhomboids"
+      ],
+      "secondaryMuscles": [
+        "Mid traps",
+        "Biceps"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Small increments", "repRange": [10, 10], "incrementKg": 2.5, "note": "Friday is a primer, not a test. Nothing to failure." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Small increments",
+        "repRange": [
+          10,
+          10
+        ],
+        "incrementKg": 2.5,
+        "note": "Friday is a primer, not a test. Nothing to failure."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Chest-supported row", "reason": "cable row taken", "kneeSafe": true },
-        { "name": "Single-arm cable row", "reason": "cable row taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Chest-supported row",
+          "reason": "cable row taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Single-arm cable row",
+          "reason": "cable row taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "db-shoulder-press",
       "name": "DB shoulder press",
-      "equipment": ["dumbbell"],
-      "primaryMuscles": ["Front delt", "Side delt"],
-      "secondaryMuscles": ["Triceps"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Front delt",
+        "Side delt"
+      ],
+      "secondaryMuscles": [
+        "Triceps"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2 kg/wk", "repRange": [8, 10], "incrementKg": 2, "note": "Dumbbell increments are usually 2 kg per hand. Fill the range first." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2 kg/wk",
+        "repRange": [
+          8,
+          10
+        ],
+        "incrementKg": 2,
+        "note": "Dumbbell increments are usually 2 kg per hand. Fill the range first."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Machine shoulder press", "reason": "dumbbells taken", "kneeSafe": true },
-        { "name": "Seated barbell press", "reason": "dumbbells taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Machine shoulder press",
+          "reason": "dumbbells taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Seated barbell press",
+          "reason": "dumbbells taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "seated-incline-db-curl",
       "name": "Seated incline DB curl",
-      "equipment": ["dumbbell"],
-      "primaryMuscles": ["Biceps"],
-      "secondaryMuscles": ["Brachialis"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Brachialis"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Reps, then load", "repRange": [10, 12], "incrementKg": 2, "note": "The incline puts the long head on stretch — that's the point of doing it seated back rather than standing." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Reps, then load",
+        "repRange": [
+          10,
+          12
+        ],
+        "incrementKg": 2,
+        "note": "The incline puts the long head on stretch — that's the point of doing it seated back rather than standing."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Standing dumbbell curl", "reason": "no incline bench free", "kneeSafe": true },
-        { "name": "Cable curl", "reason": "want constant tension", "kneeSafe": true }
-      ]
+        {
+          "name": "Standing dumbbell curl",
+          "reason": "no incline bench free",
+          "kneeSafe": true
+        },
+        {
+          "name": "Cable curl",
+          "reason": "want constant tension",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "overhead-triceps-extension",
       "name": "Overhead triceps extension",
-      "equipment": ["cable", "dumbbell"],
-      "primaryMuscles": ["Triceps — long head"],
+      "equipment": [
+        "cable",
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Triceps — long head"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["weight", "reps"],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Reps, then load", "repRange": [10, 12], "incrementKg": 2.5, "note": "Overhead position loads the long head, which the pressing work doesn't reach." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Reps, then load",
+        "repRange": [
+          10,
+          12
+        ],
+        "incrementKg": 2.5,
+        "note": "Overhead position loads the long head, which the pressing work doesn't reach."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Skullcrusher", "reason": "cables taken", "kneeSafe": true },
-        { "name": "Cable pushdown", "reason": "elbows irritable overhead", "kneeSafe": true }
-      ]
+        {
+          "name": "Skullcrusher",
+          "reason": "cables taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Cable pushdown",
+          "reason": "elbows irritable overhead",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
-
     {
       "id": "pallof-press",
       "name": "Pallof press",
-      "equipment": ["cable"],
-      "primaryMuscles": ["Obliques"],
-      "secondaryMuscles": ["Transverse abs"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "Obliques"
+      ],
+      "secondaryMuscles": [
+        "Transverse abs"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ Small increments", "repRange": [10, 10], "incrementKg": 2.5, "note": "Anti-rotation. The goal is not moving, so load only as far as you can stay square." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Small increments",
+        "repRange": [
+          10,
+          10
+        ],
+        "incrementKg": 2.5,
+        "note": "Anti-rotation. The goal is not moving, so load only as far as you can stay square."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Banded Pallof press", "reason": "cables taken", "kneeSafe": true },
-        { "name": "Suitcase carry", "reason": "cables taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Banded Pallof press",
+          "reason": "cables taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Suitcase carry",
+          "reason": "cables taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "landmine-rotation",
       "name": "Landmine rotation",
-      "equipment": ["landmine"],
-      "primaryMuscles": ["Obliques"],
-      "secondaryMuscles": ["Transverse abs", "Delts"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "landmine"
+      ],
+      "primaryMuscles": [
+        "Obliques"
+      ],
+      "secondaryMuscles": [
+        "Transverse abs",
+        "Delts"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ Slowly", "repRange": [8, 8], "incrementKg": 2.5, "note": "Striking a ball is a rotational act — everything your legs generate passes through here. Load this conservatively; speed of rotation matters more than weight." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Slowly",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Striking a ball is a rotational act — everything your legs generate passes through here. Load this conservatively; speed of rotation matters more than weight."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Cable rotational chop", "reason": "no landmine", "kneeSafe": true },
-        { "name": "Med ball rotational throw", "reason": "want it more explosive", "kneeSafe": true }
-      ]
+        {
+          "name": "Cable rotational chop",
+          "reason": "no landmine",
+          "kneeSafe": true
+        },
+        {
+          "name": "Med ball rotational throw",
+          "reason": "want it more explosive",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "split-stance-oh-rotation",
       "name": "Split-stance overhead rotation",
-      "equipment": ["plate"],
-      "primaryMuscles": ["Obliques"],
-      "secondaryMuscles": ["Thoracic spine", "Delts"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "plate"
+      ],
+      "primaryMuscles": [
+        "Obliques"
+      ],
+      "secondaryMuscles": [
+        "Thoracic spine",
+        "Delts"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ Slowly", "repRange": [8, 8], "incrementKg": 2.5, "note": "Rotation under an overhead load — trains the thoracic spine to turn while the hips stay stable." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Slowly",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Rotation under an overhead load — trains the thoracic spine to turn while the hips stay stable."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Half-kneeling overhead plate rotation", "reason": "want more hip stability", "kneeSafe": false }
-      ]
+        {
+          "name": "Half-kneeling overhead plate rotation",
+          "reason": "want more hip stability",
+          "kneeSafe": false
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "plated-woodchop",
       "name": "Plated woodchop",
-      "equipment": ["plate"],
-      "primaryMuscles": ["Obliques"],
-      "secondaryMuscles": ["Rectus abs"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "plate"
+      ],
+      "primaryMuscles": [
+        "Obliques"
+      ],
+      "secondaryMuscles": [
+        "Rectus abs"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ Slowly", "repRange": [10, 10], "incrementKg": 2.5, "note": "First to cut when short on time." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Slowly",
+        "repRange": [
+          10,
+          10
+        ],
+        "incrementKg": 2.5,
+        "note": "First to cut when short on time."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Cable woodchop", "reason": "want constant tension", "kneeSafe": true }
-      ]
+        {
+          "name": "Cable woodchop",
+          "reason": "want constant tension",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "cable-crunch",
       "name": "Cable crunch",
-      "equipment": ["cable"],
-      "primaryMuscles": ["Rectus abs"],
+      "equipment": [
+        "cable"
+      ],
+      "primaryMuscles": [
+        "Rectus abs"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["weight", "reps"],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ Small increments", "repRange": [12, 12], "incrementKg": 2.5, "note": "The one piece of direct spinal flexion in the week. Everything else in the trunk work is anti-movement." },
+      "progression": {
+        "type": "load",
+        "label": "↑ Small increments",
+        "repRange": [
+          12,
+          12
+        ],
+        "incrementKg": 2.5,
+        "note": "The one piece of direct spinal flexion in the week. Everything else in the trunk work is anti-movement."
+      },
       "kneeSensitive": true,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Ab wheel rollout", "reason": "cables taken", "kneeSafe": false },
-        { "name": "Weighted decline sit-up", "reason": "cables taken", "kneeSafe": true },
-        { "name": "Hanging knee raise", "reason": "kneeling is uncomfortable", "kneeSafe": true }
-      ]
+        {
+          "name": "Ab wheel rollout",
+          "reason": "cables taken",
+          "kneeSafe": false
+        },
+        {
+          "name": "Weighted decline sit-up",
+          "reason": "cables taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Hanging knee raise",
+          "reason": "kneeling is uncomfortable",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
-
     {
       "id": "calf-raise-smith",
       "name": "Calf raise",
-      "equipment": ["smith"],
-      "primaryMuscles": ["Gastrocnemius", "Soleus"],
+      "equipment": [
+        "smith"
+      ],
+      "primaryMuscles": [
+        "Gastrocnemius",
+        "Soleus"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["weight", "reps"],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "load", "label": "↑ 2.5–5 kg/wk", "repRange": [12, 12], "incrementKg": 5, "note": "Slow. Calves and Achilles absorb more running load than anything else you own, and they're the tissue that eats the most sprinting volume." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5–5 kg/wk",
+        "repRange": [
+          12,
+          12
+        ],
+        "incrementKg": 5,
+        "note": "Slow. Calves and Achilles absorb more running load than anything else you own, and they're the tissue that eats the most sprinting volume."
+      },
       "cue": "Full stretch at the bottom, pause at the top.",
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Standing calf machine", "reason": "Smith taken", "kneeSafe": true },
-        { "name": "Single-leg calf raise, bodyweight", "reason": "Smith taken", "kneeSafe": true },
-        { "name": "Seated calf raise", "reason": "want more soleus", "kneeSafe": true }
-      ]
+        {
+          "name": "Standing calf machine",
+          "reason": "Smith taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Single-leg calf raise, bodyweight",
+          "reason": "Smith taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Seated calf raise",
+          "reason": "want more soleus",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "tib-raise",
       "name": "Tib raise",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Tibialis anterior"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Tibialis anterior"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["reps"],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Reps", "note": "Back against a wall, heels out, toes up. Builds shin tolerance for deceleration and landing." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Reps",
+        "note": "Back against a wall, heels out, toes up. Builds shin tolerance for deceleration and landing."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Banded dorsiflexion", "reason": "want it loaded", "kneeSafe": true },
-        { "name": "Tib bar raise", "reason": "equipment available", "kneeSafe": true }
-      ]
+        {
+          "name": "Banded dorsiflexion",
+          "reason": "want it loaded",
+          "kneeSafe": true
+        },
+        {
+          "name": "Tib bar raise",
+          "reason": "equipment available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "interval-conditioning",
       "name": "Repeated-effort intervals — sled or ski erg",
-      "equipment": ["sled", "erg"],
-      "primaryMuscles": ["Full body"],
-      "secondaryMuscles": ["Aerobic"],
-      "tracks": ["seconds"],
+      "equipment": [
+        "sled",
+        "erg"
+      ],
+      "primaryMuscles": [
+        "Full body"
+      ],
+      "secondaryMuscles": [
+        "Aerobic"
+      ],
+      "tracks": [
+        "seconds"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Reps or shorter rest", "neverAddLoad": true, "note": "Sprint, recover badly, sprint again — the energy system football actually runs on. NOT the bike: the cycle commute already supplies that dose, and holding that dose steady is part of the knee plan." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Reps or shorter rest",
+        "neverAddLoad": true,
+        "note": "Sprint, recover badly, sprint again — the energy system football actually runs on. NOT the bike: the cycle commute already supplies that dose, and holding that dose steady is part of the knee plan."
+      },
       "kneeSensitive": false,
       "painTracked": false,
       "phase1Excluded": false,
       "alternatives": [
-        { "name": "Rower intervals", "reason": "ski erg taken", "kneeSafe": false },
-        { "name": "Battle rope intervals", "reason": "ergs taken", "kneeSafe": true },
-        { "name": "Incline treadmill intervals", "reason": "ergs taken", "kneeSafe": true }
-      ]
+        {
+          "name": "Rower intervals",
+          "reason": "ski erg taken",
+          "kneeSafe": false
+        },
+        {
+          "name": "Battle rope intervals",
+          "reason": "ergs taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Incline treadmill intervals",
+          "reason": "ergs taken",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
-
     {
       "id": "heel-elevated-split-squat",
       "name": "Heel-elevated split squat",
-      "equipment": ["dumbbell"],
-      "primaryMuscles": ["Quads", "Glute max"],
-      "secondaryMuscles": ["Adductors"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "dumbbell"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Adductors"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2.5 kg/wk", "repRange": [6, 8], "incrementKg": 2.5, "note": "Deferred: heel elevation increases knee travel and therefore front-of-knee load. Reintroduce week 5 at low elevation, 2 sets, no added weight." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          6,
+          8
+        ],
+        "incrementKg": 2.5,
+        "note": "Deferred: heel elevation increases knee travel and therefore front-of-knee load. Reintroduce week 5 at low elevation, 2 sets, no added weight."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 5,
-      "alternatives": [{ "exerciseId": "split-squat-box", "name": "Split squat to a box, flat-footed", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "split-squat-box",
+          "name": "Split squat to a box, flat-footed",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "kb-step-down",
       "name": "KB step down",
-      "equipment": ["kettlebell", "box"],
-      "primaryMuscles": ["Quads"],
-      "secondaryMuscles": ["Glute max", "Glute medius"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "kettlebell",
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
+      "secondaryMuscles": [
+        "Glute max",
+        "Glute medius"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2 kg/wk", "repRange": [8, 8], "incrementKg": 2, "note": "Deferred: slow eccentric knee flexion under load. Reintroduce week 5 from a low box." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2 kg/wk",
+        "repRange": [
+          8,
+          8
+        ],
+        "incrementKg": 2,
+        "note": "Deferred: slow eccentric knee flexion under load. Reintroduce week 5 from a low box."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 5,
-      "alternatives": [{ "exerciseId": "db-step-up-low", "name": "DB step up, low box", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "db-step-up-low",
+          "name": "DB step up, low box",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "box-jump",
       "name": "Box jump",
-      "equipment": ["box"],
-      "primaryMuscles": ["Quads", "Glutes"],
-      "secondaryMuscles": ["Calves"],
-      "tracks": ["reps"],
+      "equipment": [
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Calves"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Height, slowly", "neverAddLoad": true, "note": "Deferred: landing is repeated high-force knee flexion. Reintroduce week 6 on a low box, 3×3. Always step down — never jump down." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Height, slowly",
+        "neverAddLoad": true,
+        "note": "Deferred: landing is repeated high-force knee flexion. Reintroduce week 6 on a low box, 3×3. Always step down — never jump down."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 6,
-      "alternatives": [{ "exerciseId": "pogo-jump", "name": "Pogo jump", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "pogo-jump",
+          "name": "Pogo jump",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "single-leg-box-jump",
       "name": "Single-leg box jump",
-      "equipment": ["box"],
-      "primaryMuscles": ["Quads", "Glutes"],
-      "secondaryMuscles": ["Calves", "Glute medius"],
-      "tracks": ["reps"],
+      "equipment": [
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Calves",
+        "Glute medius"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "quality", "label": "↑ Height, slowly", "neverAddLoad": true, "note": "Deferred to week 6, after the double-leg version is tolerated." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Height, slowly",
+        "neverAddLoad": true,
+        "note": "Deferred to week 6, after the double-leg version is tolerated."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 6,
-      "alternatives": [{ "exerciseId": "skater-jump", "name": "Skater jump", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "skater-jump",
+          "name": "Skater jump",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "reactive-box-jump",
       "name": "Reactive box jump",
-      "equipment": ["box"],
-      "primaryMuscles": ["Quads", "Glutes"],
-      "secondaryMuscles": ["Calves"],
-      "tracks": ["reps"],
+      "equipment": [
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Calves"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Ground contact", "neverAddLoad": true, "note": "Deferred to week 6. Trains the stretch reflex — the opposite quality to the seated box jump. Alternate the two once both are back." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Ground contact",
+        "neverAddLoad": true,
+        "note": "Deferred to week 6. Trains the stretch reflex — the opposite quality to the seated box jump. Alternate the two once both are back."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 6,
-      "alternatives": []
+      "alternatives": [],
+      "userExcluded": false
     },
     {
       "id": "seated-box-jump",
       "name": "Seated box jump",
-      "equipment": ["box"],
-      "primaryMuscles": ["Quads", "Glutes"],
+      "equipment": [
+        "box"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["reps"],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Height, slowly", "neverAddLoad": true, "note": "Deferred to week 6. Killing the stretch reflex trains pure starting strength." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Height, slowly",
+        "neverAddLoad": true,
+        "note": "Deferred to week 6. Killing the stretch reflex trains pure starting strength."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 6,
-      "alternatives": []
+      "alternatives": [],
+      "userExcluded": false
     },
     {
       "id": "broad-jump-pogo",
       "name": "Broad jump → pogo jump",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Glutes", "Quads"],
-      "secondaryMuscles": ["Calves", "Hamstrings"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Glutes",
+        "Quads"
+      ],
+      "secondaryMuscles": [
+        "Calves",
+        "Hamstrings"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "quality", "label": "↑ Distance", "neverAddLoad": true, "note": "Deferred to week 6. The broad jump landing is a hard deceleration." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Distance",
+        "neverAddLoad": true,
+        "note": "Deferred to week 6. The broad jump landing is a hard deceleration."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 6,
-      "alternatives": [{ "exerciseId": "pogo-jump", "name": "Pogo jump", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "pogo-jump",
+          "name": "Pogo jump",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "deep-hack-squat-20",
       "name": "Deep hack squat @ 20% bodyweight",
-      "equipment": ["machine"],
-      "primaryMuscles": ["Quads"],
-      "secondaryMuscles": ["Glute max", "Adductors"],
-      "tracks": ["weight", "reps"],
+      "equipment": [
+        "machine"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
+      "secondaryMuscles": [
+        "Glute max",
+        "Adductors"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Range", "note": "Deferred: a deep-range knee-health tool, which is the wrong range while symptomatic. Reintroduce week 7 at half the range you eventually want. Note this is a DIFFERENT exercise from a heavy hack squat — light load, deep range, tolerance-building." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Range",
+        "note": "Deferred: a deep-range knee-health tool, which is the wrong range while symptomatic. Reintroduce week 7 at half the range you eventually want. Note this is a DIFFERENT exercise from a heavy hack squat — light load, deep range, tolerance-building."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 7,
-      "alternatives": [{ "exerciseId": "spanish-squat-iso", "name": "Spanish squat isometric", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "spanish-squat-iso",
+          "name": "Spanish squat isometric",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "descending-lateral-jump",
       "name": "Descending lateral jump",
-      "equipment": ["box"],
-      "primaryMuscles": ["Glute medius", "Quads"],
-      "secondaryMuscles": ["Adductors", "Calves"],
-      "tracks": ["reps"],
+      "equipment": [
+        "box"
+      ],
+      "primaryMuscles": [
+        "Glute medius",
+        "Quads"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Calves"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "quality", "label": "↑ Quiet landings", "neverAddLoad": true, "note": "Deferred to week 8. Land quietly — noise is uncontrolled force. The training effect and the risk both sit in the landing." },
+      "progression": {
+        "type": "quality",
+        "label": "↑ Quiet landings",
+        "neverAddLoad": true,
+        "note": "Deferred to week 8. Land quietly — noise is uncontrolled force. The training effect and the risk both sit in the landing."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 8,
-      "alternatives": [{ "exerciseId": "skater-jump", "name": "Skater jump, stick each landing", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "skater-jump",
+          "name": "Skater jump, stick each landing",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "sissy-squat",
       "name": "Sissy squat",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Quads"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["reps"],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": false,
-      "progression": { "type": "time", "label": "↑ Range, then reps", "note": "Deferred to week 9+: the highest front-of-knee load in the whole programme. Bodyweight, partial range, no rush." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Range, then reps",
+        "note": "Deferred to week 9+: the highest front-of-knee load in the whole programme. Bodyweight, partial range, no rush."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 9,
-      "alternatives": [{ "exerciseId": "spanish-squat-iso", "name": "Spanish squat isometric", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "spanish-squat-iso",
+          "name": "Spanish squat isometric",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "pistol-squat",
       "name": "Pistol squat",
-      "equipment": ["bodyweight"],
-      "primaryMuscles": ["Quads", "Glute max"],
-      "secondaryMuscles": ["Adductors", "Ankle stabilisers"],
-      "tracks": ["reps"],
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glute max"
+      ],
+      "secondaryMuscles": [
+        "Adductors",
+        "Ankle stabilisers"
+      ],
+      "tracks": [
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "time", "label": "↑ Range, then reps", "note": "Deferred to week 9+. Deep, single-leg and unsupported — the last thing to come back." },
+      "progression": {
+        "type": "time",
+        "label": "↑ Range, then reps",
+        "note": "Deferred to week 9+. Deep, single-leg and unsupported — the last thing to come back."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 9,
-      "alternatives": [{ "exerciseId": "split-squat-box", "name": "Split squat to a box", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "split-squat-box",
+          "name": "Split squat to a box",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     },
     {
       "id": "single-leg-leg-extension",
       "name": "Single-leg leg extension",
-      "equipment": ["machine"],
-      "primaryMuscles": ["Quads"],
+      "equipment": [
+        "machine"
+      ],
+      "primaryMuscles": [
+        "Quads"
+      ],
       "secondaryMuscles": [],
-      "tracks": ["weight", "reps"],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
       "unilateral": true,
-      "progression": { "type": "load", "label": "↑ 2.5 kg/wk", "repRange": [10, 12], "incrementKg": 2.5, "note": "Deferred to week 9+: high kneecap load for what it returns while symptomatic." },
+      "progression": {
+        "type": "load",
+        "label": "↑ 2.5 kg/wk",
+        "repRange": [
+          10,
+          12
+        ],
+        "incrementKg": 2.5,
+        "note": "Deferred to week 9+: high kneecap load for what it returns while symptomatic."
+      },
       "kneeSensitive": true,
       "painTracked": true,
       "phase1Excluded": true,
       "reintroduceWeek": 9,
-      "alternatives": [{ "exerciseId": "single-leg-press-partial", "name": "Single-leg press, partial range", "reason": "Phase 1 replacement", "kneeSafe": true }]
+      "alternatives": [
+        {
+          "exerciseId": "single-leg-press-partial",
+          "name": "Single-leg press, partial range",
+          "reason": "Phase 1 replacement",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
+    },
+    {
+      "id": "seated-leg-curl",
+      "name": "Seated leg curl",
+      "equipment": [
+        "machine"
+      ],
+      "primaryMuscles": [
+        "Hamstrings"
+      ],
+      "secondaryMuscles": [
+        "Calves"
+      ],
+      "tracks": [
+        "weight",
+        "reps"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "load",
+        "label": "↑ Small increments",
+        "repRange": [
+          10,
+          10
+        ],
+        "incrementKg": 2.5,
+        "note": "Replaces the Nordic curl. Trains knee flexion — the hamstring function that fails at sprinting speed, and the one the single-leg RDL does not cover. Four seconds on the lowering every rep: the eccentric is where the protective effect lives. Move to single-leg once you can."
+      },
+      "cue": "Four seconds down, every rep. Hips pinned to the seat.",
+      "kneeSensitive": false,
+      "painTracked": false,
+      "phase1Excluded": false,
+      "alternatives": [
+        {
+          "name": "Lying leg curl",
+          "reason": "seated machine taken",
+          "kneeSafe": true
+        },
+        {
+          "name": "Sliding leg curl",
+          "reason": "no machine — heels on sliders, hips bridged, slide out and drag back",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "nordic-curl",
+          "name": "Nordic hamstring curl",
+          "reason": "if you find a setup you'll actually use",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
+    },
+    {
+      "id": "countermovement-jump",
+      "name": "Countermovement jump",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Quads",
+        "Glutes"
+      ],
+      "secondaryMuscles": [
+        "Calves"
+      ],
+      "tracks": [
+        "reps"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "quality",
+        "label": "↑ Height",
+        "neverAddLoad": true,
+        "note": "Replaces the trap bar jump. Bodyweight is plenty while the knee settles, and jump height is the cleanest single measure of whether you are getting more explosive — track it."
+      },
+      "cue": "Dip fast, jump as high as you can, land soft.",
+      "kneeSensitive": true,
+      "painTracked": true,
+      "phase1Excluded": false,
+      "alternatives": [
+        {
+          "exerciseId": "pogo-jump",
+          "name": "Pogo jump",
+          "reason": "knee sore",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "trap-bar-jump",
+          "name": "Trap bar jump",
+          "reason": "want it loaded once the knee is settled",
+          "kneeSafe": false
+        }
+      ],
+      "userExcluded": false
+    },
+    {
+      "id": "negative-pull-up",
+      "name": "Negative pull-up",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Rhomboids",
+        "Mid traps"
+      ],
+      "tracks": [
+        "reps",
+        "seconds"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "time",
+        "label": "↑ Lowering time",
+        "neverAddLoad": true,
+        "note": "Ladder stage 2, and the highest-yield movement toward a first unassisted rep. You are far stronger lowering than lifting, so this loads the movement properly before you can do one. Progress the lowering from 5 seconds toward 8."
+      },
+      "cue": "Step or jump to the top, chin over the bar, then lower as slowly as you can.",
+      "kneeSensitive": false,
+      "painTracked": false,
+      "phase1Excluded": false,
+      "alternatives": [
+        {
+          "exerciseId": "assisted-pull-up",
+          "name": "Assisted pull-up",
+          "reason": "no box to step from",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
+    },
+    {
+      "id": "banded-pull-up",
+      "name": "Band-assisted pull-up",
+      "equipment": [
+        "band"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Biceps"
+      ],
+      "secondaryMuscles": [
+        "Rhomboids",
+        "Mid traps"
+      ],
+      "tracks": [
+        "reps"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "load",
+        "label": "↓ Band thickness",
+        "inverse": true,
+        "repRange": [
+          5,
+          5
+        ],
+        "note": "Ladder stage 3. Better than the machine here because a band gives least help at the top, where you are weakest. Drop to a thinner band every two to three weeks."
+      },
+      "kneeSensitive": false,
+      "painTracked": false,
+      "phase1Excluded": false,
+      "alternatives": [
+        {
+          "exerciseId": "assisted-pull-up",
+          "name": "Assisted pull-up",
+          "reason": "no bands available",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
+    },
+    {
+      "id": "scapular-pull-up",
+      "name": "Scapular pull-up",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Lower traps",
+        "Lats"
+      ],
+      "secondaryMuscles": [
+        "Rhomboids"
+      ],
+      "tracks": [
+        "reps"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "time",
+        "label": "↑ Reps",
+        "neverAddLoad": true,
+        "note": "Ladder stage 1. A dead hang where you pull the shoulder blades down and back without bending the arms — about four inches of movement. Teaches the start position, which is where most first pull-ups actually fail."
+      },
+      "kneeSensitive": false,
+      "painTracked": false,
+      "phase1Excluded": false,
+      "alternatives": [],
+      "userExcluded": false
+    },
+    {
+      "id": "inverted-row",
+      "name": "Inverted row",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Lats",
+        "Rhomboids"
+      ],
+      "secondaryMuscles": [
+        "Mid traps",
+        "Biceps",
+        "Rear delt"
+      ],
+      "tracks": [
+        "reps"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "load",
+        "label": "↑ Elevate the feet",
+        "repRange": [
+          10,
+          10
+        ],
+        "note": "Ladder stage 1. Progress by lowering the bar or raising your feet rather than by adding weight."
+      },
+      "cue": "Body in one straight line, chest to the bar.",
+      "kneeSensitive": false,
+      "painTracked": false,
+      "phase1Excluded": false,
+      "alternatives": [
+        {
+          "name": "Ring row",
+          "reason": "no Smith bar free",
+          "kneeSafe": true
+        },
+        {
+          "exerciseId": "seated-row",
+          "name": "Seated row",
+          "reason": "nothing to row under",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
+    },
+    {
+      "id": "dead-hang",
+      "name": "Dead hang",
+      "equipment": [
+        "bodyweight"
+      ],
+      "primaryMuscles": [
+        "Grip",
+        "Lats"
+      ],
+      "secondaryMuscles": [
+        "Shoulders"
+      ],
+      "tracks": [
+        "seconds"
+      ],
+      "unilateral": false,
+      "progression": {
+        "type": "time",
+        "label": "↑ Time",
+        "holdIncrementSeconds": 5,
+        "note": "Ladder stage 1. Builds grip and shoulder tolerance for everything above it."
+      },
+      "kneeSensitive": false,
+      "painTracked": false,
+      "phase1Excluded": false,
+      "alternatives": [
+        {
+          "name": "Farmer's hold",
+          "reason": "no bar free",
+          "kneeSafe": true
+        }
+      ],
+      "userExcluded": false
     }
   ],
-
   "days": [
     {
-      "id": "day-1",
-      "dayLabel": "Day 1 · Mon",
-      "title": "Lower Strength + Power",
+      "id": "day-a",
+      "dayLabel": "Day A · Mon",
+      "title": "Full Body — Strength",
       "cnsLoad": "high",
-      "targetMinutes": 70,
+      "targetMinutes": 66,
       "atHome": false,
       "blocks": [
         {
           "letter": "W",
           "name": "Prep",
-          "estimatedMinutes": 8,
+          "estimatedMinutes": 6,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "hip-mobility-flow", "sets": 1, "reps": "6 / 30s / 8", "restSeconds": 0, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "banded-lateral-walk", "sets": 3, "distanceM": 15, "restSeconds": 30, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest", "note": "Warm-up and knee work in one." } }
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "hip-mobility-flow",
+                "sets": 1,
+                "reps": "6 / 30s / 8",
+                "restSeconds": 0,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "banded-lateral-walk",
+                "sets": 3,
+                "distanceM": 15,
+                "restSeconds": 30,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest"
+              }
+            }
           ]
         },
         {
           "letter": "A",
-          "name": "Power & acceleration",
-          "estimatedMinutes": 14,
+          "name": "Power",
+          "estimatedMinutes": 11,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "heavy-sled-push", "sets": 5, "distanceM": 20, "restSeconds": 90, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "trap-bar-jump", "sets": 3, "reps": "3", "restSeconds": 90, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "rest", "note": "If the front of the knee complains, drop this and add a sled set." } }
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "heavy-sled-push",
+                "sets": 5,
+                "distanceM": 20,
+                "restSeconds": 90,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest",
+                "note": "Acceleration work, and the most knee-tolerant leg exercise in the gym."
+              }
+            }
           ]
         },
         {
           "letter": "B",
-          "name": "Strength",
-          "estimatedMinutes": 26,
+          "name": "Main lower lift",
+          "estimatedMinutes": 15,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "trap-bar-deadlift", "sets": 4, "reps": "6-8", "restSeconds": 120, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
             {
-              "kind": "superset",
-              "label": "Superset — alternate, 60s between pairs",
-              "restBetweenPairsSeconds": 60,
-              "prescriptions": [
-                { "exerciseId": "split-squat-box", "sets": 3, "reps": "8", "restSeconds": 30, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest" },
-                { "exerciseId": "hip-thrust", "sets": 3, "reps": "10", "restSeconds": 60, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "rest" }
-              ]
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "split-squat-box",
+                "sets": 4,
+                "reps": "8",
+                "restSeconds": 90,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest",
+                "note": "The week's heaviest lower lift now — go after it."
+              }
             }
           ]
         },
         {
           "letter": "C",
-          "name": "Knee & robustness",
-          "estimatedMinutes": 22,
-          "items": [
-            {
-              "kind": "superset",
-              "label": "Superset — alternate",
-              "restBetweenPairsSeconds": 60,
-              "prescriptions": [
-                { "exerciseId": "spanish-squat-iso", "sets": 5, "holdSeconds": 45, "restSeconds": 30, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "hold" },
-                { "exerciseId": "nordic-curl", "sets": 3, "reps": "4-6", "restSeconds": 60, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest", "note": "Start at 3 reps. Never add weight." }
-              ]
-            },
-            { "kind": "single", "prescription": { "exerciseId": "single-leg-rdl", "sets": 3, "reps": "8", "restSeconds": 60, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "pallof-press", "sets": 3, "reps": "10", "restSeconds": 45, "perSide": true, "cutFirst": true, "kneeModified": false, "timerMode": "rest" } }
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "day-2",
-      "dayLabel": "Day 2 · Tue",
-      "title": "Upper Strength + Trunk",
-      "cnsLoad": "moderate",
-      "targetMinutes": 58,
-      "atHome": false,
-      "note": "Pull volume beats press volume, roughly 2:1. That ratio builds the back and holds posture together at speed.",
-      "blocks": [
-        {
-          "letter": "W",
-          "name": "Prep",
-          "estimatedMinutes": 5,
-          "items": [
-            { "kind": "single", "prescription": { "exerciseId": "shoulder-prep", "sets": 1, "reps": "10 / 15 / 8", "restSeconds": 0, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } }
-          ]
-        },
-        {
-          "letter": "A",
-          "name": "Pull & press",
-          "estimatedMinutes": 28,
+          "name": "Push & pull",
+          "estimatedMinutes": 17,
           "items": [
             {
               "kind": "superset",
               "label": "Superset — alternate, 90s between pairs",
               "restBetweenPairsSeconds": 90,
               "prescriptions": [
-                { "exerciseId": "assisted-pull-up", "sets": 4, "reps": "6-8", "restSeconds": 30, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" },
-                { "exerciseId": "incline-bench-smith", "sets": 4, "reps": "6-8", "restSeconds": 90, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" }
-              ]
-            },
-            {
-              "kind": "superset",
-              "label": "Superset — alternate",
-              "restBetweenPairsSeconds": 75,
-              "prescriptions": [
-                { "exerciseId": "single-arm-row", "sets": 3, "reps": "8-10", "restSeconds": 30, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" },
-                { "exerciseId": "half-kneel-landmine-press", "sets": 3, "reps": "8", "restSeconds": 75, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" }
+                {
+                  "exerciseId": "assisted-pull-up",
+                  "sets": 4,
+                  "reps": "6-8",
+                  "restSeconds": 30,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest",
+                  "note": "Run your current ladder stage here. Try one unassisted rep first, fresh."
+                },
+                {
+                  "exerciseId": "incline-bench-smith",
+                  "sets": 4,
+                  "reps": "6-8",
+                  "restSeconds": 90,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                }
               ]
             }
           ]
         },
         {
-          "letter": "B",
-          "name": "Shoulders & upper back",
-          "estimatedMinutes": 9,
+          "letter": "D",
+          "name": "Knee & trunk",
+          "estimatedMinutes": 7,
+          "items": [
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "spanish-squat-iso",
+                "sets": 4,
+                "holdSeconds": 45,
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "hold"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "pallof-press",
+                "sets": 2,
+                "reps": "10",
+                "restSeconds": 45,
+                "perSide": true,
+                "cutFirst": true,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            }
+          ]
+        },
+        {
+          "letter": "F",
+          "name": "Finisher — every session",
+          "estimatedMinutes": 10,
           "items": [
             {
               "kind": "superset",
               "label": "Superset — alternate, minimal rest",
               "restBetweenPairsSeconds": 45,
               "prescriptions": [
-                { "exerciseId": "cable-lateral-raise", "sets": 3, "reps": "12-15", "restSeconds": 20, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" },
-                { "exerciseId": "rear-delt-fly", "sets": 3, "reps": "15", "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" }
+                {
+                  "exerciseId": "cable-lateral-raise",
+                  "sets": 3,
+                  "reps": "12-15",
+                  "restSeconds": 20,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                },
+                {
+                  "exerciseId": "rear-delt-fly",
+                  "sets": 2,
+                  "reps": "15",
+                  "restSeconds": 45,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                }
+              ]
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "cable-crunch",
+                "sets": 2,
+                "reps": "12",
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "farmers-carry",
+                "sets": 2,
+                "distanceM": 40,
+                "restSeconds": 75,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest",
+                "note": "Heavy. Walk tall, don't lean."
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "day-b",
+      "dayLabel": "Day B · Wed",
+      "title": "Full Body — Posterior & Pull",
+      "cnsLoad": "moderate",
+      "targetMinutes": 62,
+      "atHome": false,
+      "blocks": [
+        {
+          "letter": "W",
+          "name": "Prep",
+          "estimatedMinutes": 5,
+          "items": [
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "shoulder-prep",
+                "sets": 1,
+                "reps": "10 / 15 / 8",
+                "restSeconds": 0,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            }
+          ]
+        },
+        {
+          "letter": "A",
+          "name": "Power",
+          "estimatedMinutes": 10,
+          "items": [
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "pogo-jump",
+                "sets": 3,
+                "reps": "15",
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "skater-jump",
+                "sets": 3,
+                "reps": "5",
+                "restSeconds": 60,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest",
+                "note": "Hold each landing a full second. The stick is the whole point."
+              }
+            }
+          ]
+        },
+        {
+          "letter": "B",
+          "name": "Posterior chain",
+          "estimatedMinutes": 16,
+          "items": [
+            {
+              "kind": "superset",
+              "label": "Superset — alternate, 75s between pairs",
+              "restBetweenPairsSeconds": 75,
+              "prescriptions": [
+                {
+                  "exerciseId": "single-leg-rdl",
+                  "sets": 4,
+                  "reps": "8",
+                  "restSeconds": 30,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest",
+                  "note": "Your main hinge now."
+                },
+                {
+                  "exerciseId": "seated-leg-curl",
+                  "sets": 3,
+                  "reps": "10",
+                  "restSeconds": 75,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest",
+                  "note": "Four seconds on the lowering, every rep."
+                }
               ]
             }
           ]
         },
         {
           "letter": "C",
-          "name": "Proximal & hips",
+          "name": "Pull & push",
           "estimatedMinutes": 16,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "farmers-carry", "sets": 3, "distanceM": 40, "restSeconds": 75, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
+            {
+              "kind": "superset",
+              "label": "Superset — alternate, 75s between pairs",
+              "restBetweenPairsSeconds": 75,
+              "prescriptions": [
+                {
+                  "exerciseId": "negative-pull-up",
+                  "sets": 4,
+                  "reps": "3",
+                  "restSeconds": 30,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest",
+                  "note": "Lower over 5 seconds. Ladder stage 2."
+                },
+                {
+                  "exerciseId": "half-kneel-landmine-press",
+                  "sets": 3,
+                  "reps": "8",
+                  "restSeconds": 75,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                }
+              ]
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "single-arm-row",
+                "sets": 3,
+                "reps": "8-10",
+                "restSeconds": 60,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            }
+          ]
+        },
+        {
+          "letter": "D",
+          "name": "Hips & groin",
+          "estimatedMinutes": 6,
+          "items": [
             {
               "kind": "superset",
               "label": "Superset — alternate",
               "restBetweenPairsSeconds": 45,
               "prescriptions": [
-                { "exerciseId": "side-lying-abduction", "sets": 3, "reps": "15", "restSeconds": 20, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest" },
-                { "exerciseId": "copenhagen-plank", "sets": 3, "holdSeconds": 25, "restSeconds": 45, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "hold" }
+                {
+                  "exerciseId": "copenhagen-plank",
+                  "sets": 3,
+                  "holdSeconds": 25,
+                  "restSeconds": 20,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "hold"
+                },
+                {
+                  "exerciseId": "side-lying-abduction",
+                  "sets": 3,
+                  "reps": "15",
+                  "restSeconds": 45,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": true,
+                  "timerMode": "rest"
+                }
               ]
+            }
+          ]
+        },
+        {
+          "letter": "F",
+          "name": "Finisher — every session",
+          "estimatedMinutes": 10,
+          "items": [
+            {
+              "kind": "superset",
+              "label": "Superset — alternate, minimal rest",
+              "restBetweenPairsSeconds": 45,
+              "prescriptions": [
+                {
+                  "exerciseId": "cable-lateral-raise",
+                  "sets": 3,
+                  "reps": "12-15",
+                  "restSeconds": 20,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                },
+                {
+                  "exerciseId": "rear-delt-fly",
+                  "sets": 2,
+                  "reps": "15",
+                  "restSeconds": 45,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                }
+              ]
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "cable-crunch",
+                "sets": 2,
+                "reps": "12",
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "farmers-carry",
+                "sets": 2,
+                "distanceM": 40,
+                "restSeconds": 75,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest",
+                "note": "Heavy. Walk tall, don't lean."
+              }
             }
           ]
         }
       ]
     },
-
     {
-      "id": "day-3",
-      "dayLabel": "Day 3 · Wed",
-      "title": "Recovery + Mobility — at home",
+      "id": "day-c",
+      "dayLabel": "Day C · Fri",
+      "title": "Full Body — Power & Conditioning",
+      "cnsLoad": "high",
+      "targetMinutes": 66,
+      "atHome": false,
+      "blocks": [
+        {
+          "letter": "W",
+          "name": "Prep",
+          "estimatedMinutes": 6,
+          "items": [
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "agility-ladder",
+                "sets": 1,
+                "holdSeconds": 240,
+                "restSeconds": 30,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "hold",
+                "note": "Coordination, warm and unfatigued. Not agility training — don't progress it."
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "banded-lateral-walk",
+                "sets": 3,
+                "distanceM": 15,
+                "restSeconds": 30,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            }
+          ]
+        },
+        {
+          "letter": "A",
+          "name": "Power",
+          "estimatedMinutes": 10,
+          "items": [
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "countermovement-jump",
+                "sets": 4,
+                "reps": "3",
+                "restSeconds": 90,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest",
+                "note": "Track the height — it is your cleanest measure of explosiveness."
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "med-ball-slam",
+                "sets": 3,
+                "reps": "5",
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            }
+          ]
+        },
+        {
+          "letter": "B",
+          "name": "Legs & sled",
+          "estimatedMinutes": 24,
+          "items": [
+            {
+              "kind": "superset",
+              "label": "Superset — alternate, 60s between pairs",
+              "restBetweenPairsSeconds": 60,
+              "prescriptions": [
+                {
+                  "exerciseId": "single-leg-press-partial",
+                  "sets": 4,
+                  "reps": "8-10",
+                  "restSeconds": 30,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": true,
+                  "timerMode": "rest"
+                },
+                {
+                  "exerciseId": "db-step-up-low",
+                  "sets": 3,
+                  "reps": "8",
+                  "restSeconds": 60,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": true,
+                  "timerMode": "rest"
+                }
+              ]
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "backward-sled-pull",
+                "sets": 5,
+                "distanceM": 20,
+                "restSeconds": 60,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest",
+                "note": "Best knee exercise in the gym. Last thing to cut."
+              }
+            }
+          ]
+        },
+        {
+          "letter": "C",
+          "name": "Pull & push",
+          "estimatedMinutes": 12,
+          "items": [
+            {
+              "kind": "superset",
+              "label": "Superset — alternate",
+              "restBetweenPairsSeconds": 60,
+              "prescriptions": [
+                {
+                  "exerciseId": "seated-row",
+                  "sets": 4,
+                  "reps": "10",
+                  "restSeconds": 30,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                },
+                {
+                  "exerciseId": "db-shoulder-press",
+                  "sets": 4,
+                  "reps": "8-10",
+                  "restSeconds": 60,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                }
+              ]
+            }
+          ]
+        },
+        {
+          "letter": "D",
+          "name": "Conditioning",
+          "estimatedMinutes": 5,
+          "items": [
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "interval-conditioning",
+                "sets": 1,
+                "restSeconds": 0,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "interval",
+                "interval": {
+                  "workSeconds": 20,
+                  "restSeconds": 40,
+                  "rounds": 6
+                },
+                "note": "Not the bike — the commute already supplies that dose."
+              }
+            }
+          ]
+        },
+        {
+          "letter": "F",
+          "name": "Finisher — every session",
+          "estimatedMinutes": 10,
+          "items": [
+            {
+              "kind": "superset",
+              "label": "Superset — alternate, minimal rest",
+              "restBetweenPairsSeconds": 45,
+              "prescriptions": [
+                {
+                  "exerciseId": "cable-lateral-raise",
+                  "sets": 3,
+                  "reps": "12-15",
+                  "restSeconds": 20,
+                  "perSide": true,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                },
+                {
+                  "exerciseId": "rear-delt-fly",
+                  "sets": 2,
+                  "reps": "15",
+                  "restSeconds": 45,
+                  "perSide": false,
+                  "cutFirst": false,
+                  "kneeModified": false,
+                  "timerMode": "rest"
+                }
+              ]
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "cable-crunch",
+                "sets": 2,
+                "reps": "12",
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "farmers-carry",
+                "sets": 2,
+                "distanceM": 40,
+                "restSeconds": 75,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest",
+                "note": "Heavy. Walk tall, don't lean."
+              }
+            }
+          ]
+        }
+      ],
+      "note": "Three lateral raise sessions a week is the right call for the look — side delts are small, recover fast, and respond to frequency."
+    },
+    {
+      "id": "day-mobility",
+      "dayLabel": "Mobility · any day",
+      "title": "Recovery + Knee Maintenance — at home",
       "cnsLoad": "low",
       "targetMinutes": 30,
       "atHome": true,
-      "note": "Genuinely easy, and not a gym trip. The cycle commute already covers the aerobic work. If it starts feeling like a session, it has gone too far.",
       "blocks": [
         {
           "letter": "A",
           "name": "Hips & spine",
           "estimatedMinutes": 15,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "hip-mobility-flow", "sets": 3, "reps": "6 / 30s / 8", "restSeconds": 20, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "scap-deadbug", "sets": 3, "reps": "10", "restSeconds": 20, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } }
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "hip-mobility-flow",
+                "sets": 3,
+                "reps": "6 / 30s / 8",
+                "restSeconds": 20,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "scap-deadbug",
+                "sets": 3,
+                "reps": "10",
+                "restSeconds": 20,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
+            }
           ]
         },
         {
@@ -1153,142 +3444,182 @@
           "name": "Knee maintenance",
           "estimatedMinutes": 15,
           "items": [
-            { "kind": "single", "prescription": { "exerciseId": "wall-sit", "sets": 5, "holdSeconds": 45, "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "hold" } },
-            { "kind": "single", "prescription": { "exerciseId": "side-lying-abduction", "sets": 3, "reps": "15", "restSeconds": 30, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest", "note": "Add clamshells here if you want the extra volume." } },
-            { "kind": "single", "prescription": { "exerciseId": "quad-hipflexor-stretch", "sets": 3, "holdSeconds": 30, "restSeconds": 10, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "hold" } },
-            { "kind": "single", "prescription": { "exerciseId": "tib-calf-raise-bw", "sets": 3, "reps": "20 / 15", "restSeconds": 30, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } }
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "day-4",
-      "dayLabel": "Day 4 · Thu",
-      "title": "Power, Legs + Conditioning",
-      "cnsLoad": "high",
-      "targetMinutes": 64,
-      "atHome": false,
-      "blocks": [
-        {
-          "letter": "W",
-          "name": "Prep",
-          "estimatedMinutes": 7,
-          "items": [
-            { "kind": "single", "prescription": { "exerciseId": "agility-ladder", "sets": 1, "holdSeconds": 240, "restSeconds": 30, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "hold" } },
-            { "kind": "single", "prescription": { "exerciseId": "banded-lateral-walk", "sets": 3, "distanceM": 15, "restSeconds": 30, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } }
-          ]
-        },
-        {
-          "letter": "A",
-          "name": "Low-amplitude plyometrics",
-          "estimatedMinutes": 10,
-          "items": [
-            { "kind": "single", "prescription": { "exerciseId": "pogo-jump", "sets": 4, "reps": "15", "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "rest", "note": "Add banded pogos for the last two sets if available." } },
-            { "kind": "single", "prescription": { "exerciseId": "skater-jump", "sets": 3, "reps": "5", "restSeconds": 60, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest" } }
-          ]
-        },
-        {
-          "letter": "B",
-          "name": "Legs",
-          "estimatedMinutes": 21,
-          "items": [
             {
-              "kind": "superset",
-              "label": "Superset — alternate, 60s between pairs",
-              "restBetweenPairsSeconds": 60,
-              "prescriptions": [
-                { "exerciseId": "single-leg-press-partial", "sets": 3, "reps": "8-10", "restSeconds": 30, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest" },
-                { "exerciseId": "db-step-up-low", "sets": 3, "reps": "8", "restSeconds": 60, "perSide": true, "cutFirst": false, "kneeModified": true, "timerMode": "rest" }
-              ]
-            },
-            { "kind": "single", "prescription": { "exerciseId": "spanish-squat-iso", "sets": 4, "holdSeconds": 45, "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "hold" } }
-          ]
-        },
-        {
-          "letter": "C",
-          "name": "Sled & conditioning",
-          "estimatedMinutes": 26,
-          "items": [
-            { "kind": "single", "prescription": { "exerciseId": "backward-sled-pull", "sets": 6, "distanceM": 20, "restSeconds": 60, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "rest", "note": "Last thing to cut when short on time." } },
-            { "kind": "single", "prescription": { "exerciseId": "forward-sled-push", "sets": 4, "distanceM": 20, "restSeconds": 60, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "interval-conditioning", "sets": 1, "restSeconds": 0, "perSide": false, "cutFirst": false, "kneeModified": true, "timerMode": "interval", "interval": { "workSeconds": 20, "restSeconds": 40, "rounds": 8 }, "note": "Not the bike." } },
-            { "kind": "single", "prescription": { "exerciseId": "med-ball-slam", "sets": 3, "reps": "5", "restSeconds": 45, "perSide": false, "cutFirst": true, "kneeModified": false, "timerMode": "rest" } }
-          ]
-        }
-      ]
-    },
-
-    {
-      "id": "day-5",
-      "dayLabel": "Day 5 · Fri",
-      "title": "Upper, Rotation + Primer",
-      "cnsLoad": "low",
-      "targetMinutes": 47,
-      "atHome": false,
-      "note": "Nothing to failure. This session keeps you sharp; it is not meant to be impressive. If you are playing twice this week, this is the session that goes.",
-      "blocks": [
-        {
-          "letter": "A",
-          "name": "Upper",
-          "estimatedMinutes": 19,
-          "items": [
-            {
-              "kind": "superset",
-              "label": "Superset — alternate",
-              "restBetweenPairsSeconds": 60,
-              "prescriptions": [
-                { "exerciseId": "seated-row", "sets": 3, "reps": "10", "restSeconds": 30, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" },
-                { "exerciseId": "db-shoulder-press", "sets": 3, "reps": "8-10", "restSeconds": 60, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" }
-              ]
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "wall-sit",
+                "sets": 5,
+                "holdSeconds": 45,
+                "restSeconds": 45,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "hold",
+                "note": "Only as deep as stays quiet. Shallow is fine — holding is the point."
+              }
             },
             {
-              "kind": "superset",
-              "label": "Superset — alternate, minimal rest",
-              "restBetweenPairsSeconds": 45,
-              "prescriptions": [
-                { "exerciseId": "seated-incline-db-curl", "sets": 3, "reps": "10-12", "restSeconds": 20, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" },
-                { "exerciseId": "overhead-triceps-extension", "sets": 3, "reps": "10-12", "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" }
-              ]
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "side-lying-abduction",
+                "sets": 3,
+                "reps": "15",
+                "restSeconds": 30,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "rest"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "quad-hipflexor-stretch",
+                "sets": 3,
+                "holdSeconds": 30,
+                "restSeconds": 10,
+                "perSide": true,
+                "cutFirst": false,
+                "kneeModified": true,
+                "timerMode": "hold"
+              }
+            },
+            {
+              "kind": "single",
+              "prescription": {
+                "exerciseId": "tib-calf-raise-bw",
+                "sets": 3,
+                "reps": "20 / 15",
+                "restSeconds": 30,
+                "perSide": false,
+                "cutFirst": false,
+                "kneeModified": false,
+                "timerMode": "rest"
+              }
             }
           ]
-        },
-        {
-          "letter": "B",
-          "name": "Rotation — the power transfer",
-          "estimatedMinutes": 16,
-          "items": [
-            { "kind": "single", "prescription": { "exerciseId": "landmine-rotation", "sets": 3, "reps": "8", "restSeconds": 60, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "split-stance-oh-rotation", "sets": 3, "reps": "8", "restSeconds": 60, "perSide": true, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } },
-            { "kind": "single", "prescription": { "exerciseId": "plated-woodchop", "sets": 3, "reps": "10", "restSeconds": 45, "perSide": true, "cutFirst": true, "kneeModified": false, "timerMode": "rest" } }
-          ]
-        },
-        {
-          "letter": "C",
-          "name": "Lower limb, light",
-          "estimatedMinutes": 12,
-          "items": [
-            {
-              "kind": "superset",
-              "label": "Superset — alternate",
-              "restBetweenPairsSeconds": 45,
-              "prescriptions": [
-                { "exerciseId": "calf-raise-smith", "sets": 3, "reps": "12", "restSeconds": 20, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" },
-                { "exerciseId": "tib-raise", "sets": 3, "reps": "20", "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" }
-              ]
-            },
-            { "kind": "single", "prescription": { "exerciseId": "cable-crunch", "sets": 3, "reps": "12", "restSeconds": 45, "perSide": false, "cutFirst": false, "kneeModified": false, "timerMode": "rest" } }
-          ]
         }
-      ]
+      ],
+      "note": "The cycle commute covers the easy aerobic work. If it starts feeling like a session, it has gone too far."
     }
   ],
-
   "reintroductionSchedule": [
-    { "week": 5, "exerciseIds": ["heel-elevated-split-squat", "kb-step-down"], "startAt": "Low elevation / low box, 2 sets, no added weight" },
-    { "week": 6, "exerciseIds": ["box-jump", "single-leg-box-jump", "reactive-box-jump", "seated-box-jump", "broad-jump-pogo"], "startAt": "Low box, 3 × 3. Step down, never jump down." },
-    { "week": 7, "exerciseIds": ["deep-hack-squat-20"], "startAt": "Half the range you eventually want" },
-    { "week": 8, "exerciseIds": ["descending-lateral-jump"], "startAt": "3 × 3 per side, quiet landings" },
-    { "week": 9, "exerciseIds": ["sissy-squat", "pistol-squat", "single-leg-leg-extension"], "startAt": "Bodyweight, partial range, no rush" }
+    {
+      "week": 5,
+      "exerciseIds": [
+        "heel-elevated-split-squat",
+        "kb-step-down"
+      ],
+      "startAt": "Low elevation / low box, 2 sets, no added weight"
+    },
+    {
+      "week": 6,
+      "exerciseIds": [
+        "box-jump",
+        "single-leg-box-jump",
+        "reactive-box-jump",
+        "seated-box-jump",
+        "broad-jump-pogo"
+      ],
+      "startAt": "Low box, 3 × 3. Step down, never jump down."
+    },
+    {
+      "week": 7,
+      "exerciseIds": [
+        "deep-hack-squat-20"
+      ],
+      "startAt": "Half the range you eventually want"
+    },
+    {
+      "week": 8,
+      "exerciseIds": [
+        "descending-lateral-jump"
+      ],
+      "startAt": "3 × 3 per side, quiet landings"
+    },
+    {
+      "week": 9,
+      "exerciseIds": [
+        "sissy-squat",
+        "pistol-squat",
+        "single-leg-leg-extension"
+      ],
+      "startAt": "Bodyweight, partial range, no rush"
+    }
+  ],
+  "pullUpLadder": [
+    {
+      "stage": 1,
+      "name": "Build the base",
+      "prescriptions": [
+        {
+          "exerciseId": "inverted-row",
+          "sets": 3,
+          "reps": "10"
+        },
+        {
+          "exerciseId": "scapular-pull-up",
+          "sets": 3,
+          "reps": "8"
+        },
+        {
+          "exerciseId": "dead-hang",
+          "sets": 3,
+          "holdSeconds": 25
+        }
+      ],
+      "gate": "3 × 10 inverted rows with feet elevated, and a 30-second dead hang"
+    },
+    {
+      "stage": 2,
+      "name": "Negatives — the one that works",
+      "prescriptions": [
+        {
+          "exerciseId": "negative-pull-up",
+          "sets": 4,
+          "reps": "3",
+          "note": "5-second lowering"
+        },
+        {
+          "exerciseId": "assisted-pull-up",
+          "sets": 3,
+          "reps": "8"
+        }
+      ],
+      "gate": "A controlled 8-second negative"
+    },
+    {
+      "stage": 3,
+      "name": "Band volume plus negatives",
+      "prescriptions": [
+        {
+          "exerciseId": "banded-pull-up",
+          "sets": 4,
+          "reps": "5"
+        },
+        {
+          "exerciseId": "negative-pull-up",
+          "sets": 3,
+          "reps": "3",
+          "note": "6-8 second lowering"
+        }
+      ],
+      "gate": "One unassisted rep",
+      "attemptUnassistedFirst": true
+    },
+    {
+      "stage": 4,
+      "name": "Grease the groove",
+      "prescriptions": [
+        {
+          "exerciseId": "assisted-pull-up",
+          "sets": 3,
+          "reps": "5",
+          "note": "Unassisted. Singles and doubles often, never to failure, building toward 3 × 5."
+        }
+      ],
+      "gate": null,
+      "attemptUnassistedFirst": true
+    }
   ]
 }

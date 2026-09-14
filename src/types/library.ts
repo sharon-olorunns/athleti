@@ -71,5 +71,13 @@ export interface Exercise {
   phase1Excluded: boolean;
   /** When phase1Excluded. */
   reintroduceWeek?: number;
+  /**
+   * Taken out of the programme by the user, not by the knee. Stays in the library
+   * — history still points at it and it can be swapped back in — but never
+   * appears in a day's blocks.
+   */
+  userExcluded: boolean;
+  /** Why it was dropped. Shown next to it, so the decision is not lost. */
+  userExcludedReason?: string;
   alternatives: Alternative[];
 }

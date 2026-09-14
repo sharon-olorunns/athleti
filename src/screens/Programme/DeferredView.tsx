@@ -7,6 +7,8 @@ interface Props {
   schedule: ReintroductionEntry[];
   exercise: (id: string) => Exercise | undefined;
   currentWeek: number;
+  /** Exercises the user took out of the programme, with the reason they gave. */
+  removed: Exercise[];
 }
 
 /**
@@ -14,7 +16,7 @@ interface Props {
  * absent from every day's blocks, so this is the only place they appear — without
  * it the deferred work would be invisible.
  */
-export function DeferredView({ schedule, exercise, currentWeek }: Props) {
+export function DeferredView({ schedule, exercise, currentWeek, removed }: Props) {
   const byWeek = [...schedule].sort((a, b) => a.week - b.week);
 
   return (
@@ -76,6 +78,32 @@ export function DeferredView({ schedule, exercise, currentWeek }: Props) {
           </section>
         );
       })}
+
+      {removed.length > 0 && (
+        <section className={styles.entry}>
+          <header className={styles.entryHead}>
+            <span className={styles.week}>Removed</span>
+            <Chip variant="muted">your call</Chip>
+          </header>
+
+          <p className={styles.startAt}>
+            <span className={styles.startAtLabel}>Not coming back on a schedule</span>
+            Still in the library, so past sessions keep their history and any of them can be
+            swapped back in mid-workout.
+          </p>
+
+          <ul className={styles.list}>
+            {removed.map((found) => (
+              <li key={found.id} className={styles.item}>
+                <p className={styles.name}>{found.name}</p>
+                {found.userExcludedReason !== undefined && (
+                  <p className={styles.cue}>{found.userExcludedReason}</p>
+                )}
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </div>
   );
 }

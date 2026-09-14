@@ -26,6 +26,7 @@ function programmeRow(): ProgrammeRow {
     ...seed.programme,
     days: seed.days,
     reintroductionSchedule: seed.reintroductionSchedule,
+    pullUpLadder: seed.pullUpLadder,
   };
 }
 

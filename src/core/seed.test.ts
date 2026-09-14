@@ -18,10 +18,26 @@ describe('seed-programme.json', () => {
     expect(validateSeed(seed)).toEqual([]);
   });
 
-  it('carries the whole library and all five days', () => {
-    expect(seed.schemaVersion).toBe(3);
-    expect(seed.exercises).toHaveLength(57);
-    expect(seed.days).toHaveLength(5);
+  it('carries the whole library, three gym days and the mobility day', () => {
+    expect(seed.schemaVersion).toBe(4);
+    expect(seed.exercises).toHaveLength(64);
+    expect(seed.days).toHaveLength(4);
+    expect(seed.days.filter((d) => d.atHome)).toHaveLength(1);
+  });
+
+  it('never places a user-removed exercise in a day', () => {
+    // These were taken out by the user rather than by the knee, so unlike the
+    // phase1Excluded set they never come back on a schedule — but they stay in
+    // the library, because history points at them and they can be swapped in.
+    const removed = seed.exercises.filter((e) => e.userExcluded);
+    expect(removed.length).toBeGreaterThan(0);
+    const prescribed = new Set(seed.days.flatMap((d) => exerciseIdsOf(d)));
+    for (const exercise of removed) {
+      expect(prescribed.has(exercise.id)).toBe(false);
+      // The reason is the whole point: a removal with no reason is a decision
+      // the user will not remember making.
+      expect(exercise.userExcludedReason).toBeTruthy();
+    }
   });
 
   it('never places a phase1Excluded exercise in a day', () => {
@@ -81,7 +97,9 @@ describe('seed-programme.json', () => {
   });
 
   it('keeps the trap bar deadlift on a load rule with a rep range and increment', () => {
-    // Acceptance criterion 8.
+    // Acceptance criterion 8. The deadlift is userExcluded now, so it is a
+    // library entry rather than programmed work — but the rule still has to be
+    // right for the day it is swapped back in.
     const deadlift = byId.get('trap-bar-deadlift');
     expect(deadlift?.progression.type).toBe('load');
     expect(deadlift?.progression.incrementKg).toBeGreaterThan(0);
@@ -93,10 +111,18 @@ describe('seed-programme.json', () => {
     expect(byId.get('assisted-pull-up')?.progression.inverse).toBe(true);
   });
 
-  it('gives every load exercise an increment to step by', () => {
+  it('gives every weighted load exercise an increment to step by', () => {
+    // Two load exercises step by geometry rather than by kilograms — the
+    // inverted row by elevating the feet, the banded pull-up by moving to a
+    // thinner band. Neither tracks weight, and neither can carry an incrementKg.
+    // Anything that does track weight must have one, or the double-progression
+    // suggestion has no step to offer.
     for (const exercise of seed.exercises) {
-      if (exercise.progression.type === 'load') {
+      if (exercise.progression.type !== 'load') continue;
+      if (exercise.tracks.includes('weight')) {
         expect(exercise.progression.incrementKg).toBeGreaterThan(0);
+      } else {
+        expect(exercise.progression.incrementKg).toBeUndefined();
       }
     }
   });
@@ -170,6 +196,33 @@ describe('seed-programme.json', () => {
       expect(['high', 'moderate', 'low']).toContain(day.cnsLoad);
       expect(totalSetRows(day, (id) => byId.get(id))).toBeGreaterThan(0);
     }
+  });
+
+  it('resolves every pull-up ladder exercise against the library', () => {
+    expect(seed.pullUpLadder).toHaveLength(4);
+    seed.pullUpLadder.forEach((stage, index) => {
+      expect(stage.stage).toBe(index + 1);
+      expect(stage.prescriptions.length).toBeGreaterThan(0);
+      for (const prescription of stage.prescriptions) {
+        expect(byId.get(prescription.exerciseId)).toBeDefined();
+      }
+    });
+    // Every stage but the last says how to know you are done with it.
+    for (const stage of seed.pullUpLadder.slice(0, -1)) {
+      expect(stage.gate).toBeTruthy();
+    }
+    expect(seed.pullUpLadder.at(-1)?.gate).toBeNull();
+  });
+
+  it('gives every day a pull-up slot for the ladder to resolve', () => {
+    // Acceptance criterion 17 only holds if the slots exist to be repointed.
+    const ladderIds = new Set(
+      seed.pullUpLadder.flatMap((s) => s.prescriptions.map((p) => p.exerciseId)),
+    );
+    const slots = seed.days
+      .flatMap((d) => prescriptionsOf(d))
+      .filter((p) => ladderIds.has(p.exerciseId));
+    expect(slots.length).toBeGreaterThan(0);
   });
 
   it('doubles the set rows for a per-side prescription', () => {

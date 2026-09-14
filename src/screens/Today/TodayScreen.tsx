@@ -37,6 +37,7 @@ export function TodayScreen({
   onOpenSettings: () => void;
 }) {
   const programme = useApp((s) => s.programme);
+  const days = useApp((s) => s.days);
   const exerciseById = useApp((s) => s.exercise);
   const currentWeek = useApp((s) => s.currentWeek());
 
@@ -88,7 +89,7 @@ export function TodayScreen({
 
   if (programme === undefined) return null;
 
-  const days = programme.days;
+
   const lastSession = history[0];
   const suggestedId = nextDayId(
     days.map((d) => d.id),

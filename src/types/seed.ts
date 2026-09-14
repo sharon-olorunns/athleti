@@ -1,5 +1,5 @@
 import type { Exercise } from './library';
-import type { Programme, ProgrammeDay, ReintroductionEntry } from './programme';
+import type { LadderStage, Programme, ProgrammeDay, ReintroductionEntry } from './programme';
 
 /**
  * The shape of `seed-programme.json` on disk. Note it keeps `days` and
@@ -12,4 +12,5 @@ export interface SeedFile {
   exercises: Exercise[];
   days: ProgrammeDay[];
   reintroductionSchedule: ReintroductionEntry[];
+  pullUpLadder: LadderStage[];
 }

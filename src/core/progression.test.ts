@@ -17,13 +17,31 @@ const seeded = (id: string): Exercise => {
   if (found === undefined) throw new Error(`no seeded exercise ${id}`);
   return found;
 };
-/** The prescription the programme actually uses for an exercise. */
+/**
+ * The prescription the programme actually uses for an exercise.
+ *
+ * Some seeded exercises are in the library without being programmed — the trap
+ * bar lifts are the case acceptance criteria 7 and 8 name, one dropped at the
+ * user's request and one simply not in this split. The progression rule still has
+ * to be right for the day they are swapped back in, so those fall back to a
+ * prescription built from the exercise's own rep range rather than skipping the
+ * check.
+ */
 const seededPrescription = (id: string) => {
   for (const day of seed.days) {
     const found = prescriptionsOf(day).find((p) => p.exerciseId === id);
     if (found !== undefined) return found;
   }
-  throw new Error(`no prescription for ${id}`);
+  const range = seeded(id).progression.repRange;
+  // A rule with no rep range describes a low-rep quality lift; the jump ran 3 × 3
+  // while it was programmed, which is the shape the rule has to hold for.
+  if (range === undefined) return aPrescription({ exerciseId: id, sets: 3, reps: '3' });
+  const [floor, top] = range;
+  return aPrescription({
+    exerciseId: id,
+    sets: 4,
+    reps: floor === top ? String(top) : `${floor}-${top}`,
+  });
 };
 
 const performance = (

@@ -10,7 +10,7 @@ A single-user, offline-first workout tracker and gym timer for the web. Hevy-sha
 
 ## 1. Context
 
-One user. A 9–5 office worker who plays football once or twice a week and trains four times a week in a commercial gym. They are currently managing anterior knee pain, so the programme is in a modified "Phase 1" and the pain needs tracking.
+One user, on an **iPhone**. A 9–5 office worker who plays football once or twice a week and trains three times a week in a commercial gym on a full-body split, plus one mobility day at home. They are currently managing anterior knee pain, so the programme is in a modified "Phase 1" and the pain needs tracking.
 
 The app is used **standing in a gym, on a phone, one-handed, with sweaty hands, often with no mobile signal, between sets of 30 to 120 seconds.** Every design decision follows from that sentence. It is not used at a desk.
 
@@ -213,7 +213,9 @@ interface Settings {
   units: 'kg' | 'lb';
   soundEnabled: boolean;
   vibrationEnabled: boolean;
-  keepScreenAwake: boolean;      // Wake Lock during active workouts
+  keepScreenAwake: boolean;      // Wake Lock during active workouts — DEFAULTS TRUE
+  backgroundAudioKeepAlive: boolean; // silent-audio hack — defaults false
+  alertVolume: number;           // 0–1, defaults 1
   autoStartRestTimer: boolean;   // default true
   plateIncrementKg: number;      // default 2.5
 }
@@ -322,12 +324,36 @@ Three modes. All three share one timer surface.
 
 - Persist `TimerState` to IndexedDB on every change, so a reload mid-rest resumes correctly.
 - On `visibilitychange` back to visible, recompute. If the timer elapsed while hidden, fire the alert immediately and show "rest finished 40s ago" rather than silently resetting.
-- **Audio:** create the `AudioContext` and pre-decode the alert sound on the **first user gesture of the session** — iOS Safari will not play audio from a context created outside a gesture. Do this when the workout starts, not when the first timer fires.
-- **Vibration:** `navigator.vibrate` on reaching zero. Works on Android; iOS Safari does not support it. Never rely on vibration alone.
-- **Wake Lock:** request a screen wake lock while a workout is active, if `settings.keepScreenAwake`. Release it on finish and re-request on visibility change, since the lock is dropped when the page is hidden.
-- **Notifications:** if permission has been granted, post a notification on timer completion as a supplementary alert. Ask for permission once, at the point the user first finishes a rest with the app backgrounded — never on first launch.
+- **Vibration:** `navigator.vibrate` on reaching zero. Works on Android; iOS Safari does not support it at all. Never rely on vibration alone.
 
-**Known limitation, accept for v1:** a fully suspended browser tab on iOS cannot be guaranteed to play a sound at the exact moment the timer hits zero. The mitigations above (wake lock, compute-on-resume, notifications) cover the realistic cases. Do not attempt to work around this with a looping silent audio element; the battery cost is not worth it. Document the limitation in the README.
+### iOS is the hard case. Design for it first.
+
+**The target device is an iPhone, and iOS does not let a web app alert you while the screen is locked.** When Safari backgrounds or the screen locks, JavaScript timers are suspended and audio playback is stopped. This is an operating-system restriction, not something that can be coded around, and any design that assumes "the sound will just play" is broken on the primary device.
+
+The app must therefore be built so the timer is *seen and heard while the screen is on*, and must degrade honestly when it isn't.
+
+**1. Screen Wake Lock is the actual fix, and it defaults ON.**
+Request a `navigator.wakeLock` screen lock when a workout starts and hold it for the whole session (supported in Safari 16.4+). Release it on finish. The lock is dropped whenever the page is hidden, so re-request it on every `visibilitychange` back to visible. `settings.keepScreenAwake` controls it and **defaults to true** — the battery cost of an hour with the screen on is an acceptable trade for a timer that works. Surface it in the UI as "Keep screen on during workouts", not as a technical setting.
+
+**2. Unlock audio on the first gesture of the session.**
+Create the `AudioContext` and decode the alert buffer when the user taps **Start workout** — not when the first timer fires. iOS will not play audio from a context created outside a user gesture, and by the time a rest timer ends the gesture is long gone. Call `audioContext.resume()` again on each `visibilitychange` back to visible, since iOS suspends the context when backgrounding.
+
+**3. Make the alert loud enough to matter.**
+A single short beep is easy to miss in a gym. Use a distinctive two-tone alert repeated three times over about two seconds, at full volume, plus an unmistakable visual change (full-screen colour flash on the timer view). Add a setting for alert volume.
+
+**4. Compute on resume, and say what happened.**
+When the app comes back to the foreground after the timer elapsed, immediately fire the alert and display "Rest finished 1:12 ago" with the option to log the next set or restart the rest. This is what turns the iOS limitation from "the app is broken" into "the app knew".
+
+**5. Optional, off by default: silent-audio keep-alive.**
+Playing a silent looping audio element can keep the audio session alive while Safari is *backgrounded with the screen still on*, allowing the alert to fire. It does **not** survive a locked screen, and it costs battery. Implement it behind a setting labelled honestly ("Try to play alerts when the app is in the background — uses more battery"), defaulted off.
+
+**6. Do not promise notifications.**
+Web Push on iOS requires the app to be installed to the home screen and, critically, a push *server* — which this app does not have. There is no reliable way to schedule a future local notification from a web app on iOS. Do not build a notification path for the timer on iOS. On Android, where the Notification API works from a service worker, use it as a supplementary alert.
+
+**7. Say so in the app.**
+On first run on iOS, show a one-time card: the timer keeps the screen awake so alerts can fire, and if the phone is locked manually the alert will be waiting when it's unlocked. Users forgive a limitation they were told about; they abandon an app that silently fails. Put the same note in the README.
+
+**Accepted limitation:** with the screen manually locked, no alert will sound on iOS. The honest workarounds are a native app or an Apple Watch, both out of scope. Everything above exists to make the locked-screen case rare rather than to defeat it.
 
 ### Default rest times
 
@@ -388,6 +414,15 @@ Alternatives must preserve the progression type where possible. If the chosen su
 
 ---
 
+## 8b. The pull-up ladder
+
+The user is working toward a first unassisted pull-up, and this is a staged progression rather than a single exercise. Model it explicitly.
+
+- `seed-programme.json` contains a `pullUpLadder` array of four stages, each with its exercises, prescriptions, and a **gate** — a plain-English criterion for moving up.
+- The app stores the user's `currentLadderStage` in settings. The pull-up slots in the programme resolve to whichever stage they're on, so the workout screen shows the right exercise without them having to remember.
+- On the exercise card, show the current stage, its gate, and a **"I've met the gate"** action that advances the stage. Never advance automatically — the gates are judgement calls.
+- Stage 3 and 4 include "attempt one unassisted rep, fresh, before anything else". Log those attempts as a boolean per session and surface the streak on the Progress screen; the first successful rep is the milestone this whole feature exists for, so mark it properly when it lands.
+
 ## 9. Pain tracking
 
 Specific to this user's current knee, but built generally: any exercise with `painTracked: true` prompts for a score.
@@ -445,6 +480,9 @@ The build is done when all of these are true on a phone:
 12. Exporting, clearing site data, and importing restores every session exactly.
 13. The app is usable one-handed: every action needed during a workout is reachable with a thumb.
 14. Killing the browser mid-workout and reopening resumes the session with all logged sets intact.
+15. **On an iPhone, starting a workout keeps the screen awake by default**, and a rest timer that elapses with the screen on plays an audible alert without the user touching anything.
+16. **On an iPhone with the screen manually locked during a rest, unlocking immediately plays the alert and shows how long ago rest ended.** No silent failure.
+17. Advancing the pull-up ladder stage changes which exercise appears in the pull-up slots of the programme.
 
 ---
 

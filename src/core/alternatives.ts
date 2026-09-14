@@ -129,6 +129,7 @@ export function deriveExerciseFromAlternative(
     kneeSensitive: !alternative.kneeSafe,
     painTracked: source.painTracked,
     phase1Excluded: false,
+    userExcluded: false,
     alternatives: [],
   };
 }

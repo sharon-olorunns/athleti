@@ -6,7 +6,7 @@
  * writes through to Dexie first.
  */
 import { create } from 'zustand';
-import type { Exercise, MorningCheck, Settings } from '@/types';
+import type { Exercise, LadderStage, MorningCheck, ProgrammeDay, Settings } from '@/types';
 import { DEFAULT_SETTINGS } from '@/types';
 import type { ProgrammeRow } from '@/db/db';
 import { db } from '@/db/db';
@@ -20,6 +20,7 @@ import {
   saveSettings,
 } from '@/db/repo';
 import { seedIfNeeded } from '@/db/seed';
+import { clampStage, nextStage, resolveLadder } from '@/core/ladder';
 import { weekNumberFor } from '@/core/schedule';
 
 export type BootStatus = 'idle' | 'loading' | 'ready' | 'error';
@@ -28,6 +29,12 @@ interface AppState {
   status: BootStatus;
   error: string | undefined;
   programme: ProgrammeRow | undefined;
+  /**
+   * The programme's days with the pull-up slots resolved to the current ladder
+   * stage. Held as state rather than computed per render so the array identity is
+   * stable and screens do not re-render on every tick.
+   */
+  days: ProgrammeDay[];
   library: Map<string, Exercise>;
   settings: Settings;
   programmeStartedAt: number | undefined;
@@ -42,12 +49,27 @@ interface AppState {
   saveMorningCheck: (check: MorningCheck) => Promise<void>;
   /** Replace a prescribed exercise across the programme, permanently. */
   makeSubstitutionPermanent: (prescribedId: string, performedId: string) => Promise<void>;
+  ladder: () => LadderStage[];
+  /** The stage the pull-up slots are resolved at, clamped into the ladder. */
+  ladderStage: () => number;
+  /** Move up a rung. Only ever called from the user's own "I've met the gate". */
+  advanceLadder: () => Promise<void>;
+}
+
+/** The days a screen should show: the stored programme, ladder slots resolved. */
+function resolvedDays(
+  programme: ProgrammeRow | undefined,
+  stage: number,
+): ProgrammeDay[] {
+  if (programme === undefined) return [];
+  return resolveLadder(programme.days, programme.pullUpLadder ?? [], stage);
 }
 
 export const useApp = create<AppState>((set, get) => ({
   status: 'idle',
   error: undefined,
   programme: undefined,
+  days: [],
   library: new Map(),
   settings: { ...DEFAULT_SETTINGS },
   programmeStartedAt: undefined,
@@ -67,7 +89,15 @@ export const useApp = create<AppState>((set, get) => ({
         getMorningChecks(),
       ]);
       if (programme === undefined) throw new Error('No programme found after seeding');
-      set({ status: 'ready', programme, library, settings, programmeStartedAt, morningChecks });
+      set({
+        status: 'ready',
+        programme,
+        days: resolvedDays(programme, settings.currentLadderStage),
+        library,
+        settings,
+        programmeStartedAt,
+        morningChecks,
+      });
       applyTheme(settings.theme);
     } catch (cause) {
       set({ status: 'error', error: cause instanceof Error ? cause.message : String(cause) });
@@ -78,6 +108,10 @@ export const useApp = create<AppState>((set, get) => ({
     const next = { ...get().settings, ...patch };
     await saveSettings(next);
     set({ settings: next });
+    // A stage change repoints the pull-up slots, so the days are rebuilt with it.
+    if (patch.currentLadderStage !== undefined) {
+      set({ days: resolvedDays(get().programme, next.currentLadderStage) });
+    }
     applyTheme(next.theme);
   },
 
@@ -132,7 +166,18 @@ export const useApp = create<AppState>((set, get) => ({
     };
 
     await db.programmes.put(next);
-    set({ programme: next });
+    set({ programme: next, days: resolvedDays(next, get().settings.currentLadderStage) });
+  },
+
+  ladder: () => get().programme?.pullUpLadder ?? [],
+
+  ladderStage: () => clampStage(get().ladder(), get().settings.currentLadderStage),
+
+  advanceLadder: async () => {
+    const ladder = get().ladder();
+    await get().updateSettings({
+      currentLadderStage: nextStage(ladder, get().settings.currentLadderStage),
+    });
   },
 
   currentWeek: (now = Date.now()) => {
