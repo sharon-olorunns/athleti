@@ -17,7 +17,13 @@ const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
  * The full-screen timer: a large countdown, a circular progress ring and the
  * −15s / +15s / Pause / Skip controls. Reached by tapping the pinned bar.
  */
-export function TimerSheet({ now }: { now: number }) {
+export function TimerSheet({
+  now,
+  onLogNextSet,
+}: {
+  now: number;
+  onLogNextSet?: () => void;
+}) {
   const timer = useTimer((s) => s.timer);
   const expanded = useTimer((s) => s.expanded);
   const setExpanded = useTimer((s) => s.setExpanded);
@@ -26,6 +32,7 @@ export function TimerSheet({ now }: { now: number }) {
   const adjust = useTimer((s) => s.adjust);
   const skip = useTimer((s) => s.skip);
   const dismiss = useTimer((s) => s.dismiss);
+  const restart = useTimer((s) => s.restart);
 
   if (!expanded || timer === undefined) return null;
 
@@ -118,15 +125,31 @@ export function TimerSheet({ now }: { now: number }) {
           </button>
         )}
 
+        {/*
+          An overdue rest gets two answers rather than one dismissal: the alert
+          may only have reached the user on unlock, and by then the honest choice
+          is another full rest or straight back to the bar (section 6, point 4).
+        */}
+        {elapsed && (
+          <button
+            type="button"
+            className={`${styles.control} ${styles.wide}`}
+            onClick={() => void restart()}
+          >
+            Rest again
+          </button>
+        )}
+
         <button
           type="button"
           className={`${styles.control} ${styles.wide} ${elapsed ? styles.primary : ''}`}
           onClick={() => {
             void (elapsed ? dismiss() : skip());
             setExpanded(false);
+            if (elapsed) onLogNextSet?.();
           }}
         >
-          {elapsed ? 'Done' : 'Skip'}
+          {elapsed ? 'Log next set' : 'Skip'}
         </button>
       </div>
     </div>

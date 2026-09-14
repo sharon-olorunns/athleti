@@ -81,11 +81,19 @@
 
 .skip {
   flex: 0 0 auto;
-  width: 72px;
+  /* Two buttons fit here once a rest is overdue, so they are sized to share. */
+  min-width: 64px;
+  padding: 0 var(--sp-2);
   border-left: 1px solid var(--border);
   color: var(--text-dim);
   font-size: var(--fs-sm);
   font-weight: 650;
+  white-space: nowrap;
+}
+
+/* Back to the bar is the expected answer, so it reads as the primary one. */
+.skipPrimary {
+  color: var(--accent);
 }
 
 /* The one-time notification offer, inline and dismissible. */

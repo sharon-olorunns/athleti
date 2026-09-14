@@ -26,10 +26,17 @@ const MODE_LABEL = {
  * The pinned bar: remaining time, context label and a skip, on every screen while
  * a timer runs. Tapping it opens the full-screen view.
  */
-export function TimerBar({ now }: { now: number }) {
+export function TimerBar({
+  now,
+  onLogNextSet,
+}: {
+  now: number;
+  onLogNextSet?: () => void;
+}) {
   const timer = useTimer((s) => s.timer);
   const skip = useTimer((s) => s.skip);
   const dismiss = useTimer((s) => s.dismiss);
+  const restart = useTimer((s) => s.restart);
   const setExpanded = useTimer((s) => s.setExpanded);
   const finishedWhileHidden = useTimer((s) => s.finishedWhileHidden);
 
@@ -107,12 +114,26 @@ export function TimerBar({ now }: { now: number }) {
           </span>
         </button>
 
+        {/*
+          An overdue rest offers a rest again as well as moving on: on iOS the
+          alert can arrive minutes late, at unlock, and a timer that just says
+          "finished 1:12 ago" leaves the user to guess (section 6, point 4).
+        */}
+        {elapsed && (
+          <button type="button" className={styles.skip} onClick={() => void restart()}>
+            Again
+          </button>
+        )}
+
         <button
           type="button"
-          className={styles.skip}
-          onClick={() => void (elapsed ? dismiss() : skip())}
+          className={`${styles.skip} ${elapsed ? styles.skipPrimary : ''}`}
+          onClick={() => {
+            void (elapsed ? dismiss() : skip());
+            if (elapsed) onLogNextSet?.();
+          }}
         >
-          {elapsed ? 'Clear' : 'Skip'}
+          {elapsed ? 'Next set' : 'Skip'}
         </button>
       </div>
     </>

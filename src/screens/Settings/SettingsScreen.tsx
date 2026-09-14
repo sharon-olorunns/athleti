@@ -12,6 +12,7 @@ import {
 import { clampStage, gateFor, stageFor } from '@/core/ladder';
 import { applyImport, readBackup, seededExerciseIds } from '@/db/backup';
 import { META_KEYS, setMeta } from '@/db/db';
+import { startKeepAlive, stopKeepAlive } from '@/platform/audio';
 import { downloadFile } from '@/platform/download';
 import { useApp } from '@/state/store';
 import { useWorkout } from '@/state/workoutStore';
@@ -86,6 +87,7 @@ export function SettingsScreen() {
   const ladder = useApp((s) => s.ladder)();
 
   const history = useWorkout((s) => s.history);
+  const workoutActive = useWorkout((s) => s.session !== undefined);
   const loadHistory = useWorkout((s) => s.loadHistory);
   const morningChecks = useApp((s) => s.morningChecks);
 
@@ -249,15 +251,57 @@ export function SettingsScreen() {
           />
         </div>
 
+        <div className={`${styles.row} ${styles.rowStacked}`}>
+          <span className={styles.label}>
+            <span className={styles.labelText}>Alert volume</span>
+            <span className={styles.labelNote}>A gym is loud. Full is the default.</span>
+          </span>
+          <Segmented
+            label="Alert volume"
+            value={String(Math.round(settings.alertVolume * 100))}
+            onChange={(v) => set('alertVolume', Number(v) / 100)}
+            options={[
+              { value: '25', label: 'Low' },
+              { value: '60', label: 'Mid' },
+              { value: '100', label: 'Full' },
+            ]}
+          />
+        </div>
+
         <div className={styles.row}>
           <span className={styles.label}>
-            <span className={styles.labelText}>Keep screen awake</span>
-            <span className={styles.labelNote}>While a workout is in progress.</span>
+            <span className={styles.labelText}>Keep screen on during workouts</span>
+            <span className={styles.labelNote}>
+              On iPhone this is what makes the alert fire at all. Leave it on.
+            </span>
           </span>
           <Toggle
-            label="Keep screen awake"
+            label="Keep screen on during workouts"
             checked={settings.keepScreenAwake}
             onChange={(v) => set('keepScreenAwake', v)}
+          />
+        </div>
+
+        <div className={styles.row}>
+          <span className={styles.label}>
+            <span className={styles.labelText}>Try to play alerts in the background</span>
+            <span className={styles.labelNote}>
+              Uses more battery. Helps when the app is backgrounded with the screen on; does
+              nothing once the phone is locked.
+            </span>
+          </span>
+          <Toggle
+            label="Try to play alerts in the background"
+            checked={settings.backgroundAudioKeepAlive}
+            onChange={(v) => {
+              set('backgroundAudioKeepAlive', v);
+              // This tap is a user gesture, which is the only moment iOS will let
+              // the silent element start playing — so act on it here rather than
+              // waiting for the next workout.
+              if (!workoutActive) return;
+              if (v) startKeepAlive();
+              else stopKeepAlive();
+            }}
           />
         </div>
       </div>

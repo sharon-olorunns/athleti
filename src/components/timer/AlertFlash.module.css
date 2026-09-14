@@ -1,0 +1,38 @@
+/*
+ * Three pulses over two seconds, matching the three two-tone beeps of the
+ * 'finished' alert. Above every fixed bar, but never in the way of one: nothing
+ * here takes a tap.
+ */
+.flash {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  pointer-events: none;
+  background: var(--accent);
+  animation: pulse 2s steps(1, end) 1 forwards;
+}
+
+@keyframes pulse {
+  0%   { opacity: 0.42; }
+  11%  { opacity: 0; }
+  22%  { opacity: 0.42; }
+  33%  { opacity: 0; }
+  44%  { opacity: 0.42; }
+  55%  { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+/*
+ * A strobing full-screen colour is exactly what this setting exists to prevent,
+ * so it degrades to one steady wash that fades out.
+ */
+@media (prefers-reduced-motion: reduce) {
+  .flash {
+    animation: fade 2s ease-out 1 forwards;
+  }
+
+  @keyframes fade {
+    0% { opacity: 0.32; }
+    100% { opacity: 0; }
+  }
+}

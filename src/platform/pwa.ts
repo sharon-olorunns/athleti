@@ -6,7 +6,8 @@
  * banner, and the banner itself is withheld during a workout.
  */
 import { registerSW } from 'virtual:pwa-register';
-import { detectIOS } from '@/core/pwa';
+
+export { isIOS } from './device';
 
 type UpdateFn = (reload?: boolean) => Promise<void>;
 
@@ -36,11 +37,6 @@ export function isStandalone(): boolean {
   if (typeof window === 'undefined') return false;
   const iosStandalone = (navigator as unknown as { standalone?: boolean }).standalone === true;
   return window.matchMedia('(display-mode: standalone)').matches || iosStandalone;
-}
-
-export function isIOS(): boolean {
-  if (typeof navigator === 'undefined') return false;
-  return detectIOS(navigator.userAgent, navigator.maxTouchPoints);
 }
 
 /**

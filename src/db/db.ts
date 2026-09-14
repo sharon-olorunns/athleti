@@ -78,6 +78,8 @@ export const META_KEYS = {
   installOffered: 'installOffered',
   /** When the backup nudge was last dismissed, so it returns only after an export. */
   exportReminderDismissedAt: 'exportReminderDismissedAt',
+  /** True once the iOS alert explainer has been read, so it is shown once. */
+  iosAlertNoticeSeen: 'iosAlertNoticeSeen',
 } as const;
 
 export class TrainerDb extends Dexie {

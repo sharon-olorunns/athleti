@@ -22,7 +22,7 @@ import {
   type IntervalSpec,
   type TimerCompletionTarget,
 } from '@/core/timer';
-import { playAlert, vibrate, type AlertKind } from '@/platform/audio';
+import { playAlert, setAlertVolume, vibrate, type AlertKind } from '@/platform/audio';
 import { postTimerNotification } from '@/platform/notifications';
 import { useApp } from './store';
 
@@ -45,6 +45,12 @@ interface TimerStoreState {
   restOverrides: Record<string, number>;
   /** Set when a timer ran out while the page was hidden, for the returning banner. */
   finishedWhileHidden: boolean;
+  /**
+   * When the last "rest is over" alert fired, so the full-screen colour flash can
+   * run alongside it. A timestamp rather than a boolean: a second alert during the
+   * first one's flash has to restart it, which a boolean already true cannot do.
+   */
+  alertedAt: number | undefined;
 
   restore: () => Promise<void>;
   startRest: (params: {
@@ -74,12 +80,17 @@ interface TimerStoreState {
   handleElapsed: (now: number, wasHidden: boolean) => ElapseOutcome;
   /** The rest to use for an exercise, including any ±15s override. */
   restSecondsFor: (exerciseId: string, prescribed: number) => number;
+  /** Run the rest again from the top — the "restart rest" action on an overdue timer. */
+  restart: () => Promise<void>;
 }
 
 function alertNow(kind: AlertKind, contextLabel?: string): void {
-  const { soundEnabled, vibrationEnabled } = useApp.getState().settings;
+  const { soundEnabled, vibrationEnabled, alertVolume } = useApp.getState().settings;
 
-  if (soundEnabled) playAlert(kind);
+  if (soundEnabled) {
+    setAlertVolume(alertVolume);
+    playAlert(kind);
+  }
   if (vibrationEnabled) {
     // Android only; iOS Safari has no vibration at all, which is why the alert
     // is never vibration alone.
@@ -115,6 +126,7 @@ export const useTimer = create<TimerStoreState>((set, get) => {
     expanded: false,
     restOverrides: {},
     finishedWhileHidden: false,
+    alertedAt: undefined,
 
     restore: async () => {
       const stored = await getTimerState();
@@ -200,12 +212,12 @@ export const useTimer = create<TimerStoreState>((set, get) => {
     },
 
     skip: async () => {
-      set({ expanded: false, finishedWhileHidden: false });
+      set({ expanded: false, finishedWhileHidden: false, alertedAt: undefined });
       await persist(undefined);
     },
 
     dismiss: async () => {
-      set({ finishedWhileHidden: false });
+      set({ finishedWhileHidden: false, alertedAt: undefined });
       await persist(undefined);
     },
 
@@ -225,13 +237,13 @@ export const useTimer = create<TimerStoreState>((set, get) => {
           return { kind: 'interval-advanced' };
         }
         alertNow('finished', current.contextLabel);
-        set({ finishedWhileHidden: wasHidden });
+        set({ finishedWhileHidden: wasHidden, alertedAt: Date.now() });
         void persist({ ...current, alerted: true });
         return { kind: 'interval-finished', target: current.completionTarget };
       }
 
       alertNow('finished', current.contextLabel);
-      set({ finishedWhileHidden: wasHidden });
+      set({ finishedWhileHidden: wasHidden, alertedAt: Date.now() });
       void persist({ ...current, alerted: true });
 
       if (current.mode === 'hold') {
@@ -241,6 +253,25 @@ export const useTimer = create<TimerStoreState>((set, get) => {
     },
 
     restSecondsFor: (exerciseId, prescribed) => get().restOverrides[exerciseId] ?? prescribed,
+
+    /**
+     * Run the same rest again. Offered when a rest has already elapsed — the
+     * honest answer to "the alert only reached me now" is another full rest, not
+     * a timer that quietly resets to nothing.
+     */
+    restart: async () => {
+      const current = get().timer;
+      if (current === undefined) return;
+      const base = createTimer({
+        mode: current.mode,
+        totalSeconds: current.totalSeconds,
+        contextLabel: current.contextLabel,
+        now: Date.now(),
+        ...(current.intervalSpec !== undefined ? { interval: current.intervalSpec } : {}),
+      });
+      set({ finishedWhileHidden: false, alertedAt: undefined });
+      await persist({ ...current, ...base, alerted: false });
+    },
   };
 });
 

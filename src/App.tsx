@@ -80,7 +80,7 @@ export default function App() {
       {detailId !== undefined && (
         <ExerciseDetail exerciseId={detailId} onClose={() => setDetailId(undefined)} />
       )}
-      <TimerRunner />
+      <TimerRunner onLogNextSet={() => setTab('today')} />
       <PwaBanners />
       <TabBar active={tab} onChange={setTab} workoutActive={session !== undefined} />
     </>

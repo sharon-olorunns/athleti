@@ -8,6 +8,7 @@ import { Sparkline } from '@/components/charts/Sparkline';
 import { permanentSubstitutionCandidate, substitutionKey } from '@/core/alternatives';
 import { ladderExerciseIds } from '@/core/ladder';
 import { getMeta, META_KEYS, setMeta } from '@/db/db';
+import { isIOS } from '@/platform/device';
 import { Chip } from '@/components/Chip';
 import { PainScale } from '@/components/pain/PainScale';
 import { CNS_LABEL, CNS_TINT, minutesLabel } from '@/components/labels';
@@ -55,6 +56,7 @@ export function TodayScreen({
   const [dismissedMornings, setDismissedMornings] = useState<string[]>([]);
   const [dismissedSwaps, setDismissedSwaps] = useState<string[]>([]);
   const [exportDue, setExportDue] = useState(false);
+  const [iosNotice, setIosNotice] = useState(false);
 
   // Both prompts are offered once and remembered, so neither becomes a nag.
   useEffect(() => {
@@ -62,6 +64,14 @@ export function TodayScreen({
       setDismissedMornings(v ?? []),
     );
     void getMeta<string[]>(META_KEYS.dismissedSubstitutions).then((v) => setDismissedSwaps(v ?? []));
+  }, []);
+
+  // The iOS alert explainer, on first run and only on the device it describes.
+  useEffect(() => {
+    if (!isIOS()) return;
+    void getMeta<boolean>(META_KEYS.iosAlertNoticeSeen).then((seen) =>
+      setIosNotice(seen !== true),
+    );
   }, []);
 
   /*
@@ -127,6 +137,11 @@ export function TodayScreen({
   const swapPrescribed = swapCandidate === undefined ? undefined : exerciseById(swapCandidate.prescribedId);
   const swapPerformed = swapCandidate === undefined ? undefined : exerciseById(swapCandidate.performedId);
 
+  const dismissIosNotice = () => {
+    setIosNotice(false);
+    void setMeta(META_KEYS.iosAlertNoticeSeen, true);
+  };
+
   const dismissMorning = (date: string) => {
     const next = [...dismissedMornings, date];
     setDismissedMornings(next);
@@ -153,6 +168,31 @@ export function TodayScreen({
           </Chip>
         )}
       </div>
+
+      {/*
+        Section 6, point 7. iOS cannot alert a locked screen, and a user who was
+        told that forgives it — one who finds out by missing a rest does not. Said
+        once, on the first run, and never again.
+      */}
+      {iosNotice && (
+        <section className={styles.card}>
+          <p className={styles.cardTitle}>About alerts on iPhone</p>
+          <p className={styles.cardBody}>
+            A workout keeps the screen awake so rest alerts can actually fire. If you lock the
+            phone yourself, iOS stops the timer sounding — the alert will be waiting, with how
+            long ago rest ended, the moment you unlock.
+          </p>
+          <div className={styles.cardActions}>
+            <button
+              type="button"
+              className={`${styles.cardButton} ${styles.cardPrimary}`}
+              onClick={dismissIosNotice}
+            >
+              Got it
+            </button>
+          </div>
+        </section>
+      )}
 
       {exportDue && (
         <section className={styles.card}>

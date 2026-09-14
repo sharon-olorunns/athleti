@@ -30,7 +30,7 @@ import {
   unlogSet,
 } from '@/core/session';
 import type { PlannedRow, RowValues } from '@/core/workout';
-import { primeAudio, releaseAudio } from '@/platform/audio';
+import { primeAudio, releaseAudio, startKeepAlive } from '@/platform/audio';
 import { useTimer } from './timerStore';
 import { useApp } from './store';
 
@@ -128,8 +128,10 @@ export const useWorkout = create<WorkoutState>((set, get) => {
 
     start: async (dayId) => {
       // The AudioContext must be created inside a user gesture or iOS Safari will
-      // never play the alert. This runs on the tap that starts the workout.
+      // never play the alert. This runs on the tap that starts the workout, and
+      // so does the keep-alive, which needs the same gesture to begin playing.
       primeAudio();
+      if (useApp.getState().settings.backgroundAudioKeepAlive) startKeepAlive();
       const now = Date.now();
       const weekNumber = useApp.getState().currentWeek(now);
       const next = createSession(dayId, weekNumber, now);

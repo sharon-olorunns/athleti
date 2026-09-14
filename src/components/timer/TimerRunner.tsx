@@ -1,8 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 import { hasElapsed } from '@/core/timer';
+import { resumeAudio } from '@/platform/audio';
 import { useApp } from '@/state/store';
 import { useTimer } from '@/state/timerStore';
 import { useWorkout } from '@/state/workoutStore';
+import { AlertFlash } from './AlertFlash';
 import { TimerBar } from './TimerBar';
 import { TimerSheet } from './TimerSheet';
 
@@ -14,7 +16,7 @@ import { TimerSheet } from './TimerSheet';
  * a throttled or suspended tab cannot desynchronise the clock — it only makes the
  * display stale until the next tick or the next visibility change.
  */
-export function TimerRunner() {
+export function TimerRunner({ onLogNextSet }: { onLogNextSet?: () => void }) {
   const timer = useTimer((s) => s.timer);
   const handleElapsed = useTimer((s) => s.handleElapsed);
   const startRest = useTimer((s) => s.startRest);
@@ -47,11 +49,16 @@ export function TimerRunner() {
 
   // Coming back from hidden: recompute at once rather than waiting for a tick,
   // so a timer that ran out in the background is reported immediately.
+  //
+  // The AudioContext is resumed on the same event. iOS suspends a backgrounded
+  // context, and a suspended one plays nothing — so without this the alert goes
+  // silent for the rest of the session the first time the phone goes in a pocket.
   useEffect(() => {
     const onVisibility = () => {
       if (document.hidden) {
         wasHidden.current = true;
       } else {
+        resumeAudio();
         setNow(Date.now());
       }
     };
@@ -93,8 +100,9 @@ export function TimerRunner() {
 
   return (
     <>
-      <TimerBar now={now} />
-      <TimerSheet now={now} />
+      <AlertFlash />
+      <TimerBar now={now} {...(onLogNextSet !== undefined ? { onLogNextSet } : {})} />
+      <TimerSheet now={now} {...(onLogNextSet !== undefined ? { onLogNextSet } : {})} />
     </>
   );
 }
