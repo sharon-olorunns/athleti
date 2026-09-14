@@ -296,6 +296,7 @@ export interface WeekAdherence {
 /** Sessions completed per week against the programme's four. */
 export function weeklyAdherence(
   sessions: readonly WorkoutSession[],
+  /** One session per programme day in the week. Passed in, never assumed. */
   target = 4,
 ): WeekAdherence[] {
   const counts = new Map<number, number>();

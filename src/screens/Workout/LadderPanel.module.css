@@ -1,10 +1,14 @@
+/*
+ * A tinted box rather than another left rail: inside a superset this already sits
+ * against the superset's own rail and the note's, and a third vertical line reads
+ * as clutter rather than as structure.
+ */
 .panel {
   margin: var(--sp-3) 0;
   padding: var(--sp-3);
-  border: 1px solid var(--border);
-  border-left: 3px solid var(--accent);
+  border: 1px solid color-mix(in srgb, var(--accent) 35%, transparent);
   border-radius: var(--radius-sm);
-  background: var(--surface-raised);
+  background: color-mix(in srgb, var(--accent) 8%, var(--surface-raised));
 }
 
 .head {
@@ -109,11 +113,15 @@
   font-weight: 600;
 }
 
-/* The milestone the whole ladder exists for, so it reads as an achievement. */
+/*
+ * The milestone the whole ladder exists for, so it reads as an achievement.
+ * Dark ink on the green rather than white: the green is a mid tone in both
+ * themes, and white on it only just clears 4.5:1.
+ */
 .got {
   background: var(--pain-green);
   border-color: var(--pain-green);
-  color: #0b0b0f;
+  color: #08120c;
 }
 
 .missed {

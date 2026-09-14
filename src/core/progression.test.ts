@@ -621,3 +621,47 @@ describe('against the seeded programme', () => {
     expect(result.prefill.weightKg).toBe(80);
   });
 });
+
+describe('load exercises that are not loaded in kilograms', () => {
+  /*
+   * The inverted row and the banded pull-up are `load` exercises that track reps
+   * only: one gets harder by elevating the feet, the other by moving to a thinner
+   * band. Telling someone to find a working weight for a bodyweight row is
+   * nonsense, and offering a kilogram step is worse.
+   */
+  const row = seeded('inverted-row');
+  const prescription = aPrescription({ exerciseId: 'inverted-row', sets: 3, reps: '10' });
+
+  it('asks for a setting rather than a weight the first time', () => {
+    const result = suggestProgression({ exercise: row, prescription, history: [], weekNumber: 1 });
+    expect(result.kind).toBe('load-start');
+    expect(result.message).not.toContain('weight');
+    expect(result.hint).toBe(row.progression.label);
+    expect(result.prefill.weightKg).toBeUndefined();
+  });
+
+  it('names the step to take rather than a number of kilograms', () => {
+    const result = suggestProgression({
+      exercise: row,
+      prescription,
+      history: [performance([10, 10, 10])],
+      weekNumber: 1,
+    });
+    expect(result.kind).toBe('load-progress');
+    expect(result.message).toBe('All sets at 10 clean last time → add a step.');
+    // "↑ Elevate the feet" — the rule already says what the step is.
+    expect(result.hint).toBe(row.progression.label);
+    expect(result.prefill.weightKg).toBeUndefined();
+  });
+
+  it('still talks in kilograms where the exercise is actually weighted', () => {
+    const result = suggestProgression({
+      exercise: seeded('seated-row'),
+      prescription: aPrescription({ exerciseId: 'seated-row', sets: 4, reps: '10' }),
+      history: [],
+      weekNumber: 1,
+    });
+    expect(result.message).toContain('working weight');
+    expect(result.hint).toBeUndefined();
+  });
+});

@@ -79,10 +79,21 @@
   letter-spacing: 0.05em;
 }
 
+/*
+ * "Rest finished 1:12 ago" is a sentence, not a label, and it has to share the
+ * bar with two buttons — uppercased and letter-spaced it wraps to two lines at
+ * 390px.
+ */
+.modeDone {
+  text-transform: none;
+  letter-spacing: 0;
+  color: var(--text-dim);
+}
+
 .skip {
   flex: 0 0 auto;
   /* Two buttons fit here once a rest is overdue, so they are sized to share. */
-  min-width: 64px;
+  min-width: 56px;
   padding: 0 var(--sp-2);
   border-left: 1px solid var(--border);
   color: var(--text-dim);

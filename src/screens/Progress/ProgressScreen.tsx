@@ -39,6 +39,7 @@ export function ProgressScreen() {
   const exerciseById = useApp((s) => s.exercise);
   const morningChecks = useApp((s) => s.morningChecks);
   const units = useApp((s) => s.settings.units);
+  const days = useApp((s) => s.days);
   const ladder = useApp((s) => s.ladder)();
   const ladderStage = useApp((s) => s.settings.currentLadderStage);
   const history = useWorkout((s) => s.history);
@@ -53,7 +54,10 @@ export function ProgressScreen() {
   );
 
   const volume = useMemo(() => weeklyVolumeByMuscle(history, exerciseById), [history, exerciseById]);
-  const adherence = useMemo(() => weeklyAdherence(history), [history]);
+  const adherence = useMemo(
+    () => weeklyAdherence(history, days.length),
+    [history, days.length],
+  );
 
   // Only exercises that have actually been performed can be charted.
   const performed = useMemo(() => {
@@ -258,7 +262,9 @@ export function ProgressScreen() {
 
       <section className={styles.section}>
         <h2 className={styles.sectionTitle}>Adherence</h2>
-        <p className={styles.sectionNote}>Sessions completed each week, against four.</p>
+        <p className={styles.sectionNote}>
+          Sessions completed each week, against the {days.length} the programme prescribes.
+        </p>
         <BarChart
           title=""
           valueLabel="of 4"

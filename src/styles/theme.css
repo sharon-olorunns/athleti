@@ -4,6 +4,16 @@
  * Dark is the default, not a preference: gym lighting and battery life. The light
  * theme is opt-in via [data-theme="light"] on the root.
  *
+ * The dark scheme is black and purple/burgundy. Purple is the foreground half —
+ * accent, chips, chart lines — because on a near-black ground a colour has to be
+ * light to be read as text at all. Burgundy is the deep half: the superset rails
+ * and anything that sits behind rather than on top. A literal burgundy used as
+ * text on black is unreadable, so it is never asked to be.
+ *
+ * The surfaces carry a faint violet cast rather than being neutral gray. On an
+ * OLED phone in a dim gym that reads as black; next to the accent it reads as
+ * deliberate.
+ *
  * Progression colours are defined here rather than in the progression UI because
  * the same four currencies get colour-coded everywhere they appear — programme
  * reference, exercise cards, the progression banner.
@@ -11,28 +21,34 @@
 
 :root {
   /* Surfaces, darkest to lightest */
-  --bg: #0c0d10;
-  --surface: #15171c;
-  --surface-raised: #1d2027;
-  --surface-sunken: #0f1115;
-  --border: #282c35;
-  --border-strong: #3a3f4b;
+  --bg: #0a0810;
+  --surface: #14101c;
+  --surface-raised: #1d1728;
+  --surface-sunken: #0d0a14;
+  --border: #2c2340;
+  --border-strong: #3f3355;
 
   /* Text */
-  --text: #f2f4f8;
-  --text-dim: #a3abba;
-  --text-faint: #6c7482;
+  --text: #f3f0f8;
+  --text-dim: #a9a0bb;
+  --text-faint: #746a85;
 
-  /* Brand / primary action */
-  --accent: #4c8dff;
-  --accent-text: #ffffff;
-  --accent-dim: #2b5fb5;
+  /*
+   * Brand. The accent is light enough to sit on black as a chart line or a chip
+   * label; --accent-text is near-black because white on this purple is only
+   * 2.8:1. --accent-dim is the burgundy, and it is only ever a fill or a rail —
+   * light enough to clear 3:1 against both the ground and the card, which is what
+   * a 3px graphical object needs.
+   */
+  --accent: #a875ff;
+  --accent-text: #150a20;
+  --accent-dim: #a63a66;
 
   /* Progression currencies (section 7) */
-  --load: #4c8dff;        /* add weight */
-  --quality: #b07cff;     /* never add weight — bar speed, height, intent */
-  --time: #35c3a6;        /* hold longer, progress the lever */
-  --fixed: #7b8393;       /* nothing goes up */
+  --load: #a875ff;        /* add weight — the primary currency, so it takes the accent */
+  --quality: #5aa9ff;     /* never add weight — bar speed, height, intent */
+  --time: #3fd0b0;        /* hold longer, progress the lever */
+  --fixed: #8a8095;       /* nothing goes up */
 
   /* CNS load chips */
   --cns-high: #ff6b5e;
@@ -101,12 +117,13 @@
   --text-dim: #535b69;
   --text-faint: #7d8595;
 
-  --accent: #1f66e0;
+  /* The same two hues, inverted: on white the purple has to be dark to be read. */
+  --accent: #6d28d9;
   --accent-text: #ffffff;
-  --accent-dim: #7ea9f0;
+  --accent-dim: #b0416b;
 
-  --load: #1f66e0;
-  --quality: #7f3fd6;
+  --load: #6d28d9;
+  --quality: #1f66e0;
   --time: #12866f;
   --fixed: #6b7280;
 

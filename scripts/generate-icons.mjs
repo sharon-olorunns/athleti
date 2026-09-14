@@ -14,9 +14,9 @@ import { fileURLToPath } from 'node:url';
 
 const OUT = join(dirname(fileURLToPath(import.meta.url)), '..', 'public', 'icons');
 
-const BG = [12, 13, 16]; // --bg
-const ACCENT = [76, 141, 255]; // --accent
-const INK = [242, 244, 248]; // --text
+const BG = [10, 8, 16]; // --bg
+const ACCENT = [168, 117, 255]; // --accent
+const INK = [243, 240, 248]; // --text
 
 function crc32(buf) {
   let c;

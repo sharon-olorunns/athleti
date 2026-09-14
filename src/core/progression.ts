@@ -179,11 +179,23 @@ function loadSuggestion(input: ProgressionInput, sets: number): ProgressionSugge
   const base = { type: 'load' as const, suggestedSets: sets, deloaded: false };
   const last = history[0];
 
+  /*
+   * Not every load exercise is loaded in kilograms. The inverted row gets harder
+   * by elevating the feet and the banded pull-up by moving to a thinner band;
+   * both track reps only. Telling someone to "find a working weight" for a
+   * bodyweight row is nonsense, so the copy asks for whatever the rule's label
+   * says the step actually is.
+   */
+  const stepsInWeight = exercise.tracks.includes('weight');
+
   if (last === undefined || last.sets.length === 0) {
     return {
       ...base,
       kind: 'load-start',
-      message: `First time logged — find a working weight for ${repTarget || '?'} reps.`,
+      message: stepsInWeight
+        ? `First time logged — find a working weight for ${repTarget || '?'} reps.`
+        : `First time logged — find a setting that gives ${repTarget || '?'} clean reps.`,
+      ...(stepsInWeight ? {} : { hint: rule.label }),
       prefill: repFloor > 0 ? { reps: repFloor } : {},
     };
   }
@@ -196,6 +208,8 @@ function loadSuggestion(input: ProgressionInput, sets: number): ProgressionSugge
         ...base,
         kind: 'load-progress',
         message: `All sets at ${repTarget} clean last time → add a step.`,
+        // Which step, from the rule: "↑ Elevate the feet", "↓ Band thickness".
+        ...(stepsInWeight ? {} : { hint: rule.label }),
         prefill: repFloor > 0 ? { reps: repFloor } : {},
       };
     }

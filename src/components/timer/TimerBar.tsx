@@ -101,7 +101,7 @@ export function TimerBar({
           </span>
           <span className={styles.labels}>
             <span className={styles.context}>{timer.contextLabel}</span>
-            <span className={styles.mode}>
+            <span className={`${styles.mode} ${elapsed ? styles.modeDone : ''}`}>
               {elapsed
                 ? // Not a silent reset: say that it finished, and how long ago.
                   `${MODE_LABEL[timer.mode]} finished ${overdueLabel(overdueMs(timer, now))}`
